@@ -12,7 +12,7 @@ import QualityFeatures from "@/components/QualityFeatures";
 import CTASection from "@/components/CTASection";
 import { getSiteUrl } from "@/lib/siteUrl";
 
-const SPOTLIGHT_ORDER = ["aluminum"];
+const SPOTLIGHT_ORDER = ["aluminum-doors"];
 
 export default async function HomePage({
   params

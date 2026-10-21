@@ -9,7 +9,7 @@ async function main() {
   // --- Categories: the Syroleb product lines ---
   const categories = [
     {
-      slug: "aluminum",
+      slug: "aluminum-doors",
       nameAr: "ألمنيوم",
       nameEn: "Aluminum",
       taglineAr: "ألمنيوم سيروليب عالي الأداء",
