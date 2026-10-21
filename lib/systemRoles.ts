@@ -1,7 +1,7 @@
 // Pure constants/helpers only — no server-only imports (next/headers etc.)
 // so this stays safe to import from client components like SystemSidebar.
 // Mirrors lib/adminRoles.ts's shape exactly, but for the fully separate
-// system.<domain> login (SystemUser/SystemRole, not Admin/AdminRole).
+// /system login (SystemUser/SystemRole, not Admin/AdminRole).
 
 // OWNER: DARKSHAM's account — full control, the only role that can manage
 // /system/users. MANAGER: everything except /system/users. STAFF: read/use
@@ -85,5 +85,5 @@ export const DEFAULT_SYSTEM_ROLE_PAGES: Record<Exclude<SystemRoleValue, "OWNER">
 };
 
 export function homeForSystemRole(_role: SystemRoleValue) {
-  return "/";
+  return "/system";
 }

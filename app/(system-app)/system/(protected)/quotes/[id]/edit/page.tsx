@@ -21,7 +21,7 @@ export default async function EditSystemQuotePage({ params }: { params: { id: st
         defaultTerms={defaultTerms}
         apiBase="/api/system/quotes"
         customerTypesApiBase="/api/system/customer-types"
-        redirectTo="/quotes"
+        redirectTo="/system/quotes"
         enableCustomerLink
       />
     </div>

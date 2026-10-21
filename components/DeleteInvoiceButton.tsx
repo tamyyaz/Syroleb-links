@@ -12,7 +12,7 @@ export default function DeleteInvoiceButton({ invoiceId }: { invoiceId: string }
     setLoading(true);
     await fetch(`/api/system/invoices/${invoiceId}`, { method: "DELETE" });
     setLoading(false);
-    router.push("/invoices");
+    router.push("/system/invoices");
     router.refresh();
   }
 

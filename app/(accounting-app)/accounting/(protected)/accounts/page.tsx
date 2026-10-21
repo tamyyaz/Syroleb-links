@@ -19,7 +19,7 @@ export default async function AccountingAccountsPage() {
         <h1 className="text-2xl font-bold text-ink-900">دليل الحسابات</h1>
         <div className="flex gap-2">
           {accounts.length === 0 && <SeedStarterChartButton />}
-          <Link href="/accounts/new" className="btn-primary">إضافة حساب</Link>
+          <Link href="/accounting/accounts/new" className="btn-primary">إضافة حساب</Link>
         </div>
       </div>
 
@@ -58,7 +58,7 @@ export default async function AccountingAccountsPage() {
                 </td>
                 <td className="p-3">
                   <div className="flex justify-end gap-2">
-                    <Link href={`/accounts/${a.id}/edit`} className="btn-secondary py-1.5 px-3 text-xs">
+                    <Link href={`/accounting/accounts/${a.id}/edit`} className="btn-secondary py-1.5 px-3 text-xs">
                       تعديل
                     </Link>
                     <DeleteAccountButton accountId={a.id} hasLines={a._count.lines > 0} />

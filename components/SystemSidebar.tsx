@@ -6,19 +6,19 @@ import { LayoutDashboard, LogOut, Users, Layers, FileText, Receipt, Wallet, User
 import { homeForSystemRole, type SystemRoleValue, type SystemPageKey } from "@/lib/systemRoles";
 
 // Mirrors components/AdminSidebar.tsx exactly, for the fully separate
-// system.<domain> app. NAV only lists modules that actually have a
+// /system app. NAV only lists modules that actually have a
 // page built yet — extended as each phase in the plan ships its route.
 const NAV: { href: string; label: string; icon: LucideIcon; key: SystemPageKey }[] = [
-  { href: "/", label: "لوحة التحكم", icon: LayoutDashboard, key: "dashboard" },
-  { href: "/quotes", label: "عروض الأسعار", icon: FileText, key: "quotes" },
-  { href: "/invoices", label: "الفواتير", icon: Receipt, key: "invoices" },
-  { href: "/payments", label: "المدفوعات", icon: Wallet, key: "payments" },
-  { href: "/customers", label: "العملاء", icon: Users, key: "customers" },
-  { href: "/customer-types", label: "أنواع العملاء", icon: Layers, key: "customerTypes" },
-  { href: "/employees", label: "الموظفين", icon: UserCog, key: "employees" },
-  { href: "/warehouse", label: "المخزن", icon: Warehouse, key: "warehouse" },
-  { href: "/users", label: "المستخدمين", icon: ShieldCheck, key: "users" },
-  { href: "/audit-log", label: "سجل التدقيق", icon: History, key: "auditLog" }
+  { href: "/system", label: "لوحة التحكم", icon: LayoutDashboard, key: "dashboard" },
+  { href: "/system/quotes", label: "عروض الأسعار", icon: FileText, key: "quotes" },
+  { href: "/system/invoices", label: "الفواتير", icon: Receipt, key: "invoices" },
+  { href: "/system/payments", label: "المدفوعات", icon: Wallet, key: "payments" },
+  { href: "/system/customers", label: "العملاء", icon: Users, key: "customers" },
+  { href: "/system/customer-types", label: "أنواع العملاء", icon: Layers, key: "customerTypes" },
+  { href: "/system/employees", label: "الموظفين", icon: UserCog, key: "employees" },
+  { href: "/system/warehouse", label: "المخزن", icon: Warehouse, key: "warehouse" },
+  { href: "/system/users", label: "المستخدمين", icon: ShieldCheck, key: "users" },
+  { href: "/system/audit-log", label: "سجل التدقيق", icon: History, key: "auditLog" }
 ];
 
 export default function SystemSidebar({
@@ -35,7 +35,7 @@ export default function SystemSidebar({
 
   async function handleLogout() {
     await fetch("/api/system/logout", { method: "POST" });
-    router.push("/login");
+    router.push("/system/login");
     router.refresh();
   }
 

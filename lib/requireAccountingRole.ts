@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { getSystemSession } from "./systemAuth";
 import { isSystemRole, type SystemRoleValue } from "./systemRoles";
 
-// Server-component page guard for account.<domain> — OWNER-only, no
+// Server-component page guard for /accounting — OWNER-only, no
 // other page to fall back to in this single-purpose app, so any failure
 // (no session, or a role downgraded mid-session) redirects straight to
 // /login rather than a "home for this role" page like requireSystemRole
@@ -12,11 +12,11 @@ import { isSystemRole, type SystemRoleValue } from "./systemRoles";
 export async function requireAccountingRole() {
   const session = await getSystemSession();
   if (!session) {
-    redirect("/login");
+    redirect("/accounting/login");
   }
   const role: SystemRoleValue = isSystemRole(session.role) ? session.role : "STAFF";
   if (role !== "OWNER") {
-    redirect("/login");
+    redirect("/accounting/login");
   }
   return { ...session, role };
 }

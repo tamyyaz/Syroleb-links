@@ -73,7 +73,7 @@ export default async function GeneralLedgerPage({ searchParams }: { searchParams
                 <tr key={line.id}>
                   <td className="p-3 text-ink-800/70">{new Date(line.journalEntry.date).toLocaleDateString("ar-AE")}</td>
                   <td className="p-3">
-                    <Link href={`/entries/${line.journalEntry.id}`} className="font-mono text-brand-700 hover:underline">
+                    <Link href={`/accounting/entries/${line.journalEntry.id}`} className="font-mono text-brand-700 hover:underline">
                       #{formatEntryNumber(line.journalEntry.entryNumber)}
                     </Link>
                   </td>

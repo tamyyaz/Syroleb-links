@@ -32,7 +32,7 @@ export default async function SystemEmployeeDetailPage({ params }: { params: { i
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-ink-900">{employee.nameAr}</h1>
-        <Link href={`/employees/${employee.id}/edit`} className="btn-secondary py-1.5 px-3 text-xs">
+        <Link href={`/system/employees/${employee.id}/edit`} className="btn-secondary py-1.5 px-3 text-xs">
           تعديل البيانات
         </Link>
       </div>

@@ -47,7 +47,7 @@ export default function EmployeeForm({ employee }: { employee?: Employee }) {
       return;
     }
 
-    router.push("/employees");
+    router.push("/system/employees");
     router.refresh();
   }
 

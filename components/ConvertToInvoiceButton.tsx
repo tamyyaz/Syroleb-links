@@ -24,7 +24,7 @@ export default function ConvertToInvoiceButton({ quoteId }: { quoteId: string })
     }
 
     const invoice = await res.json();
-    router.push(`/invoices/${invoice.id}`);
+    router.push(`/system/invoices/${invoice.id}`);
   }
 
   return (

@@ -30,14 +30,14 @@ export default async function SystemQuotesPage({ searchParams }: { searchParams:
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-ink-900">عروض الأسعار</h1>
-          <Link href="/customer-types" className="text-sm text-brand-700 hover:underline">
+          <Link href="/system/customer-types" className="text-sm text-brand-700 hover:underline">
             إدارة أنواع العملاء والخصومات
           </Link>
         </div>
-        <Link href="/quotes/new" className="btn-primary">عرض سعر جديد</Link>
+        <Link href="/system/quotes/new" className="btn-primary">عرض سعر جديد</Link>
       </div>
 
-      <SystemSearchBar action="/quotes" q={q} placeholder="اسم الزبون، الهاتف، أو رقم العرض" />
+      <SystemSearchBar action="/system/quotes" q={q} placeholder="اسم الزبون، الهاتف، أو رقم العرض" />
 
       <div className="card overflow-x-auto">
         <table className="w-full text-sm">
@@ -69,7 +69,7 @@ export default async function SystemQuotesPage({ searchParams }: { searchParams:
                     <a href={`/api/system/quote-pdf/${q.id}`} download className="btn-secondary py-1.5 px-3 text-xs">
                       PDF
                     </a>
-                    <Link href={`/quotes/${q.id}/edit`} className="btn-secondary py-1.5 px-3 text-xs">
+                    <Link href={`/system/quotes/${q.id}/edit`} className="btn-secondary py-1.5 px-3 text-xs">
                       تعديل
                     </Link>
                     <ConvertToInvoiceButton quoteId={q.id} />

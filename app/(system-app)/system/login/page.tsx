@@ -31,7 +31,7 @@ export default function SystemLoginPage() {
     }
 
     const data = await res.json().catch(() => null);
-    router.push(data?.redirectTo || "/");
+    router.push(data?.redirectTo || "/system");
     router.refresh();
   }
 

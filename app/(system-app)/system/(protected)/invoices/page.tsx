@@ -48,7 +48,7 @@ export default async function SystemInvoicesPage({ searchParams }: { searchParam
       </p>
 
       <SystemSearchBar
-        action="/invoices"
+        action="/system/invoices"
         q={q}
         hasFilter={Boolean(q || validStatus)}
         placeholder="اسم الزبون، الهاتف، أو رقم الفاتورة"
@@ -106,7 +106,7 @@ export default async function SystemInvoicesPage({ searchParams }: { searchParam
                     <a href={`/api/system/invoice-pdf/${inv.id}`} download className="btn-secondary py-1.5 px-3 text-xs">
                       PDF
                     </a>
-                    <Link href={`/invoices/${inv.id}`} className="btn-secondary py-1.5 px-3 text-xs">
+                    <Link href={`/system/invoices/${inv.id}`} className="btn-secondary py-1.5 px-3 text-xs">
                       عرض
                     </Link>
                   </div>

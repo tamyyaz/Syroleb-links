@@ -55,7 +55,7 @@ export default function AccountForm({
       return;
     }
 
-    router.push("/accounts");
+    router.push("/accounting/accounts");
     router.refresh();
   }
 

@@ -7,7 +7,7 @@ export default async function NewSystemCustomerTypePage() {
   return (
     <div>
       <h1 className="mb-6 text-2xl font-bold text-ink-900">إضافة نوع عميل</h1>
-      <CustomerTypeForm apiBase="/api/system/customer-types" redirectTo="/customer-types" />
+      <CustomerTypeForm apiBase="/api/system/customer-types" redirectTo="/system/customer-types" />
     </div>
   );
 }

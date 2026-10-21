@@ -35,7 +35,7 @@ export default function AccountingLoginPage() {
     }
 
     const data = await res.json().catch(() => null);
-    router.push(data?.redirectTo || "/");
+    router.push(data?.redirectTo || "/accounting");
     router.refresh();
   }
 

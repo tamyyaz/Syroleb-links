@@ -6,7 +6,7 @@ import SystemSidebar from "@/components/SystemSidebar";
 export default async function ProtectedSystemLayout({ children }: { children: React.ReactNode }) {
   const session = await getSystemSession();
   if (!session) {
-    redirect("/login");
+    redirect("/system/login");
   }
   const role = isSystemRole(session.role) ? session.role : "STAFF";
   // OWNER sees every module unconditionally; MANAGER/STAFF are filtered by

@@ -63,7 +63,7 @@ export default async function SystemPaymentsPage({ searchParams }: { searchParam
       <ManualPaymentForm />
 
       <SystemSearchBar
-        action="/payments"
+        action="/system/payments"
         q={searchParams.q}
         hasFilter={Boolean(searchParams.q || validType)}
         placeholder="التصنيف، الملاحظة، أو اسم العميل"

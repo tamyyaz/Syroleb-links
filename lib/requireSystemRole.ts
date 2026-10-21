@@ -17,7 +17,7 @@ import {
 export async function requireSystemRole(page: SystemPageKey) {
   const session = await getSystemSession();
   if (!session) {
-    redirect("/login");
+    redirect("/system/login");
   }
   const role: SystemRoleValue = isSystemRole(session.role) ? session.role : "STAFF";
   if (role !== "OWNER" && !DEFAULT_SYSTEM_ROLE_PAGES[role].includes(page)) {

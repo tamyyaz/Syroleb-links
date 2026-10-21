@@ -12,7 +12,7 @@ export default function DeleteJournalEntryButton({ entryId }: { entryId: string 
     setLoading(true);
     await fetch(`/api/accounting/entries/${entryId}`, { method: "DELETE" });
     setLoading(false);
-    router.push("/entries");
+    router.push("/accounting/entries");
     router.refresh();
   }
 

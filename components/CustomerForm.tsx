@@ -49,7 +49,7 @@ export default function CustomerForm({ customer }: { customer?: Customer }) {
       return;
     }
 
-    router.push("/customers");
+    router.push("/system/customers");
     router.refresh();
   }
 

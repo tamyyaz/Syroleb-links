@@ -30,11 +30,11 @@ export default async function SystemEmployeesPage({ searchParams }: { searchPara
         <h1 className="text-2xl font-bold text-ink-900">الموظفين</h1>
         <div className="flex gap-2">
           <PayAllSalariesButton />
-          <Link href="/employees/new" className="btn-primary">إضافة موظف</Link>
+          <Link href="/system/employees/new" className="btn-primary">إضافة موظف</Link>
         </div>
       </div>
 
-      <SystemSearchBar action="/employees" q={q} placeholder="الاسم، الهاتف، أو الوظيفة" />
+      <SystemSearchBar action="/system/employees" q={q} placeholder="الاسم، الهاتف، أو الوظيفة" />
 
       <div className="card overflow-x-auto">
         <table className="w-full text-sm">
@@ -71,10 +71,10 @@ export default async function SystemEmployeesPage({ searchParams }: { searchPara
                 </td>
                 <td className="p-3">
                   <div className="flex justify-end gap-2">
-                    <Link href={`/employees/${e.id}`} className="btn-secondary py-1.5 px-3 text-xs">
+                    <Link href={`/system/employees/${e.id}`} className="btn-secondary py-1.5 px-3 text-xs">
                       عرض
                     </Link>
-                    <Link href={`/employees/${e.id}/edit`} className="btn-secondary py-1.5 px-3 text-xs">
+                    <Link href={`/system/employees/${e.id}/edit`} className="btn-secondary py-1.5 px-3 text-xs">
                       تعديل
                     </Link>
                     <DeleteEmployeeButton employeeId={e.id} />

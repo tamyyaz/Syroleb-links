@@ -13,7 +13,7 @@ export default async function EditSystemCustomerTypePage({ params }: { params: {
   return (
     <div>
       <h1 className="mb-6 text-2xl font-bold text-ink-900">تعديل نوع العميل</h1>
-      <CustomerTypeForm customerType={customerType} apiBase="/api/system/customer-types" redirectTo="/customer-types" />
+      <CustomerTypeForm customerType={customerType} apiBase="/api/system/customer-types" redirectTo="/system/customer-types" />
     </div>
   );
 }

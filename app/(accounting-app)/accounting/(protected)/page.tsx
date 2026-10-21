@@ -21,7 +21,7 @@ export default async function AccountingDashboardPage() {
         <p className="mb-4 text-sm text-ink-800/60">
           كل الحسابات (أصول، التزامات، حقوق ملكية، إيرادات، مصروفات) يلي بتنبني عليها القيود اليومية والتقارير.
         </p>
-        <Link href="/accounts" className="btn-primary">
+        <Link href="/accounting/accounts" className="btn-primary">
           فتح دليل الحسابات
         </Link>
       </div>

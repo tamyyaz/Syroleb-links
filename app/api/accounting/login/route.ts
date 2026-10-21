@@ -10,7 +10,7 @@ const loginSchema = z.object({
   password: z.string().min(1)
 });
 
-// Same SystemUser login as system.<domain> (app/api/system/login),
+// Same SystemUser login as /system (app/api/system/login),
 // but this one refuses to issue a session at all for a non-OWNER — the
 // accounting module is OWNER-only (see lib/systemRoles.ts), and this app
 // has no other page to redirect a rejected role to.
@@ -40,5 +40,5 @@ export async function POST(request: NextRequest) {
   }
 
   await createSystemSession(user.id, user.email, role);
-  return NextResponse.json({ ok: true, redirectTo: "/" });
+  return NextResponse.json({ ok: true, redirectTo: "/accounting" });
 }

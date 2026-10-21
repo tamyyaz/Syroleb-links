@@ -48,7 +48,7 @@ export default function JournalEntryForm({ accounts }: { accounts: Account[] }) 
       return;
     }
 
-    router.push("/entries");
+    router.push("/accounting/entries");
     router.refresh();
   }
 

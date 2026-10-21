@@ -26,7 +26,7 @@ export default async function SystemWarehousePage({ searchParams }: { searchPara
         نفس المنتجات الموجودة بكتالوج الموقع الرئيسي — الكمية هون داخلية فقط، ما بتأثر على شارة "متوفر" بالموقع.
       </p>
 
-      <SystemSearchBar action="/warehouse" q={q} placeholder="اسم المنتج" />
+      <SystemSearchBar action="/system/warehouse" q={q} placeholder="اسم المنتج" />
 
       <div className="card overflow-x-auto">
         <table className="w-full text-sm">
@@ -67,7 +67,7 @@ export default async function SystemWarehousePage({ searchParams }: { searchPara
                   )}
                 </td>
                 <td className="p-3">
-                  <Link href={`/warehouse/${p.id}`} className="btn-secondary py-1.5 px-3 text-xs">
+                  <Link href={`/system/warehouse/${p.id}`} className="btn-secondary py-1.5 px-3 text-xs">
                     تسجيل حركة
                   </Link>
                 </td>

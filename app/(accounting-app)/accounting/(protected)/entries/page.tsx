@@ -20,7 +20,7 @@ export default async function JournalEntriesPage() {
           <a href="/api/accounting/entries/export" download className="btn-secondary py-1.5 px-3 text-xs">
             تصدير Excel
           </a>
-          <Link href="/entries/new" className="btn-primary">إضافة قيد</Link>
+          <Link href="/accounting/entries/new" className="btn-primary">إضافة قيد</Link>
         </div>
       </div>
 
@@ -46,7 +46,7 @@ export default async function JournalEntriesPage() {
               return (
                 <tr key={entry.id}>
                   <td className="p-3">
-                    <Link href={`/entries/${entry.id}`} className="font-mono text-brand-700 hover:underline">
+                    <Link href={`/accounting/entries/${entry.id}`} className="font-mono text-brand-700 hover:underline">
                       #{formatEntryNumber(entry.entryNumber)}
                     </Link>
                   </td>

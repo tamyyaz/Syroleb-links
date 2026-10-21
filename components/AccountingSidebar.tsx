@@ -5,19 +5,19 @@ import { usePathname, useRouter } from "next/navigation";
 import { LayoutDashboard, LogOut, BookOpen, ScrollText, Settings, BookMarked, Scale, Landmark, TrendingUp, type LucideIcon } from "lucide-react";
 
 // Mirrors components/SystemSidebar.tsx, but for the OWNER-only,
-// single-purpose account.<domain> app — no role-based filtering
+// single-purpose /accounting app — no role-based filtering
 // needed (login itself already refuses anyone but OWNER). NAV only lists
 // modules that actually have a page built yet — extended as each phase in
 // the plan ships its route.
 const NAV: { href: string; label: string; icon: LucideIcon }[] = [
-  { href: "/", label: "الرئيسية", icon: LayoutDashboard },
-  { href: "/accounts", label: "دليل الحسابات", icon: BookOpen },
-  { href: "/entries", label: "القيود اليومية", icon: ScrollText },
-  { href: "/ledger", label: "دفتر الأستاذ", icon: BookMarked },
-  { href: "/trial-balance", label: "ميزان المراجعة", icon: Scale },
-  { href: "/balance-sheet", label: "الميزانية العمومية", icon: Landmark },
-  { href: "/income-statement", label: "قائمة الدخل", icon: TrendingUp },
-  { href: "/settings", label: "إعدادات الترحيل", icon: Settings }
+  { href: "/accounting", label: "الرئيسية", icon: LayoutDashboard },
+  { href: "/accounting/accounts", label: "دليل الحسابات", icon: BookOpen },
+  { href: "/accounting/entries", label: "القيود اليومية", icon: ScrollText },
+  { href: "/accounting/ledger", label: "دفتر الأستاذ", icon: BookMarked },
+  { href: "/accounting/trial-balance", label: "ميزان المراجعة", icon: Scale },
+  { href: "/accounting/balance-sheet", label: "الميزانية العمومية", icon: Landmark },
+  { href: "/accounting/income-statement", label: "قائمة الدخل", icon: TrendingUp },
+  { href: "/accounting/settings", label: "إعدادات الترحيل", icon: Settings }
 ];
 
 export default function AccountingSidebar() {
@@ -26,13 +26,13 @@ export default function AccountingSidebar() {
 
   async function handleLogout() {
     await fetch("/api/accounting/logout", { method: "POST" });
-    router.push("/login");
+    router.push("/accounting/login");
     router.refresh();
   }
 
   return (
     <aside className="flex h-full w-60 flex-col border-e border-brand-100 bg-white p-4">
-      <Link href="/" className="mb-8 flex items-center gap-2 px-2">
+      <Link href="/accounting" className="mb-8 flex items-center gap-2 px-2">
         <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-brand-700">
           <img src="/images/logo-mark.png" alt="" className="h-full w-full object-cover" />
         </span>

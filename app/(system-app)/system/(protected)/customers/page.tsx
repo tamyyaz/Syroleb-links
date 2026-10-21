@@ -21,10 +21,10 @@ export default async function SystemCustomersPage({ searchParams }: { searchPara
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-ink-900">العملاء</h1>
-        <Link href="/customers/new" className="btn-primary">إضافة عميل</Link>
+        <Link href="/system/customers/new" className="btn-primary">إضافة عميل</Link>
       </div>
 
-      <SystemSearchBar action="/customers" q={q} placeholder="الاسم أو رقم الهاتف" />
+      <SystemSearchBar action="/system/customers" q={q} placeholder="الاسم أو رقم الهاتف" />
 
       <div className="card overflow-x-auto">
         <table className="w-full text-sm">
@@ -54,7 +54,7 @@ export default async function SystemCustomersPage({ searchParams }: { searchPara
                     <a href={`/api/system/customer-statement-pdf/${c.id}`} download className="btn-secondary py-1.5 px-3 text-xs">
                       كشف حساب
                     </a>
-                    <Link href={`/customers/${c.id}/edit`} className="btn-secondary py-1.5 px-3 text-xs">
+                    <Link href={`/system/customers/${c.id}/edit`} className="btn-secondary py-1.5 px-3 text-xs">
                       تعديل
                     </Link>
                     <DeleteCustomerButton customerId={c.id} />

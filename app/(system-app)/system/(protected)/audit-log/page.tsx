@@ -29,7 +29,7 @@ export default async function SystemAuditLogPage({ searchParams }: { searchParam
         آخر 200 عملية إضافة/تعديل/حذف تمت من النظام — من عملها ومتى.
       </p>
 
-      <SystemSearchBar action="/audit-log" q={q} placeholder="البريد الإلكتروني أو نص العملية" />
+      <SystemSearchBar action="/system/audit-log" q={q} placeholder="البريد الإلكتروني أو نص العملية" />
 
       <div className="card overflow-x-auto">
         <table className="w-full text-sm">

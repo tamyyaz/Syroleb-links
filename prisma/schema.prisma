@@ -79,7 +79,7 @@ model Product {
   images        ProductImage[]
   orderItems    OrderItem[]
   quoteItems    QuoteItem[]
-  // Internal warehouse tracking (system.<domain>) — deliberately
+  // Internal warehouse tracking (/system) — deliberately
   // separate from `inStock` above, which stays the manually-toggled
   // storefront badge exactly as before; nothing here changes what
   // customers see until that's wired up as its own, separate decision.
@@ -270,7 +270,7 @@ model CustomerType {
   updatedAt       DateTime    @updatedAt
 }
 
-// A real customer record, managed from system.<domain> — Quote itself
+// A real customer record, managed from /system — Quote itself
 // still keeps its own snapshotted customerName/customerPhone/etc (a quote
 // printed once must never change if the Customer record is edited later),
 // this is just an optional live link for the system app's own customer
@@ -362,7 +362,7 @@ model QuoteItem {
   @@index([customerTypeId])
 }
 
-// --- Internal system (system.<domain>) -------------------------------
+// --- Internal system (/system) -------------------------------
 // Fully separate login from Admin/AdminRole above — an "employee" here
 // (factory/sales staff) has no reason to ever touch /admin, and vice versa.
 // OWNER is the only role that can create/edit other SystemUsers (mirrors how
@@ -524,7 +524,7 @@ model EmployeeDeduction {
   @@index([employeeId])
 }
 
-// One row per create/update/delete made through system.<domain> —
+// One row per create/update/delete made through /system —
 // written by lib/auditLog.ts, called from the mutating API routes. OWNER-only
 // visibility (/system/audit-log), for accountability once more than one
 // SystemUser is added. actorEmail/actorName are copied at write time rather
@@ -558,11 +558,11 @@ model InventoryMovement {
   @@index([productId])
 }
 
-// --- Formal accounting (account.<domain>) ----------------------------
+// --- Formal accounting (/accounting) ----------------------------
 // Fully separate from the flat income/expense Payment ledger above, which
 // stays exactly as-is. OWNER-only — see lib/systemRoles.ts's
 // DEFAULT_SYSTEM_ROLE_PAGES (MANAGER/STAFF don't get the "accounting" page
-// key). Reuses the same SystemUser login as system.<domain>.
+// key). Reuses the same SystemUser login as /system.
 enum AccountType {
   ASSET
   LIABILITY

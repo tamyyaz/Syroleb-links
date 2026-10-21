@@ -14,7 +14,7 @@ export default async function NewSystemQuotePage() {
         defaultTerms={defaultTerms}
         apiBase="/api/system/quotes"
         customerTypesApiBase="/api/system/customer-types"
-        redirectTo="/quotes"
+        redirectTo="/system/quotes"
         enableCustomerLink
       />
     </div>

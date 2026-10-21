@@ -84,7 +84,7 @@ export default async function SystemDashboardPage() {
           <p className="text-sm text-ink-800/70">
             إجمالي المتبقي على {openInvoices.length} فاتورة غير مدفوعة بالكامل: <span className="font-bold text-red-700">{openTotal.toFixed(2)} {DEFAULT_CURRENCY}</span>
           </p>
-          <Link href="/invoices" className="mt-2 inline-block text-sm text-brand-700 hover:underline">
+          <Link href="/system/invoices" className="mt-2 inline-block text-sm text-brand-700 hover:underline">
             عرض الفواتير →
           </Link>
         </div>
@@ -115,7 +115,7 @@ export default async function SystemDashboardPage() {
               </li>
             ))}
           </ul>
-          <Link href="/warehouse" className="mt-2 inline-block text-sm text-brand-700 hover:underline">
+          <Link href="/system/warehouse" className="mt-2 inline-block text-sm text-brand-700 hover:underline">
             عرض المخزن →
           </Link>
         </div>

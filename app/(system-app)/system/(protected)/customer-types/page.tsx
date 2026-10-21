@@ -17,7 +17,7 @@ export default async function SystemCustomerTypesPage() {
             هاي القائمة يلي منها بتختار نسبة الخصم لكل سطر بعرض السعر — نفس القائمة يلي بيستخدمها الموقع الرئيسي.
           </p>
         </div>
-        <Link href="/customer-types/new" className="btn-primary">إضافة نوع</Link>
+        <Link href="/system/customer-types/new" className="btn-primary">إضافة نوع</Link>
       </div>
 
       <div className="card overflow-x-auto">
@@ -51,7 +51,7 @@ export default async function SystemCustomerTypesPage() {
                 </td>
                 <td className="p-3">
                   <div className="flex justify-end gap-2">
-                    <Link href={`/customer-types/${ct.id}/edit`} className="btn-secondary py-1.5 px-3 text-xs">
+                    <Link href={`/system/customer-types/${ct.id}/edit`} className="btn-secondary py-1.5 px-3 text-xs">
                       تعديل
                     </Link>
                     <DeleteCustomerTypeButton customerTypeId={ct.id} apiBase="/api/system/customer-types" />
