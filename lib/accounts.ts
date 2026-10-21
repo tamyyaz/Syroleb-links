@@ -39,8 +39,8 @@ export const SUSPENSE_ACCOUNT_CODE = "3999";
 
 export type StarterAccount = { code: string; nameAr: string; nameEn: string; type: AccountTypeValue };
 
-// A reasonable starting chart of accounts for a door-manufacturing +
-// real-estate SMB — seeded once via the "تحميل دليل الحسابات الافتراضي"
+// A reasonable starting chart of accounts for a door-manufacturing
+// SMB — seeded once via the "تحميل دليل الحسابات الافتراضي"
 // button on an empty Chart of Accounts page (upsert on `code`, safe to
 // re-run). The client's bookkeeper is expected to review/adjust this list;
 // it's a starting point, not a fixed requirement.
@@ -49,7 +49,6 @@ export const STARTER_CHART_OF_ACCOUNTS: StarterAccount[] = [
   { code: "1010", nameAr: "البنك", nameEn: "Bank", type: "ASSET" },
   { code: "1100", nameAr: "حسابات العملاء", nameEn: "Accounts Receivable", type: "ASSET" },
   { code: "1200", nameAr: "مخزون الأبواب والخامات", nameEn: "Inventory", type: "ASSET" },
-  { code: "1210", nameAr: "عقارات معدة للبيع", nameEn: "Real Estate Held for Sale", type: "ASSET" },
   { code: "1300", nameAr: "ضريبة القيمة المضافة القابلة للاسترداد", nameEn: "VAT Input", type: "ASSET" },
   { code: "1500", nameAr: "أصول ثابتة - معدات وآلات", nameEn: "Fixed Assets", type: "ASSET" },
   { code: "1510", nameAr: "مجمع استهلاك الأصول الثابتة", nameEn: "Accumulated Depreciation", type: "ASSET" },
@@ -62,7 +61,6 @@ export const STARTER_CHART_OF_ACCOUNTS: StarterAccount[] = [
   { code: "3900", nameAr: "الأرباح المرحلة", nameEn: "Retained Earnings", type: "EQUITY" },
   { code: SUSPENSE_ACCOUNT_CODE, nameAr: "حساب معلق (يحتاج تصنيف)", nameEn: "Suspense", type: "EQUITY" },
   { code: "4000", nameAr: "إيرادات مبيعات الأبواب", nameEn: "Sales Revenue", type: "INCOME" },
-  { code: "4100", nameAr: "إيرادات العقارات", nameEn: "Real Estate Revenue", type: "INCOME" },
   { code: "4900", nameAr: "إيرادات أخرى", nameEn: "Other Income", type: "INCOME" },
   { code: "5000", nameAr: "تكلفة البضاعة المباعة", nameEn: "Cost of Goods Sold", type: "EXPENSE" },
   { code: "5100", nameAr: "رواتب وأجور", nameEn: "Salaries Expense", type: "EXPENSE" },

@@ -22,29 +22,12 @@ export default async function CatalogChooserPage({ params }: { params: { locale:
   const locale = params.locale as Locale;
   const dict = await getDictionary(locale);
 
-  const [categories, firstProperty] = await Promise.all([
-    prisma.category.findMany({ orderBy: { nameEn: "asc" } }),
-    prisma.property.findFirst({ include: { images: true }, orderBy: { createdAt: "asc" } })
-  ]);
+  const categories = await prisma.category.findMany({ orderBy: { nameEn: "asc" } });
 
-  const bySlug = (slug: string) => categories.find((c) => c.slug === slug);
-  const wpc = bySlug("wpc-doors");
-  const aluminum = bySlug("aluminum-doors");
-  const composite = bySlug("upvc-doors");
-  const realEstateImage = firstProperty?.images[0]?.url;
+  const aluminum = categories.find((c) => c.slug === "aluminum-doors");
 
   type Card = { href: string; name: string; image: string | undefined };
   const cards: Card[] = [];
-  if (wpc) {
-    cards.push({ href: `/${locale}/catalog/wpc`, name: locale === "ar" ? wpc.nameAr : wpc.nameEn, image: wpc.heroImage ?? undefined });
-  }
-  if (composite) {
-    cards.push({
-      href: `/${locale}/catalog/composite`,
-      name: locale === "ar" ? composite.nameAr : composite.nameEn,
-      image: composite.heroImage ?? undefined
-    });
-  }
   if (aluminum) {
     cards.push({
       href: `/${locale}/catalog/aluminum`,
@@ -52,7 +35,6 @@ export default async function CatalogChooserPage({ params }: { params: { locale:
       image: aluminum.heroImage ?? undefined
     });
   }
-  cards.push({ href: `/${locale}/realestate`, name: dict.realestate.title, image: realEstateImage });
 
   return (
     <div className="container-page py-16">
@@ -62,7 +44,7 @@ export default async function CatalogChooserPage({ params }: { params: { locale:
         <p className="mb-10 max-w-xl text-ink-800/70">{dict.products.choose_section}</p>
       </Reveal>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((card, i) => (
           <Reveal key={card.href} delay={i * 0.08}>
             <Link href={card.href} className="card-interactive group block overflow-hidden">

@@ -23,7 +23,7 @@ async function buildSystemPrompt(locale: string) {
   ]);
 
   const siteFacts = [
-    "Syroleb — doors (WPC, COMPOSITE, Aluminum) and real estate.",
+    "Syroleb — doors and aluminum products.",
     `Locations: ${footer.locations.map((loc) => `${loc.name.en} (${loc.address.en})`).join(", ")}.`,
     `Contact: ${footer.email}, ${footer.locations.map((loc) => `+${loc.phone}`).join(", ")}.`
   ].join("\n");
@@ -46,7 +46,7 @@ async function buildSystemPrompt(locale: string) {
       ? "Reply in formal Modern Standard Arabic (فصحى) — no dialect/colloquial words or grammar — unless the visitor writes in English."
       : "Reply in English unless the visitor writes in Arabic — then switch to formal Modern Standard Arabic (فصحى), not dialect.";
 
-  return `You are the SYROLEB Doors website assistant. You help visitors with questions about Syroleb's products (WPC, COMPOSITE and Aluminum doors) and services.
+  return `You are the SYROLEB Doors website assistant. You help visitors with questions about Syroleb's products and services.
 
 Rules:
 - Only answer using the SITE FACTS, KNOWLEDGE BASE and PRODUCT CATALOG below. If you don't know something, say so honestly and suggest contacting the team on WhatsApp instead of guessing.

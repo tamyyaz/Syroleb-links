@@ -25,7 +25,7 @@ const updateSchema = z.object({
   descriptionAr: z.string().min(1).optional(),
   descriptionEn: z.string().min(1).optional(),
   categoryId: z.string().min(1).optional(),
-  material: z.enum(["WPC", "UPVC", "ALUMINUM", "STEEL"]).optional(),
+  material: z.enum(["ALUMINUM", "STEEL"]).optional(),
   productLine: z.enum(PRODUCT_LINES).nullable().optional(),
   price: z.number().positive().optional(),
   currency: z.enum(CURRENCIES).optional(),

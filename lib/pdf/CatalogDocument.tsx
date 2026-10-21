@@ -23,8 +23,6 @@ const COLORS = {
 };
 
 const MATERIAL_LABELS_AR: Record<string, string> = {
-  WPC: "WPC",
-  UPVC: "COMPOSITE",
   ALUMINUM: "ألمنيوم",
   STEEL: "حديد"
 };
@@ -156,7 +154,7 @@ function chunk<T>(items: T[], size: number): T[][] {
 export function CatalogDocument({
   categories,
   siteName = "SYROLEB",
-  siteTagline = "حلول أبواب وعقارات بجودة عالية وتصميم مبتكر",
+  siteTagline = "حلول أبواب بجودة عالية وتصميم مبتكر",
   collectionTag = "( COLLECTION 2026 ) @SYROLEB"
 }: {
   categories: CatalogPdfCategory[];

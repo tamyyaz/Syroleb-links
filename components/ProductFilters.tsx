@@ -6,7 +6,7 @@ import type { Dictionary } from "@/lib/i18n/getDictionary";
 import type { Category, Material } from "@/lib/types";
 import { PRODUCT_LINE_LABELS, PRODUCT_LINE_SLUGS, type ProductLine } from "@/lib/productLines";
 
-const MATERIALS = ["WPC", "UPVC", "ALUMINUM", "STEEL"] as const;
+const MATERIALS = ["ALUMINUM", "STEEL"] as const;
 
 export default function ProductFilters({
   categories,
@@ -26,21 +26,20 @@ export default function ProductFilters({
   // otherwise let a visitor navigate away via a `?category=` query param is
   // hidden instead of shown-but-conflicting.
   lockedCategory?: Category;
-  // Same idea, for the dedicated material sections (/catalog/wpc,
-  // /catalog/aluminum, /catalog/composite) — the material is fixed by
+  // Same idea, for the dedicated material sections (/catalog/aluminum) — the material is fixed by
   // which section you're on.
   lockedMaterial?: Material;
-  // Only Aluminum/WPC/Composite have sub-lines — omitted (or empty)
+  // Only Aluminum has sub-lines — omitted (or empty)
   // elsewhere, so no extra dropdown renders.
   productLines?: ProductLine[];
   // Set on /catalog/[material] (and its [slug] sub-line branch) — changing
   // the line select there navigates to a real clean URL like
-  // /catalog/wpc/doors instead of appending ?line= to the current page, so
+  // /catalog/aluminum/doors instead of appending ?line= to the current page, so
   // there's exactly one canonical URL per sub-line rather than two.
   lineBasePath?: string;
   // The active line when it's expressed in the URL path rather than a
   // ?line= query param — without this the select would show "all lines"
-  // even while actually viewing e.g. /catalog/wpc/doors.
+  // even while actually viewing e.g. /catalog/aluminum/doors.
   currentLine?: ProductLine;
 }) {
   const router = useRouter();

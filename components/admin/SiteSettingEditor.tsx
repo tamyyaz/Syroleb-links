@@ -510,10 +510,7 @@ function FooterEditor({ value, onChange }: { value: FooterContent; onChange: (v:
 }
 
 const CATALOG_SECTION_LABELS: Record<keyof CatalogsContent, string> = {
-  wpc: "كتالوج WPC",
-  aluminum: "كتالوج الألمنيوم",
-  composite: "كتالوج COMPOSITE",
-  realestate: "كتالوج العقارات"
+  aluminum: "كتالوج الألمنيوم"
 };
 
 function QuoteTermsEditor({ value, onChange }: { value: QuoteTermsContent; onChange: (v: QuoteTermsContent) => void }) {

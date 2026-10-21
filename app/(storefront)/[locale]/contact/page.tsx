@@ -13,8 +13,8 @@ export async function generateMetadata({ params }: { params: { locale: string } 
   const dict = await getDictionary(locale);
   const description =
     locale === "ar"
-      ? "تواصل مع سيروليب لأي استفسار عن الأبواب أو العقارات — عبر واتساب أو نموذج الطلب."
-      : "Get in touch with Syroleb for any question about our doors or real estate — via WhatsApp or the inquiry form.";
+      ? "تواصل مع سيروليب لأي استفسار عن منتجاتنا — عبر واتساب أو نموذج الطلب."
+      : "Get in touch with Syroleb for any question about our products — via WhatsApp or the inquiry form.";
   return {
     title: dict.contact.title,
     description,

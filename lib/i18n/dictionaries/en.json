@@ -11,7 +11,7 @@
   },
   "hero": {
     "title": "SYROLEB",
-    "subtitle": "High-quality door and real estate solutions with innovative design",
+    "subtitle": "High-quality door solutions with innovative design",
     "cta_products": "Browse Catalog",
     "cta_contact": "Contact Us"
   },
@@ -28,10 +28,7 @@
   "services": {
     "eyebrow": "Our Services",
     "heading": "We Do More Than Doors",
-    "aluminum": "Aluminum",
-    "doors": "COMPOSITE",
-    "real_estate": "Real Estate",
-    "wpc": "WPC"
+    "aluminum": "Aluminum"
   },
   "spotlight": {
     "tagline": "Syroleb's high performance doors",
@@ -39,7 +36,7 @@
     "details": "Details"
   },
   "quality": {
-    "eyebrow": "Real Estate, Aluminum, Doors",
+    "eyebrow": "Aluminum, Doors",
     "q1_title": "World-Class Quality",
     "q1_body": "International standards in execution",
     "q2_title": "Comprehensive Warranty",
@@ -84,8 +81,6 @@
     "sort_price_desc": "Price: High to Low",
     "no_results": "No products match your search",
     "material": {
-      "WPC": "WPC",
-      "UPVC": "COMPOSITE",
       "ALUMINUM": "Aluminum",
       "STEEL": "Steel"
     },
@@ -111,20 +106,6 @@
     "description": "Description",
     "add_to_cart": "Add to Cart",
     "added_to_cart": "Added ✓"
-  },
-  "realestate": {
-    "title": "Real Estate",
-    "eyebrow": "Explore Opportunities",
-    "filter_region": "Region",
-    "all_regions": "All Regions",
-    "no_results": "No properties match your search",
-    "region": "Region",
-    "price": "Price",
-    "ask_price": "Ask for Price",
-    "description": "Description",
-    "ask_whatsapp": "Ask via WhatsApp",
-    "view_details": "View Details",
-    "call": "Call"
   },
   "careers": {
     "eyebrow": "Join Us",
@@ -167,7 +148,7 @@
   "about": {
     "title": "About Us",
     "eyebrow": "Syroleb",
-    "body": "Syroleb specializes in manufacturing, supplying and installing WPC, COMPOSITE and Aluminum doors to world-class quality standards. We serve individuals, contractors and commercial projects with high quality, comprehensive warranty and continuous innovation.",
+    "body": "Syroleb specializes in manufacturing, supplying and installing doors and aluminum products to world-class quality standards. We serve individuals, contractors and commercial projects with high quality, comprehensive warranty and continuous innovation.",
     "vision_eyebrow": "Our Vision",
     "vision_body": "We aim to be the premier partner for developers and engineers, bringing world-class solutions to regional projects.",
     "values_title": "Our Values",
@@ -204,7 +185,7 @@
     "placeholder": "Type your question...",
     "send": "Send",
     "thinking": "Typing...",
-    "greeting": "Hi! I'm Syroleb's AI assistant — ask me about WPC, COMPOSITE or Aluminum doors, or anything else.",
+    "greeting": "Hi! I'm Syroleb's AI assistant — ask me about our products, or anything else.",
     "disabled": "The AI assistant isn't enabled yet. Please reach us directly on WhatsApp.",
     "error": "Something went wrong. Please try again or reach us on WhatsApp.",
     "blocked": "This chat has been disabled due to inappropriate language. Please reach us directly on WhatsApp if you need help."

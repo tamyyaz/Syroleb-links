@@ -22,12 +22,8 @@ const FIELD_LABELS: Record<string, string> = {
   images: "صور/فيديوهات المنتج"
 };
 
-const MATERIALS: Material[] = ["WPC", "UPVC", "ALUMINUM", "STEEL"];
-// Display label only — the stored/submitted value stays the real enum
-// value ("UPVC") so existing products, filters, and URLs keep working.
+const MATERIALS: Material[] = ["ALUMINUM", "STEEL"];
 const MATERIAL_LABELS: Record<Material, string> = {
-  WPC: "WPC",
-  UPVC: "COMPOSITE",
   ALUMINUM: "ألمنيوم",
   STEEL: "حديد"
 };
@@ -39,7 +35,7 @@ export default function ProductForm({ product }: { product?: ProductWithRelation
     product?.images.map((i) => ({ url: i.url, type: i.type === "VIDEO" ? "video" : "image" })) ?? []
   );
   const [categoryId, setCategoryId] = useState<string>(product?.categoryId ?? "");
-  const [material, setMaterial] = useState<Material>(product?.material ?? "WPC");
+  const [material, setMaterial] = useState<Material>(product?.material ?? "ALUMINUM");
   const [productLine, setProductLine] = useState<ProductLine | "">(
     (product?.productLine as ProductLine | null) ?? ""
   );

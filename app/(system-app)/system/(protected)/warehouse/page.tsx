@@ -4,8 +4,6 @@ import { requireSystemRole } from "@/lib/requireSystemRole";
 import SystemSearchBar from "@/components/SystemSearchBar";
 
 const MATERIAL_LABELS_AR: Record<string, string> = {
-  WPC: "WPC",
-  UPVC: "COMPOSITE",
   ALUMINUM: "ألمنيوم",
   STEEL: "حديد"
 };

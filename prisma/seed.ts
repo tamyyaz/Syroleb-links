@@ -6,32 +6,8 @@ import { SITE_SETTING_DEFAULTS } from "../lib/siteContent";
 const prisma = new PrismaClient();
 
 async function main() {
-  // --- Categories: the 3 real SYROLEB door product lines ---
+  // --- Categories: the Syroleb product lines ---
   const categories = [
-    {
-      slug: "wpc-doors",
-      nameAr: "أبواب WPC",
-      nameEn: "WPC Doors",
-      taglineAr: "أبواب سيروليب عالية الأداء",
-      taglineEn: "Syroleb's high performance doors",
-      descriptionAr:
-        "مصممة لمتانة استثنائية، تجمع أبواب WPC لدينا بين أعلى مقاومة للرطوبة والأناقة العصرية لحماية مساحاتك والارتقاء بها.",
-      descriptionEn:
-        "Engineered for superior durability, our WPC doors combine ultimate moisture resistance with modern elegance to secure and elevate your spaces.",
-      heroImage: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1200"
-    },
-    {
-      slug: "upvc-doors",
-      nameAr: "أبواب COMPOSITE",
-      nameEn: "COMPOSITE Doors",
-      taglineAr: "أبواب سيروليب عالية الأداء",
-      taglineEn: "Syroleb's high performance doors",
-      descriptionAr:
-        "تجمع أبواب COMPOSITE العصرية لدينا بين خفة الوزن والمرونة والعزل الحراري الاستثنائي، وتقدّم أداءً ذكياً واقتصادياً مع مقاومة عالية للاستخدام اليومي والعوامل الجوية.",
-      descriptionEn:
-        "Combining lightweight versatility with exceptional insulation, our modern COMPOSITE doors deliver smart, cost-effective performance while maintaining high resistance to daily wear and weather elements.",
-      heroImage: "https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?w=1200"
-    },
     {
       slug: "aluminum-doors",
       nameAr: "أبواب ألمنيوم",
@@ -56,58 +32,10 @@ async function main() {
     createdCategories.push(cat);
   }
 
-  const [wpc, upvc, aluminum] = createdCategories;
+  const [aluminum] = createdCategories;
 
-  // --- Sample products (2 per category) ---
+  // --- Sample products ---
   const products = [
-    {
-      slug: "wpc-classic-entry-door",
-      nameAr: "باب WPC كلاسيكي للمدخل",
-      nameEn: "WPC Classic Entry Door",
-      descriptionAr: "باب WPC فاخر بتشطيب خشبي طبيعي المظهر، مقاوم تماماً للرطوبة والعوامل الجوية، مثالي للمداخل الرئيسية.",
-      descriptionEn: "Premium WPC door with a natural wood-look finish, fully moisture and weather resistant — ideal for main entrances.",
-      categoryId: wpc.id,
-      material: Material.WPC,
-      price: 2400,
-      featured: true,
-      images: ["https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1200"]
-    },
-    {
-      slug: "wpc-modern-villa-door",
-      nameAr: "باب WPC مودرن للفلل",
-      nameEn: "WPC Modern Villa Door",
-      descriptionAr: "تصميم عصري بخطوط نظيفة وطبقة حماية UV، يحافظ على لونه لسنوات طويلة تحت أشعة الشمس.",
-      descriptionEn: "Modern clean-line design with UV-protective coating, keeping its color for years under the sun.",
-      categoryId: wpc.id,
-      material: Material.WPC,
-      price: 2750,
-      featured: false,
-      images: ["https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200"]
-    },
-    {
-      slug: "upvc-insulated-door",
-      nameAr: "باب COMPOSITE معزول حرارياً",
-      nameEn: "COMPOSITE Insulated Door",
-      descriptionAr: "عزل حراري وصوتي ممتاز، خفيف الوزن وسهل الصيانة، خيار اقتصادي وذكي للمنازل والمكاتب.",
-      descriptionEn: "Excellent thermal and acoustic insulation, lightweight and low-maintenance — a smart, cost-effective choice for homes and offices.",
-      categoryId: upvc.id,
-      material: Material.UPVC,
-      price: 1450,
-      featured: true,
-      images: ["https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=1200"]
-    },
-    {
-      slug: "upvc-sliding-door",
-      nameAr: "باب COMPOSITE سحّاب",
-      nameEn: "COMPOSITE Sliding Door",
-      descriptionAr: "باب سحّاب أنيق يوفر مساحة أكبر ورؤية بانورامية، مقاوم للاستخدام اليومي المكثف.",
-      descriptionEn: "Elegant sliding door that maximizes space and view, built to withstand heavy daily use.",
-      categoryId: upvc.id,
-      material: Material.UPVC,
-      price: 1980,
-      featured: false,
-      images: ["https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?w=1200"]
-    },
     {
       slug: "aluminum-security-door-pro",
       nameAr: "باب ألمنيوم أمني بروفيشنال",
@@ -169,19 +97,13 @@ async function main() {
       category: "faq",
       title: "الضمان",
       content:
-        "كل منتجات سيروليب مغطاة بضمان شامل يبدأ من تاريخ التركيب (المدة تختلف حسب نوع الباب: WPC، COMPOSITE، أو ألمنيوم)، ويغطي عيوب الصناعة والتركيب."
+        "كل منتجات سيروليب مغطاة بضمان شامل يبدأ من تاريخ التركيب (المدة تختلف حسب نوع المنتج)، ويغطي عيوب الصناعة والتركيب."
     },
     {
       category: "policy",
       title: "مناطق التغطية",
       content:
         "نغطي عدة مناطق ونوصّل ونركّب حسب الاتفاق مع العميل. للاستفسار عن منطقتك تواصل معنا عبر واتساب."
-    },
-    {
-      category: "product",
-      title: "الفرق بين WPC و COMPOSITE والألمنيوم",
-      content:
-        "أبواب WPC: مقاومة عالية جداً للرطوبة بمظهر خشبي طبيعي، مناسبة للمداخل والمناطق الرطبة. أبواب COMPOSITE: خفيفة، عازلة حرارياً وصوتياً، اقتصادية. أبواب الألمنيوم: أعلى درجات الأمان والمتانة، مناسبة للمداخل الرئيسية والمشاريع التجارية والفلل الفاخرة."
     }
   ];
 

@@ -37,8 +37,8 @@ export async function generateMetadata({
   const ogLocale = locale === "ar" ? "ar_AE" : "en_AE";
   const altOgLocale = locale === "ar" ? "en_AE" : "ar_AE";
   // Site-wide fallback social-share image (real photography, not just the
-  // logo) — pages with their own product/category/property photo (see
-  // products/[slug], realestate/[slug]) override this with theirs.
+  // logo) — pages with their own product/category photo (see
+  // products/[slug]) override this with theirs.
   const defaultOgImage = hero.backgroundImage;
 
   return {

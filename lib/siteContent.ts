@@ -34,7 +34,8 @@ export const servicesContentSchema = z.object({
   // ServicesGrid.tsx.
   items: z
     .array(z.object({ key: z.string(), image: z.string().url(), label: bilingualText, href: z.string() }))
-    .length(4)
+    .min(1)
+    .max(8)
 });
 
 export const qualityContentSchema = z.object({
@@ -113,10 +114,7 @@ export const aboutMediaContentSchema = z.object({
 // from the live product data, unlike /api/admin/catalog-pdf), shown as a
 // "Download Catalog" button on that section's page only once uploaded.
 export const catalogsContentSchema = z.object({
-  wpc: z.string().default(""),
-  aluminum: z.string().default(""),
-  composite: z.string().default(""),
-  realestate: z.string().default("")
+  aluminum: z.string().default("")
 });
 
 // Default bilingual terms text pre-filled onto every new price quote (see
@@ -187,10 +185,7 @@ export const SITE_SETTING_DEFAULTS: {
     eyebrow: { ar: arDict.services.eyebrow, en: enDict.services.eyebrow },
     heading: { ar: arDict.services.heading, en: enDict.services.heading },
     items: [
-      { key: "aluminum", image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600", label: { ar: arDict.services.aluminum, en: enDict.services.aluminum }, href: "/catalog/aluminum" },
-      { key: "doors", image: "https://images.unsplash.com/photo-1770756051811-1612ac8bedfa?w=600", label: { ar: arDict.services.doors, en: enDict.services.doors }, href: "/catalog/composite" },
-      { key: "real_estate", image: "https://images.unsplash.com/photo-1541976590-713941681591?w=600", label: { ar: arDict.services.real_estate, en: enDict.services.real_estate }, href: "/realestate" },
-      { key: "wpc", image: "https://images.unsplash.com/photo-1636320806984-ecc0576ff328?w=600", label: { ar: arDict.services.wpc, en: enDict.services.wpc }, href: "/catalog/wpc" }
+      { key: "aluminum", image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600", label: { ar: arDict.services.aluminum, en: enDict.services.aluminum }, href: "/catalog/aluminum" }
     ]
   },
   quality: {
@@ -219,10 +214,7 @@ export const SITE_SETTING_DEFAULTS: {
     items: []
   },
   catalogs: {
-    wpc: "",
-    aluminum: "",
-    composite: "",
-    realestate: ""
+    aluminum: ""
   },
   quoteTerms: {
     ar:

@@ -54,7 +54,7 @@ const productSchema = z.object({
   descriptionAr: z.string().min(1),
   descriptionEn: z.string().min(1),
   categoryId: z.string().min(1),
-  material: z.enum(["WPC", "UPVC", "ALUMINUM", "STEEL"]),
+  material: z.enum(["ALUMINUM", "STEEL"]),
   productLine: z.enum(PRODUCT_LINES).nullable().optional(),
   price: z.number().positive(),
   currency: z.enum(CURRENCIES).default(DEFAULT_CURRENCY),

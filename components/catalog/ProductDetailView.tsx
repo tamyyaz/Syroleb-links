@@ -7,7 +7,7 @@ import OrderForm from "@/components/OrderForm";
 import AddToCartButton from "@/components/cart/AddToCartButton";
 import ProductGallery from "@/components/ProductGallery";
 
-// Shared by /wpc/[slug], /aluminum/[slug], /composite/[slug] (and the
+// Shared by /aluminum/[slug] (and the
 // legacy /products/[slug] product branch, kept only as a redirector).
 export default function ProductDetailView({
   product,

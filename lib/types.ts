@@ -1,12 +1,8 @@
-import type { Category, Job, Material, Product, ProductImage, Property, PropertyImage } from "@prisma/client";
+import type { Category, Job, Material, Product, ProductImage } from "@prisma/client";
 
 export type ProductWithRelations = Product & {
   images: ProductImage[];
   category: Category;
-};
-
-export type PropertyWithRelations = Property & {
-  images: PropertyImage[];
 };
 
 // A product's images array can now include videos (see ProductImage.type)
@@ -17,4 +13,4 @@ export function firstProductImageUrl(images: { url: string; type: string }[]): s
   return images.find((img) => img.type !== "VIDEO")?.url;
 }
 
-export type { Category, Job, Material, Product, ProductImage, Property, PropertyImage };
+export type { Category, Job, Material, Product, ProductImage };

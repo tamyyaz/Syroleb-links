@@ -31,7 +31,7 @@ export default async function MaterialCatalogView({
   // hidden until one's uploaded from /admin/content -> "كتالوجات PDF".
   catalogPdfUrl?: string;
   // /catalog/[material] — when set, the sub-line filter navigates to a real
-  // clean URL (e.g. /catalog/wpc/doors) instead of a ?line= query param.
+  // clean URL (e.g. /catalog/aluminum/doors) instead of a ?line= query param.
   lineBasePath?: string;
 }) {
   const categories = await prisma.category.findMany({ orderBy: { nameEn: "asc" } });

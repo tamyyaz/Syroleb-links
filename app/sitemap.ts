@@ -6,18 +6,17 @@ import { MATERIAL_PRODUCT_LINES, PRODUCT_LINE_SLUGS } from "@/lib/productLines";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb-links.web.app";
 
-const STATIC_PATHS = ["", "/catalog", "/realestate", "/about", "/contact", "/careers"];
+const STATIC_PATHS = ["", "/catalog", "/about", "/contact", "/careers"];
 
-// Queries Prisma for live product/property slugs — same reasoning as the
+// Queries Prisma for live product slugs — same reasoning as the
 // storefront layout's dynamic export: no DB connection exists at build
 // time, and the list would go stale immediately if cached anyway.
 export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [categories, products, properties] = await Promise.all([
+  const [categories, products] = await Promise.all([
     prisma.category.findMany({ select: { slug: true } }),
-    prisma.product.findMany({ select: { slug: true, material: true, updatedAt: true } }),
-    prisma.property.findMany({ select: { slug: true, updatedAt: true } })
+    prisma.product.findMany({ select: { slug: true, material: true, updatedAt: true } })
   ]);
 
   const entries: MetadataRoute.Sitemap = [];
@@ -50,14 +49,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       entries.push({
         url: `${SITE_URL}/${locale}${productPath(product.material, product.slug)}`,
         lastModified: product.updatedAt,
-        changeFrequency: "weekly",
-        priority: 0.6
-      });
-    }
-    for (const property of properties) {
-      entries.push({
-        url: `${SITE_URL}/${locale}/realestate/${property.slug}`,
-        lastModified: property.updatedAt,
         changeFrequency: "weekly",
         priority: 0.6
       });

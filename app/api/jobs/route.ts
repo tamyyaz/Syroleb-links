@@ -6,7 +6,7 @@ import { requireAdmin } from "@/lib/adminApi";
 export const dynamic = "force-dynamic";
 
 // Public: list job openings (used by the /careers storefront page's own
-// server-side Prisma query too, but exposed here the same way properties are).
+// server-side Prisma query too, but exposed here as a public API).
 export async function GET() {
   const jobs = await prisma.job.findMany({ orderBy: { createdAt: "desc" } });
   return NextResponse.json(jobs);

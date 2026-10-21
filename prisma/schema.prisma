@@ -15,13 +15,6 @@ datasource db {
 }
 
 enum Material {
-  WPC
-  // Displayed everywhere in the UI as "COMPOSITE" (see the material label
-  // maps in ProductForm.tsx, ProductFilters.tsx, CatalogDocument.tsx, and
-  // dict.products.material.UPVC) — kept as UPVC here so existing Product
-  // rows, the "upvc-doors" category slug, and ?material=UPVC URLs/filters
-  // don't need a data migration for what is, for now, a rename in name only.
-  UPVC
   ALUMINUM
   STEEL
 }
@@ -50,19 +43,7 @@ enum MediaType {
 enum ProductLine {
   ALUMINUM_SLIM_SYSTEM
   ALUMINUM_DOORS
-  // Renamed to ALUMINUM_ALUCOBOND (correct brand name) — kept declared
-  // here, unused, rather than removed: dropping a value from a Postgres
-  // enum that might still be referenced is a data-loss-flagged `db push`
-  // operation, whereas adding one alongside it is always safe. Not
-  // included in lib/productLines.ts, so it's invisible to the app.
-  ALUMINUM_ECOBOND
   ALUMINUM_ALUCOBOND
-  WPC_EXTERNAL
-  WPC_CLOSETS
-  WPC_DOORS
-  WPC_INTERIOR_DECOR
-  COMPOSITE_DOORS
-  COMPOSITE_EXTERIOR_DECOR
 }
 
 model Category {
@@ -70,8 +51,7 @@ model Category {
   slug          String    @unique
   nameAr        String
   nameEn        String
-  // Marketing copy for the homepage "spotlight" section (WPC / COMPOSITE (UPVC) / Aluminum
-  // doors blocks). Optional so extra categories can be added later without copy.
+  // Marketing copy for the homepage "spotlight" section. Optional so extra categories can be added later without copy.
   taglineAr     String?
   taglineEn     String?
   descriptionAr String?  @db.Text
@@ -88,7 +68,7 @@ model Product {
   nameEn        String
   descriptionAr String         @db.Text
   descriptionEn String         @db.Text
-  material      Material       @default(WPC)
+  material      Material       @default(ALUMINUM)
   productLine   ProductLine?
   price         Float
   currency      String         @default("USD")
@@ -170,37 +150,6 @@ model OrderItem {
 
   @@index([orderId])
   @@index([productId])
-}
-
-// --- Real estate (separate from the door Product catalog — no material or
-// door Category, has a region instead) ------------------------------------
-model Property {
-  id            String          @id @default(cuid())
-  slug          String          @unique
-  titleAr       String
-  titleEn       String
-  descriptionAr String          @db.Text
-  descriptionEn String          @db.Text
-  price         Float
-  currency      String          @default("USD")
-  regionAr      String
-  regionEn      String
-  images        PropertyImage[]
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-
-  @@index([regionAr])
-}
-
-model PropertyImage {
-  id         String   @id @default(cuid())
-  url        String
-  alt        String   @default("")
-  position   Int      @default(0)
-  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  propertyId String
-
-  @@index([propertyId])
 }
 
 // --- Careers / job openings -----------------------------------------------

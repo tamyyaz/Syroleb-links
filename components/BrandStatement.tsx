@@ -9,13 +9,13 @@ import Reveal from "./motion/Reveal";
 const COPY: Record<Locale, { line1: string; line2: string; support: string }> = {
   ar: {
     line1: "أبواب تُصنع لتدوم.",
-    line2: "عقارات تُبنى لتُورَّث.",
+    line2: "تفاصيل تُنفَّذ بدقة.",
     support:
       "من مصنعنا إلى مشاريعنا — نفس المعيار الذي لا يساوم."
   },
   en: {
     line1: "Doors built to last.",
-    line2: "Properties built to endure.",
+    line2: "Details crafted with precision.",
     support: "From our workshop to our projects — one uncompromising standard."
   }
 };

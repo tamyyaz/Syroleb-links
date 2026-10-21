@@ -11,7 +11,7 @@ import BrandStatement from "@/components/BrandStatement";
 import QualityFeatures from "@/components/QualityFeatures";
 import CTASection from "@/components/CTASection";
 
-const SPOTLIGHT_ORDER = ["wpc-doors", "upvc-doors", "aluminum-doors"];
+const SPOTLIGHT_ORDER = ["aluminum-doors"];
 
 export default async function HomePage({
   params

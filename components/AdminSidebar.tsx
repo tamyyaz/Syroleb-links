@@ -26,7 +26,6 @@ const NAV: { href: string; label: string; icon: LucideIcon; key: PageKey }[] = [
   { href: "/admin", label: "لوحة التحكم", icon: LayoutDashboard, key: "dashboard" },
   { href: "/admin/products", label: "المنتجات", icon: DoorOpen, key: "products" },
   { href: "/admin/categories", label: "الفئات", icon: Layers, key: "categories" },
-  { href: "/admin/properties", label: "العقارات", icon: Building2, key: "properties" },
   { href: "/admin/jobs", label: "الوظائف الشاغرة", icon: Briefcase, key: "jobs" },
   { href: "/admin/job-applications", label: "طلبات التوظيف", icon: UserCheck, key: "jobApplications" },
   { href: "/admin/orders", label: "الطلبات", icon: ClipboardList, key: "orders" },

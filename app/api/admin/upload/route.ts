@@ -19,7 +19,7 @@ const ALLOWED_TYPES: Record<string, string> = {
   "application/pdf": "pdf"
 };
 
-// Admin-only image upload (logo, hero background, product/property photos,
+// Admin-only image upload (logo, hero background, product photos,
 // etc.) — stored in Vercel Blob (BLOB_READ_WRITE_TOKEN, added automatically
 // once the Blob store is connected from the Vercel dashboard) and returns
 // its public URL. A local-disk write here would fail on Vercel: serverless
