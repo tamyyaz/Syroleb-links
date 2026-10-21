@@ -206,7 +206,7 @@ export const SITE_SETTING_DEFAULTS: {
     subtitle: { ar: arDict.cta.subtitle, en: enDict.cta.subtitle }
   },
   footer: {
-    email: "info@syroleb.com",
+    email: "info@example.com",
     locations: [
       { icon: "map-pin", name: { ar: arDict.footer.location_ad, en: enDict.footer.location_ad }, address: { ar: arDict.footer.location_ad_address, en: enDict.footer.location_ad_address }, phone: "000000000000" },
       { icon: "map-pin", name: { ar: arDict.footer.location_ain, en: enDict.footer.location_ain }, address: { ar: arDict.footer.location_ain_address, en: enDict.footer.location_ain_address }, phone: "000000000000" },

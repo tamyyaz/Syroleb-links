@@ -1,7 +1,7 @@
 // Pure constants/helpers only — no server-only imports (next/headers etc.)
 // so this stays safe to import from client components like SystemSidebar.
 // Mirrors lib/adminRoles.ts's shape exactly, but for the fully separate
-// system.syroleb.com login (SystemUser/SystemRole, not Admin/AdminRole).
+// system.<domain> login (SystemUser/SystemRole, not Admin/AdminRole).
 
 // OWNER: DARKSHAM's account — full control, the only role that can manage
 // /system/users. MANAGER: everything except /system/users. STAFF: read/use

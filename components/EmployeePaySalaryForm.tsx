@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { DEFAULT_CURRENCY } from "@/lib/currency";
 
 export default function EmployeePaySalaryForm({ employeeId, monthlyWage }: { employeeId: string; monthlyWage: number }) {
   const router = useRouter();
@@ -36,7 +37,7 @@ export default function EmployeePaySalaryForm({ employeeId, monthlyWage }: { emp
   return (
     <form onSubmit={handleSubmit} className="flex flex-wrap items-end gap-3">
       <div>
-        <label className="label">المبلغ (اختياري — الافتراضي: الراتب الشهري {monthlyWage.toFixed(2)} AED)</label>
+        <label className="label">المبلغ (اختياري — الافتراضي: الراتب الشهري {monthlyWage.toFixed(2)} {DEFAULT_CURRENCY})</label>
         <input className="input" type="number" step="0.01" min="0.01" name="amount" placeholder={monthlyWage.toFixed(2)} />
       </div>
       <button type="submit" disabled={loading} className="btn-primary">

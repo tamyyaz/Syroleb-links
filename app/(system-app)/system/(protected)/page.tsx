@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { requireSystemRole } from "@/lib/requireSystemRole";
 import { DEFAULT_SYSTEM_ROLE_PAGES } from "@/lib/systemRoles";
 import { INVOICE_STATUS_LABELS } from "@/lib/invoices";
+import { DEFAULT_CURRENCY } from "@/lib/currency";
 
 function StatTile({ label, value, tone = "brand" }: { label: string; value: string; tone?: "brand" | "emerald" | "red" }) {
   const toneClass = tone === "emerald" ? "text-emerald-700" : tone === "red" ? "text-red-700" : "text-brand-700";
@@ -71,9 +72,9 @@ export default async function SystemDashboardPage() {
 
       {canSeeFinancials && (
         <div className="grid gap-4 sm:grid-cols-3">
-          <StatTile label="دخل هذا الشهر" value={`${monthIncome.toFixed(2)} AED`} tone="emerald" />
-          <StatTile label="مصروف هذا الشهر" value={`${monthExpense.toFixed(2)} AED`} tone="red" />
-          <StatTile label="صافي هذا الشهر" value={`${(monthIncome - monthExpense).toFixed(2)} AED`} />
+          <StatTile label="دخل هذا الشهر" value={`${monthIncome.toFixed(2)} ${DEFAULT_CURRENCY}`} tone="emerald" />
+          <StatTile label="مصروف هذا الشهر" value={`${monthExpense.toFixed(2)} ${DEFAULT_CURRENCY}`} tone="red" />
+          <StatTile label="صافي هذا الشهر" value={`${(monthIncome - monthExpense).toFixed(2)} ${DEFAULT_CURRENCY}`} />
         </div>
       )}
 
@@ -81,7 +82,7 @@ export default async function SystemDashboardPage() {
         <div className="card p-6">
           <h2 className="mb-2 font-bold text-ink-900">مبالغ مستحقة القبض</h2>
           <p className="text-sm text-ink-800/70">
-            إجمالي المتبقي على {openInvoices.length} فاتورة غير مدفوعة بالكامل: <span className="font-bold text-red-700">{openTotal.toFixed(2)} AED</span>
+            إجمالي المتبقي على {openInvoices.length} فاتورة غير مدفوعة بالكامل: <span className="font-bold text-red-700">{openTotal.toFixed(2)} {DEFAULT_CURRENCY}</span>
           </p>
           <Link href="/invoices" className="mt-2 inline-block text-sm text-brand-700 hover:underline">
             عرض الفواتير →
@@ -96,7 +97,7 @@ export default async function SystemDashboardPage() {
             {topCustomers.map(([name, total]) => (
               <li key={name} className="flex items-center justify-between py-2">
                 <span>{name}</span>
-                <span className="font-semibold text-brand-700">{total.toFixed(2)} AED</span>
+                <span className="font-semibold text-brand-700">{total.toFixed(2)} {DEFAULT_CURRENCY}</span>
               </li>
             ))}
           </ul>

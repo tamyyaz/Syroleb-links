@@ -1,12 +1,10 @@
 import type { Config } from "tailwindcss";
 
-// Brand palette (deep forest green + warm sage/sand):
-//   header/nav bar   -> #193123  (brand-900)
-//   buttons/CTA/footer -> #2b503a  (brand-700)
-//   page background (stats/services/spotlight/quality sections) -> #cbc7b7 (sage-300)
-//   elevated card tone (stat cards, service pills) -> #d7d3c7 (sage-200)
-//   quality-feature card + CTA banner tan -> #c9bca7 (sand-300)
-// Every other step in each scale is interpolated from those anchors.
+// Brand palette sampled from the official Syroleb logo (public/images/logo-full.jpg):
+//   S / frame graphite   -> #484745 (brand-700)
+//   cedar tree           -> #585d57
+//   arch stone           -> #d6cfc9 (sand-300)
+//   glass / background   -> #dce1e4 / #f7f7f7 (sage-50)
 const config: Config = {
   content: [
     "./app/**/*.{ts,tsx}",
@@ -16,37 +14,39 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Primary — deep forest green (buttons, links, footer, header bar)
+        // Primary — graphite (from the S + frame of the Syroleb logo): buttons,
+        // links, footer, header bar
         brand: {
-          50: "#eef2ee",
-          100: "#d6e0d5",
-          200: "#b3c4b0",
-          300: "#8aa485",
-          400: "#5f7d5b",
-          500: "#3f6248",
-          600: "#345a3f",
-          700: "#2b503a",
-          800: "#22402e",
-          900: "#193123"
+          50: "#f4f4f3",
+          100: "#e4e4e2",
+          200: "#c9c8c5",
+          300: "#a3a29e",
+          400: "#7b7a77",
+          500: "#5e5d5a",
+          600: "#545352",
+          700: "#484745",
+          800: "#3a3938",
+          900: "#262625"
         },
-        // Sage — warm neutral greige used as the main page surface behind
-        // the stats/services/category-spotlight/quality sections
+        // Sage — cool light neutral (logo background / glass tint), the main
+        // page surface behind the stats/services/category/quality sections
         sage: {
-          50: "#f5f3ee",
-          100: "#e9e5d9",
-          200: "#d7d3c7",
-          300: "#cbc7b7",
-          400: "#b3ac97",
-          500: "#96907a"
+          50: "#f7f7f7",
+          100: "#eeedeb",
+          200: "#e6e4e1",
+          300: "#dcdad7",
+          400: "#c4c1bc",
+          500: "#9d9a94"
         },
-        // Sand — deeper warm tan for the quality-feature cards + CTA banner
+        // Sand — stone beige (the arch in the logo) for the quality-feature
+        // cards + CTA banner
         sand: {
-          50: "#faf7f0",
-          100: "#efe6d5",
-          200: "#ded2ba",
-          300: "#c9bca7",
-          400: "#b5a488",
-          500: "#9c8a6c"
+          50: "#f8f6f4",
+          100: "#ece8e4",
+          200: "#e0dad4",
+          300: "#d6cfc9",
+          400: "#c6bdb7",
+          500: "#a89d95"
         },
         ink: {
           900: "#1b1b18",

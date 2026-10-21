@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { requireSystemRole } from "@/lib/requireSystemRole";
 import { formatInvoiceNumber, INVOICE_STATUS_LABELS } from "@/lib/invoices";
 import SystemSearchBar from "@/components/SystemSearchBar";
+import { DEFAULT_CURRENCY } from "@/lib/currency";
 
 const STATUS_BADGE_CLASS: Record<string, string> = {
   UNPAID: "bg-red-50 text-red-700",
@@ -90,8 +91,8 @@ export default async function SystemInvoicesPage({ searchParams }: { searchParam
               <tr key={inv.id}>
                 <td className="p-3 font-mono text-ink-900">#{formatInvoiceNumber(inv.invoiceNumber)}</td>
                 <td className="p-3 font-medium text-ink-900">{inv.customerName}</td>
-                <td className="p-3 text-ink-800/70">{inv.totalAmount.toFixed(2)} AED</td>
-                <td className="p-3 text-ink-800/70">{inv.paidAmount.toFixed(2)} AED</td>
+                <td className="p-3 text-ink-800/70">{inv.totalAmount.toFixed(2)} {DEFAULT_CURRENCY}</td>
+                <td className="p-3 text-ink-800/70">{inv.paidAmount.toFixed(2)} {DEFAULT_CURRENCY}</td>
                 <td className="p-3">
                   <span className={`rounded-full px-2 py-1 text-xs font-semibold ${STATUS_BADGE_CLASS[inv.status]}`}>
                     {INVOICE_STATUS_LABELS[inv.status as keyof typeof INVOICE_STATUS_LABELS]}

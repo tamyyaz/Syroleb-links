@@ -5,6 +5,7 @@ import { formatInvoiceNumber, invoiceItemSchema, INVOICE_STATUS_LABELS } from "@
 import InvoicePaymentForm from "@/components/InvoicePaymentForm";
 import InvoiceDueDateForm from "@/components/InvoiceDueDateForm";
 import DeleteInvoiceButton from "@/components/DeleteInvoiceButton";
+import { DEFAULT_CURRENCY } from "@/lib/currency";
 
 export default async function SystemInvoiceDetailPage({ params }: { params: { id: string } }) {
   await requireSystemRole("invoices");
@@ -70,10 +71,10 @@ export default async function SystemInvoiceDetailPage({ params }: { params: { id
           </tbody>
         </table>
         <div className="mt-4 space-y-1 text-end text-sm">
-          <p>المجموع الجزئي: <span className="font-semibold">{invoice.subtotal.toFixed(2)} AED</span></p>
-          <p className="text-base font-bold text-brand-700">الإجمالي: {invoice.totalAmount.toFixed(2)} AED</p>
-          <p>المدفوع: <span className="font-semibold text-emerald-700">{invoice.paidAmount.toFixed(2)} AED</span></p>
-          <p>المتبقي: <span className="font-semibold text-red-700">{remaining.toFixed(2)} AED</span></p>
+          <p>المجموع الجزئي: <span className="font-semibold">{invoice.subtotal.toFixed(2)} {DEFAULT_CURRENCY}</span></p>
+          <p className="text-base font-bold text-brand-700">الإجمالي: {invoice.totalAmount.toFixed(2)} {DEFAULT_CURRENCY}</p>
+          <p>المدفوع: <span className="font-semibold text-emerald-700">{invoice.paidAmount.toFixed(2)} {DEFAULT_CURRENCY}</span></p>
+          <p>المتبقي: <span className="font-semibold text-red-700">{remaining.toFixed(2)} {DEFAULT_CURRENCY}</span></p>
         </div>
       </div>
 
@@ -91,7 +92,7 @@ export default async function SystemInvoiceDetailPage({ params }: { params: { id
             {invoice.payments.map((p) => (
               <li key={p.id} className="flex items-center justify-between py-2">
                 <span>{new Date(p.createdAt).toLocaleString("ar-AE")} {p.method ? `— ${p.method}` : ""} {p.note ? `— ${p.note}` : ""}</span>
-                <span className="font-semibold text-emerald-700">{p.amount.toFixed(2)} AED</span>
+                <span className="font-semibold text-emerald-700">{p.amount.toFixed(2)} {DEFAULT_CURRENCY}</span>
               </li>
             ))}
           </ul>

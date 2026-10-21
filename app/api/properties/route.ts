@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/adminApi";
+import { CURRENCIES, DEFAULT_CURRENCY } from "@/lib/currency";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +28,7 @@ const propertySchema = z.object({
   descriptionAr: z.string().min(1),
   descriptionEn: z.string().min(1),
   price: z.number().positive(),
-  currency: z.string().min(1).max(10).default("AED"),
+  currency: z.enum(CURRENCIES).default(DEFAULT_CURRENCY),
   regionAr: z.string().min(1),
   regionEn: z.string().min(1),
   images: z.array(z.string().url("يجب أن يكون رابط كامل (https://...) — لا يقبل مسار نسبي مثل /images/...")).default([])

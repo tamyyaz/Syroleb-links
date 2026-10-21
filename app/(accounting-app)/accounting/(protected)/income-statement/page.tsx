@@ -1,5 +1,6 @@
 import { requireAccountingRole } from "@/lib/requireAccountingRole";
 import { getAccountBalances } from "@/lib/accountingReports";
+import { DEFAULT_CURRENCY } from "@/lib/currency";
 
 function toDateInputValue(date: Date): string {
   return date.toISOString().slice(0, 10);
@@ -57,7 +58,7 @@ export default async function IncomeStatementPage({ searchParams }: { searchPara
               {income.map((r) => (
                 <tr key={r.accountId}>
                   <td className="py-2 text-ink-900">{r.code} — {r.nameAr}</td>
-                  <td className="py-2 text-end font-semibold text-emerald-700">{r.balance.toFixed(2)} AED</td>
+                  <td className="py-2 text-end font-semibold text-emerald-700">{r.balance.toFixed(2)} {DEFAULT_CURRENCY}</td>
                 </tr>
               ))}
             </tbody>
@@ -65,7 +66,7 @@ export default async function IncomeStatementPage({ searchParams }: { searchPara
         )}
         <div className="mt-3 flex justify-between border-t border-brand-200 pt-3 font-bold text-emerald-700">
           <span>إجمالي الإيرادات</span>
-          <span>{totalIncome.toFixed(2)} AED</span>
+          <span>{totalIncome.toFixed(2)} {DEFAULT_CURRENCY}</span>
         </div>
       </div>
 
@@ -79,7 +80,7 @@ export default async function IncomeStatementPage({ searchParams }: { searchPara
               {expense.map((r) => (
                 <tr key={r.accountId}>
                   <td className="py-2 text-ink-900">{r.code} — {r.nameAr}</td>
-                  <td className="py-2 text-end font-semibold text-red-700">{r.balance.toFixed(2)} AED</td>
+                  <td className="py-2 text-end font-semibold text-red-700">{r.balance.toFixed(2)} {DEFAULT_CURRENCY}</td>
                 </tr>
               ))}
             </tbody>
@@ -87,14 +88,14 @@ export default async function IncomeStatementPage({ searchParams }: { searchPara
         )}
         <div className="mt-3 flex justify-between border-t border-brand-200 pt-3 font-bold text-red-700">
           <span>إجمالي المصروفات</span>
-          <span>{totalExpense.toFixed(2)} AED</span>
+          <span>{totalExpense.toFixed(2)} {DEFAULT_CURRENCY}</span>
         </div>
       </div>
 
       <div className="card mt-6 p-6">
         <div className="flex justify-between text-lg font-bold text-brand-700">
           <span>صافي الدخل</span>
-          <span>{netIncome.toFixed(2)} AED</span>
+          <span>{netIncome.toFixed(2)} {DEFAULT_CURRENCY}</span>
         </div>
       </div>
     </div>

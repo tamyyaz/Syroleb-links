@@ -6,6 +6,7 @@ import type { Customer, CustomerType, Product, Quote, QuoteItem } from "@prisma/
 import QuoteItemsTable, { emptyItem } from "@/components/admin/QuoteItemsTable";
 import QuoteTotalsSummary from "@/components/admin/QuoteTotalsSummary";
 import { quoteInputSchema, type QuoteItemInput } from "@/lib/quotes";
+import { CURRENCIES, CURRENCY_LABELS, DEFAULT_CURRENCY } from "@/lib/currency";
 
 export type QuoteOrderPrefill = {
   orderId: string;
@@ -61,7 +62,7 @@ export default function QuoteForm({
   );
   const [shippingFee, setShippingFee] = useState(quote?.shippingFee ?? 0);
   const [discountAmount, setDiscountAmount] = useState(quote?.discountAmount ?? 0);
-  const [currency, setCurrency] = useState(quote?.currency ?? "AED");
+  const [currency, setCurrency] = useState(quote?.currency ?? DEFAULT_CURRENCY);
   const [termsAr, setTermsAr] = useState(quote?.termsAr ?? defaultTerms.ar);
   const [termsEn, setTermsEn] = useState(quote?.termsEn ?? defaultTerms.en);
   const [customerNote, setCustomerNote] = useState(quote?.customerNote ?? "");
@@ -264,7 +265,11 @@ export default function QuoteForm({
           </div>
           <div>
             <label className="label">العملة</label>
-            <input className="input" value={currency} onChange={(e) => setCurrency(e.target.value)} />
+            <select className="input" value={currency} onChange={(e) => setCurrency(e.target.value)}>
+            {CURRENCIES.map((c) => (
+              <option key={c} value={c}>{CURRENCY_LABELS[c].ar}</option>
+            ))}
+          </select>
           </div>
         </div>
         <QuoteTotalsSummary items={items} shippingFee={shippingFee} discountAmount={discountAmount} currency={currency} />

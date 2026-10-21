@@ -33,7 +33,7 @@ export async function generateMetadata({
   const dict = await getDictionary(locale);
   const hero = await getSiteSetting("hero");
   const siteName = process.env.NEXT_PUBLIC_SITE_NAME ?? "Syroleb";
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb-links.web.app";
   const ogLocale = locale === "ar" ? "ar_AE" : "en_AE";
   const altOgLocale = locale === "ar" ? "en_AE" : "ar_AE";
   // Site-wide fallback social-share image (real photography, not just the

@@ -4,6 +4,7 @@ import { requireSystemUser } from "@/lib/systemApi";
 import { getSiteSetting } from "@/lib/siteContent";
 import { renderInvoicePdf, type InvoicePdfData } from "@/lib/pdf/InvoiceDocument";
 import { formatInvoiceNumber, invoiceItemSchema } from "@/lib/invoices";
+import { DEFAULT_CURRENCY } from "@/lib/currency";
 
 function formatDate(date: Date): string {
   const day = String(date.getDate()).padStart(2, "0");
@@ -33,7 +34,7 @@ export async function GET(_request: NextRequest, { params }: { params: { id: str
     totalAmount: invoice.totalAmount,
     paidAmount: invoice.paidAmount,
     status: invoice.status,
-    currency: "AED",
+    currency: DEFAULT_CURRENCY,
     companyEmail: footer.email,
     companyBranches: footer.locations.map((loc) => ({ name: loc.name.ar, phone: `+${loc.phone}` }))
   };

@@ -30,7 +30,7 @@ export default async function HomePage({
     categories.find((c) => c.slug === slug)
   ).filter((c): c is (typeof categories)[number] => Boolean(c));
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb-links.web.app";
   // LocalBusiness (not the more generic Organization) — the branches are
   // physical locations customers visit, so this is eligible for local-
   // search treatment (map pack, knowledge panel) that Organization isn't.

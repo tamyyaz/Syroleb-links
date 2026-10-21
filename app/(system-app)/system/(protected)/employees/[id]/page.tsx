@@ -6,6 +6,7 @@ import EmployeePaySalaryForm from "@/components/EmployeePaySalaryForm";
 import EmployeeAmountReasonForm from "@/components/EmployeeAmountReasonForm";
 import EmployeeEvaluationForm from "@/components/EmployeeEvaluationForm";
 import DeleteRecordButton from "@/components/DeleteRecordButton";
+import { DEFAULT_CURRENCY } from "@/lib/currency";
 
 const SCORE_LABELS: Record<number, string> = { 5: "ممتاز", 4: "جيد جداً", 3: "جيد", 2: "مقبول", 1: "ضعيف" };
 
@@ -39,9 +40,9 @@ export default async function SystemEmployeeDetailPage({ params }: { params: { i
       <div className="card grid gap-2 p-6 sm:grid-cols-2">
         <p className="text-sm"><span className="font-bold text-brand-700">الوظيفة:</span> {employee.position ?? "—"}</p>
         <p className="text-sm"><span className="font-bold text-brand-700">الهاتف:</span> {employee.phone}</p>
-        <p className="text-sm"><span className="font-bold text-brand-700">الراتب الشهري:</span> {employee.monthlyWage.toFixed(2)} AED</p>
-        <p className="text-sm"><span className="font-bold text-brand-700">إجمالي الخصومات:</span> {totalDeductions.toFixed(2)} AED</p>
-        <p className="text-sm font-semibold text-brand-700">الصافي المستحق هذا الشهر: {netDue.toFixed(2)} AED</p>
+        <p className="text-sm"><span className="font-bold text-brand-700">الراتب الشهري:</span> {employee.monthlyWage.toFixed(2)} {DEFAULT_CURRENCY}</p>
+        <p className="text-sm"><span className="font-bold text-brand-700">إجمالي الخصومات:</span> {totalDeductions.toFixed(2)} {DEFAULT_CURRENCY}</p>
+        <p className="text-sm font-semibold text-brand-700">الصافي المستحق هذا الشهر: {netDue.toFixed(2)} {DEFAULT_CURRENCY}</p>
       </div>
 
       <div className="card space-y-4 p-6">
@@ -64,7 +65,7 @@ export default async function SystemEmployeeDetailPage({ params }: { params: { i
               <li key={v.id} className="flex items-center justify-between py-2">
                 <span>{new Date(v.createdAt).toLocaleDateString("ar-AE")} — {v.reason}</span>
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-red-700">{v.amount.toFixed(2)} AED</span>
+                  <span className="font-semibold text-red-700">{v.amount.toFixed(2)} {DEFAULT_CURRENCY}</span>
                   <a href={`/api/system/voucher-pdf/${v.id}`} download className="btn-secondary py-1 px-2 text-xs">
                     PDF
                   </a>
@@ -74,7 +75,7 @@ export default async function SystemEmployeeDetailPage({ params }: { params: { i
             ))}
           </ul>
         )}
-        <p className="text-end text-sm font-semibold text-ink-900">الإجمالي: {totalVouchers.toFixed(2)} AED</p>
+        <p className="text-end text-sm font-semibold text-ink-900">الإجمالي: {totalVouchers.toFixed(2)} {DEFAULT_CURRENCY}</p>
       </div>
 
       <div className="card space-y-4 p-6">
@@ -92,7 +93,7 @@ export default async function SystemEmployeeDetailPage({ params }: { params: { i
               <li key={d.id} className="flex items-center justify-between py-2">
                 <span>{new Date(d.createdAt).toLocaleDateString("ar-AE")} — {d.reason}</span>
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-red-700">{d.amount.toFixed(2)} AED</span>
+                  <span className="font-semibold text-red-700">{d.amount.toFixed(2)} {DEFAULT_CURRENCY}</span>
                   <DeleteRecordButton apiBase="/api/system/deductions" id={d.id} />
                 </div>
               </li>
@@ -133,7 +134,7 @@ export default async function SystemEmployeeDetailPage({ params }: { params: { i
             {employee.payments.map((p) => (
               <li key={p.id} className="flex items-center justify-between py-2">
                 <span>{new Date(p.createdAt).toLocaleString("ar-AE")} — {p.category === "salary" ? "راتب" : p.category === "voucher" ? "سند قبض" : p.category}</span>
-                <span className="font-semibold text-red-700">{p.amount.toFixed(2)} AED</span>
+                <span className="font-semibold text-red-700">{p.amount.toFixed(2)} {DEFAULT_CURRENCY}</span>
               </li>
             ))}
           </ul>

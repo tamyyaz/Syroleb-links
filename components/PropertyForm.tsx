@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import type { PropertyWithRelations } from "@/lib/types";
 import MultiImageUploadField from "./admin/MultiImageUploadField";
 import { describeApiError } from "@/lib/adminFormError";
+import { CURRENCIES, CURRENCY_LABELS, DEFAULT_CURRENCY } from "@/lib/currency";
 
 const FIELD_LABELS: Record<string, string> = {
   slug: "الرابط المختصر",
@@ -41,7 +42,7 @@ export default function PropertyForm({ property }: { property?: PropertyWithRela
       regionAr: String(form.get("regionAr") || "").trim(),
       regionEn: String(form.get("regionEn") || "").trim(),
       price: Number(form.get("price") || 0),
-      currency: String(form.get("currency") || "AED"),
+      currency: String(form.get("currency") || DEFAULT_CURRENCY),
       images
     };
 
@@ -114,7 +115,11 @@ export default function PropertyForm({ property }: { property?: PropertyWithRela
         </div>
         <div>
           <label className="label">العملة</label>
-          <input className="input" name="currency" defaultValue={property?.currency ?? "AED"} />
+          <select className="input" name="currency" defaultValue={property?.currency ?? DEFAULT_CURRENCY}>
+            {CURRENCIES.map((c) => (
+              <option key={c} value={c}>{CURRENCY_LABELS[c].ar}</option>
+            ))}
+          </select>
         </div>
       </div>
 

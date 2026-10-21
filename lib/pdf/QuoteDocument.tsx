@@ -14,12 +14,12 @@ const ar = fixArabicShaping;
 const LOGO_SRC = { data: readFileSync(path.join(process.cwd(), "public", "images", "logo-mark.png")), format: "png" as const };
 
 const COLORS = {
-  brand700: "#365030",
-  brand600: "#47663b",
+  brand700: "#484745",
+  brand600: "#5e5d5a",
   ink900: "#1b1b18",
   ink800: "#2b2a24",
   white: "#ffffff",
-  border: "#c7d2c5"
+  border: "#c9c8c5"
 };
 
 export type QuotePdfItem = {
@@ -204,7 +204,7 @@ export function QuoteDocument({ quote }: { quote: QuotePdfData }) {
               {branch && <FieldLine label="الفرع" value={branch.name} />}
               <FieldLine label="الهاتف" value={branch ? branch.phone : ""} />
               <FieldLine label="العنوان" value={quote.companyEmail} />
-              <FieldLine label="الموقع" value="syroleb.com" />
+              <FieldLine label="الموقع" value="syroleb-links.web.app" />
               {(quote.responsibleName || quote.responsiblePhone) && (
                 <FieldLine
                   label="المسؤول"

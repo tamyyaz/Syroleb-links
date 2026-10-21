@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { LayoutDashboard, LogOut, BookOpen, ScrollText, Settings, BookMarked, Scale, Landmark, TrendingUp, type LucideIcon } from "lucide-react";
 
 // Mirrors components/SystemSidebar.tsx, but for the OWNER-only,
-// single-purpose account.syroleb.com app — no role-based filtering
+// single-purpose account.<domain> app — no role-based filtering
 // needed (login itself already refuses anyone but OWNER). NAV only lists
 // modules that actually have a page built yet — extended as each phase in
 // the plan ships its route.

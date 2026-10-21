@@ -28,7 +28,7 @@ export default function ProductDetailView({
       : `Hello, I'd like to ask about: ${name}`
   );
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb-links.web.app";
   const productUrl = `${siteUrl}/${locale}${productPath(product.material, product.slug)}`;
   // Price intentionally omitted from Offer — SYROLEB doesn't list prices
   // publicly (see dict.products.ask_price), so there's nothing honest to

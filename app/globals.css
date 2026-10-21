@@ -119,12 +119,12 @@ html {
   @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none;
 }
 
-/* Primary — brand-900, the darkest green (SHOP NOW / contact us) */
+/* Primary — brand-900, the darkest graphite (SHOP NOW / contact us) */
 .btn-primary {
   @apply btn bg-brand-900 text-white shadow-sm hover:-translate-y-0.5 hover:bg-brand-800 hover:shadow-md focus:ring-brand-400 active:translate-y-0 disabled:translate-y-0;
 }
 
-/* Secondary — light cream fill, dark green text (DETAILS / Catalog) */
+/* Secondary — light cream fill, dark graphite text (DETAILS / Catalog) */
 .btn-secondary {
   @apply btn bg-sage-100 text-brand-900 hover:-translate-y-0.5 hover:bg-sage-200 hover:shadow-md focus:ring-brand-300 active:translate-y-0;
 }

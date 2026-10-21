@@ -3,6 +3,7 @@ import { requireSystemRole } from "@/lib/requireSystemRole";
 import ManualPaymentForm from "@/components/ManualPaymentForm";
 import DeletePaymentButton from "@/components/DeletePaymentButton";
 import SystemSearchBar from "@/components/SystemSearchBar";
+import { DEFAULT_CURRENCY } from "@/lib/currency";
 
 const CATEGORY_LABELS: Record<string, string> = {
   invoice: "فاتورة",
@@ -47,15 +48,15 @@ export default async function SystemPaymentsPage({ searchParams }: { searchParam
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="card p-4">
           <p className="text-sm text-ink-800/60">إجمالي الدخل</p>
-          <p className="mt-1 text-xl font-bold text-emerald-700">{totalIncome.toFixed(2)} AED</p>
+          <p className="mt-1 text-xl font-bold text-emerald-700">{totalIncome.toFixed(2)} {DEFAULT_CURRENCY}</p>
         </div>
         <div className="card p-4">
           <p className="text-sm text-ink-800/60">إجمالي المصروف</p>
-          <p className="mt-1 text-xl font-bold text-red-700">{totalExpense.toFixed(2)} AED</p>
+          <p className="mt-1 text-xl font-bold text-red-700">{totalExpense.toFixed(2)} {DEFAULT_CURRENCY}</p>
         </div>
         <div className="card p-4">
           <p className="text-sm text-ink-800/60">الصافي</p>
-          <p className="mt-1 text-xl font-bold text-brand-700">{(totalIncome - totalExpense).toFixed(2)} AED</p>
+          <p className="mt-1 text-xl font-bold text-brand-700">{(totalIncome - totalExpense).toFixed(2)} {DEFAULT_CURRENCY}</p>
         </div>
       </div>
 
@@ -108,7 +109,7 @@ export default async function SystemPaymentsPage({ searchParams }: { searchParam
                   </span>
                 </td>
                 <td className="p-3 text-ink-800/70">{CATEGORY_LABELS[p.category] ?? p.category}</td>
-                <td className="p-3 font-semibold text-ink-900">{p.amount.toFixed(2)} AED</td>
+                <td className="p-3 font-semibold text-ink-900">{p.amount.toFixed(2)} {DEFAULT_CURRENCY}</td>
                 <td className="p-3 text-ink-800/70">
                   {p.invoice ? `فاتورة #${p.invoice.invoiceNumber} — ${p.invoice.customerName}` : "—"}
                 </td>

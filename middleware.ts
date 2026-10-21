@@ -6,18 +6,18 @@ const ADMIN_HOST_PREFIX = "admin.";
 const ACCOUNTING_HOST_PREFIX = "account.";
 
 // Handles five things:
-// 1) system.syroleb.com serves ONLY the internal system app (quotes,
+// 1) system.<domain> serves ONLY the internal system app (quotes,
 //    invoices, employees, etc. — app/(system-app)/system/...). Route groups
 //    don't change the URL, so every path on this host is rewritten to carry
 //    a /system prefix internally; api routes (app/api/system/...) pass
 //    through untouched, same as /api elsewhere.
-// 2) admin.syroleb.com serves ONLY the admin panel (app/(admin-app)/
-//    admin/...) the same way — syroleb.com/admin was retired in favor
+// 2) admin.<domain> serves ONLY the admin panel (app/(admin-app)/
+//    admin/...) the same way — <domain>/admin was retired in favor
 //    of this subdomain (see the 404 block below), matching how /system
 //    never existed on the main domain either.
-// 3) account.syroleb.com serves ONLY the formal accounting module
+// 3) account.<domain> serves ONLY the formal accounting module
 //    (app/(accounting-app)/accounting/...) the same way again — OWNER-only,
-//    reuses the same SystemUser login as system.syroleb.com (see
+//    reuses the same SystemUser login as system.<domain> (see
 //    lib/systemAuth.ts) but requires its own sign-in step per host.
 // 4) Locale prefixing for the public site: "/" -> "/ar" (default) so every
 //    public page lives under /ar/... or /en/....

@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import OrderForm from "@/components/OrderForm";
 import Reveal from "@/components/motion/Reveal";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { getSiteSetting } from "@/lib/siteContent";
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   const locale = isLocale(params.locale) ? params.locale : "ar";
@@ -30,6 +31,7 @@ export default async function ContactPage({
   if (!isLocale(params.locale)) notFound();
   const locale = params.locale as Locale;
   const dict = await getDictionary(locale);
+  const footer = await getSiteSetting("footer");
   const whatsappHref = buildWhatsAppLink(
     locale === "ar" ? "مرحباً، لدي استفسار عام." : "Hello, I have a general inquiry."
   );
@@ -58,7 +60,7 @@ export default async function ContactPage({
             </span>
             <div>
               <div className="text-xs font-semibold uppercase tracking-wide text-ink-800/50">{dict.contact.email}</div>
-              <div className="mt-0.5 text-sm font-medium text-ink-900" dir="ltr">info@syroleb.com</div>
+              <div className="mt-0.5 text-sm font-medium text-ink-900" dir="ltr">{footer.email}</div>
             </div>
           </div>
         </div>

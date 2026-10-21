@@ -3,6 +3,7 @@
 // running total, as well as from the API routes (the authoritative
 // recompute — client-submitted totals are never trusted) and the PDF.
 import { z } from "zod";
+import { CURRENCIES, DEFAULT_CURRENCY } from "@/lib/currency";
 
 export const quoteItemInputSchema = z.object({
   productId: z.string().min(1).nullable().optional(),
@@ -29,7 +30,7 @@ export const quoteInputSchema = z.object({
   expiryDate: z.string().nullable().optional(),
   shippingFee: z.number().nonnegative().default(0),
   discountAmount: z.number().nonnegative().default(0),
-  currency: z.string().min(1).max(10).default("AED"),
+  currency: z.enum(CURRENCIES).default(DEFAULT_CURRENCY),
   termsAr: z.string().min(1),
   termsEn: z.string().min(1),
   customerNote: z.string().nullable().optional(),

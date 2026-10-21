@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { requireSystemUser } from "@/lib/systemApi";
 import { getSiteSetting } from "@/lib/siteContent";
 import { renderStatementPdf, type StatementPdfData } from "@/lib/pdf/StatementDocument";
+import { DEFAULT_CURRENCY } from "@/lib/currency";
 
 function formatDate(date: Date): string {
   const day = String(date.getDate()).padStart(2, "0");
@@ -28,7 +29,7 @@ export async function GET(_request: NextRequest, { params }: { params: { id: str
     customerName: customer.nameAr,
     customerPhone: customer.phone,
     generatedDate: formatDate(new Date()),
-    currency: "AED",
+    currency: DEFAULT_CURRENCY,
     invoices: customer.invoices.map((inv) => ({
       invoiceNumber: inv.invoiceNumber,
       date: formatDate(inv.createdAt),

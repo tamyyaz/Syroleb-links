@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { getSystemSession } from "./systemAuth";
 import { isSystemRole, type SystemRoleValue } from "./systemRoles";
 
-// Server-component page guard for account.syroleb.com — OWNER-only, no
+// Server-component page guard for account.<domain> — OWNER-only, no
 // other page to fall back to in this single-purpose app, so any failure
 // (no session, or a role downgraded mid-session) redirects straight to
 // /login rather than a "home for this role" page like requireSystemRole

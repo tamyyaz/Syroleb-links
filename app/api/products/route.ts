@@ -3,6 +3,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/adminApi";
 import { PRODUCT_LINES } from "@/lib/productLines";
+import { CURRENCIES, DEFAULT_CURRENCY } from "@/lib/currency";
 
 export const dynamic = "force-dynamic";
 
@@ -56,7 +57,7 @@ const productSchema = z.object({
   material: z.enum(["WPC", "UPVC", "ALUMINUM", "STEEL"]),
   productLine: z.enum(PRODUCT_LINES).nullable().optional(),
   price: z.number().positive(),
-  currency: z.string().min(1).max(10).default("AED"),
+  currency: z.enum(CURRENCIES).default(DEFAULT_CURRENCY),
   inStock: z.boolean().default(true),
   featured: z.boolean().default(false),
   images: z

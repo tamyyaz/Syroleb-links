@@ -91,7 +91,7 @@ model Product {
   material      Material       @default(WPC)
   productLine   ProductLine?
   price         Float
-  currency      String         @default("AED")
+  currency      String         @default("USD")
   inStock       Boolean        @default(true)
   featured      Boolean        @default(false)
   category      Category       @relation(fields: [categoryId], references: [id])
@@ -99,7 +99,7 @@ model Product {
   images        ProductImage[]
   orderItems    OrderItem[]
   quoteItems    QuoteItem[]
-  // Internal warehouse tracking (system.syroleb.com) — deliberately
+  // Internal warehouse tracking (system.<domain>) — deliberately
   // separate from `inStock` above, which stays the manually-toggled
   // storefront badge exactly as before; nothing here changes what
   // customers see until that's wired up as its own, separate decision.
@@ -182,7 +182,7 @@ model Property {
   descriptionAr String          @db.Text
   descriptionEn String          @db.Text
   price         Float
-  currency      String          @default("AED")
+  currency      String          @default("USD")
   regionAr      String
   regionEn      String
   images        PropertyImage[]
@@ -321,7 +321,7 @@ model CustomerType {
   updatedAt       DateTime    @updatedAt
 }
 
-// A real customer record, managed from system.syroleb.com — Quote itself
+// A real customer record, managed from system.<domain> — Quote itself
 // still keeps its own snapshotted customerName/customerPhone/etc (a quote
 // printed once must never change if the Customer record is edited later),
 // this is just an optional live link for the system app's own customer
@@ -372,7 +372,7 @@ model Quote {
   discountAmount    Float       @default(0)
   subtotal          Float
   grandTotal        Float
-  currency          String      @default("AED")
+  currency          String      @default("USD")
   termsAr           String      @db.Text
   termsEn           String      @db.Text
   customerNote      String?     @db.Text
@@ -413,7 +413,7 @@ model QuoteItem {
   @@index([customerTypeId])
 }
 
-// --- Internal system (system.syroleb.com) -------------------------------
+// --- Internal system (system.<domain>) -------------------------------
 // Fully separate login from Admin/AdminRole above — an "employee" here
 // (factory/sales staff) has no reason to ever touch /admin, and vice versa.
 // OWNER is the only role that can create/edit other SystemUsers (mirrors how
@@ -575,7 +575,7 @@ model EmployeeDeduction {
   @@index([employeeId])
 }
 
-// One row per create/update/delete made through system.syroleb.com —
+// One row per create/update/delete made through system.<domain> —
 // written by lib/auditLog.ts, called from the mutating API routes. OWNER-only
 // visibility (/system/audit-log), for accountability once more than one
 // SystemUser is added. actorEmail/actorName are copied at write time rather
@@ -609,11 +609,11 @@ model InventoryMovement {
   @@index([productId])
 }
 
-// --- Formal accounting (account.syroleb.com) ----------------------------
+// --- Formal accounting (account.<domain>) ----------------------------
 // Fully separate from the flat income/expense Payment ledger above, which
 // stays exactly as-is. OWNER-only — see lib/systemRoles.ts's
 // DEFAULT_SYSTEM_ROLE_PAGES (MANAGER/STAFF don't get the "accounting" page
-// key). Reuses the same SystemUser login as system.syroleb.com.
+// key). Reuses the same SystemUser login as system.<domain>.
 enum AccountType {
   ASSET
   LIABILITY

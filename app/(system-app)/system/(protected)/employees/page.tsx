@@ -4,6 +4,7 @@ import DeleteEmployeeButton from "@/components/DeleteEmployeeButton";
 import PayAllSalariesButton from "@/components/PayAllSalariesButton";
 import SystemSearchBar from "@/components/SystemSearchBar";
 import { requireSystemRole } from "@/lib/requireSystemRole";
+import { DEFAULT_CURRENCY } from "@/lib/currency";
 
 export default async function SystemEmployeesPage({ searchParams }: { searchParams: { q?: string } }) {
   await requireSystemRole("employees");
@@ -60,7 +61,7 @@ export default async function SystemEmployeesPage({ searchParams }: { searchPara
                 <td className="p-3 font-medium text-ink-900">{e.nameAr}</td>
                 <td className="p-3 text-ink-800/70">{e.position ?? "—"}</td>
                 <td className="p-3 text-ink-800/70">{e.phone}</td>
-                <td className="p-3 text-ink-800/70">{e.monthlyWage.toFixed(2)} AED</td>
+                <td className="p-3 text-ink-800/70">{e.monthlyWage.toFixed(2)} {DEFAULT_CURRENCY}</td>
                 <td className="p-3">
                   {e.isActive ? (
                     <span className="rounded-full bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">نشط</span>

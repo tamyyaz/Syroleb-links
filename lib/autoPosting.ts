@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { formatInvoiceNumber } from "@/lib/invoices";
 import { SUSPENSE_ACCOUNT_CODE } from "@/lib/accounts";
 
-// Safe auto-posting from the existing system.syroleb.com Invoice/Payment
+// Safe auto-posting from the existing system.<domain> Invoice/Payment
 // flow into the formal double-entry ledger. Every function here is called
 // as best-effort from the existing app/api/system/* routes — wrapped in
 // try/catch there, exactly like the WhatsApp/email notification calls

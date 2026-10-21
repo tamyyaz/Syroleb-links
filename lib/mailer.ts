@@ -87,11 +87,11 @@ function getTransport() {
   });
 }
 
-const BRAND = "#2b503a";
-const BRAND_LIGHT = "#d6e0d5";
+const BRAND = "#484745";
+const BRAND_LIGHT = "#e4e4e2";
 const INK = "#1b1b18";
 const INK_MUTED = "#5b5850";
-const LOGO_URL = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb.com"}/images/logo-mark.png`;
+const LOGO_URL = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb-links.web.app"}/images/logo-mark.png`;
 
 // Shared shell (header with logo/title/id + a label:value fields table) for
 // every auto-sent notification email — order and job-application alike are
@@ -101,7 +101,7 @@ const LOGO_URL = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb.com"}/i
 // (items table for orders, nothing extra for job applications).
 function buildEmailShell(opts: { title: string; shortId: string; rows: [string, string][]; bodyHtml: string }) {
   return `
-  <div dir="rtl" style="background:#f5f3ee; padding:24px 12px; font-family:Tahoma, Arial, sans-serif;">
+  <div dir="rtl" style="background:#f5f5f4; padding:24px 12px; font-family:Tahoma, Arial, sans-serif;">
     <table role="presentation" width="100%" style="max-width:600px; margin:0 auto; background:#ffffff; border-collapse:collapse;" cellpadding="0" cellspacing="0">
       <tr>
         <td style="padding:24px 28px; border-bottom:2px solid ${BRAND};">
@@ -200,7 +200,7 @@ export function buildNewJobApplicationEmailHtml(application: NewJobApplicationEm
 // jobs rather than per-record, so a busy day doesn't flood the inbox.
 function buildAlertTableEmail(opts: { title: string; columns: string[]; rows: string[][] }) {
   return `
-  <div dir="rtl" style="background:#f5f3ee; padding:24px 12px; font-family:Tahoma, Arial, sans-serif;">
+  <div dir="rtl" style="background:#f5f5f4; padding:24px 12px; font-family:Tahoma, Arial, sans-serif;">
     <table role="presentation" width="100%" style="max-width:600px; margin:0 auto; background:#ffffff; border-collapse:collapse;" cellpadding="0" cellspacing="0">
       <tr>
         <td style="padding:24px 28px; border-bottom:2px solid ${BRAND};">
@@ -321,7 +321,7 @@ export async function sendQuoteExpiryAlert(quotes: ExpiringQuote[]) {
 // a single flat list.
 function buildMultiSectionEmail(opts: { title: string; sections: { heading: string; columns: string[]; rows: string[][] }[] }) {
   return `
-  <div dir="rtl" style="background:#f5f3ee; padding:24px 12px; font-family:Tahoma, Arial, sans-serif;">
+  <div dir="rtl" style="background:#f5f5f4; padding:24px 12px; font-family:Tahoma, Arial, sans-serif;">
     <table role="presentation" width="100%" style="max-width:600px; margin:0 auto; background:#ffffff; border-collapse:collapse;" cellpadding="0" cellspacing="0">
       <tr>
         <td style="padding:24px 28px; border-bottom:2px solid ${BRAND};">

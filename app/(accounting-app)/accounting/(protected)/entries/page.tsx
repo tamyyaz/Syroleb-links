@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requireAccountingRole } from "@/lib/requireAccountingRole";
 import { formatEntryNumber } from "@/lib/journalEntries";
+import { DEFAULT_CURRENCY } from "@/lib/currency";
 
 export default async function JournalEntriesPage() {
   await requireAccountingRole();
@@ -52,7 +53,7 @@ export default async function JournalEntriesPage() {
                   <td className="p-3 text-ink-800/70">{new Date(entry.date).toLocaleDateString("ar-AE")}</td>
                   <td className="p-3 text-ink-900">{entry.description}</td>
                   <td className="p-3 text-ink-800/70">{entry.sourceType ? "تلقائي" : "يدوي"}</td>
-                  <td className="p-3 font-semibold text-ink-900">{total.toFixed(2)} AED</td>
+                  <td className="p-3 font-semibold text-ink-900">{total.toFixed(2)} {DEFAULT_CURRENCY}</td>
                 </tr>
               );
             })}

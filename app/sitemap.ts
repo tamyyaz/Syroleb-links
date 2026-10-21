@@ -4,7 +4,7 @@ import { locales } from "@/lib/i18n/config";
 import { categoryPath, productPath, MATERIAL_SLUGS, CATALOG_MATERIALS } from "@/lib/materialPaths";
 import { MATERIAL_PRODUCT_LINES, PRODUCT_LINE_SLUGS } from "@/lib/productLines";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb-links.web.app";
 
 const STATIC_PATHS = ["", "/catalog", "/realestate", "/about", "/contact", "/careers"];
 

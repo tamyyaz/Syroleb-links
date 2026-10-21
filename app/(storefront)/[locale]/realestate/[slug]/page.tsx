@@ -56,7 +56,7 @@ export default async function PropertyDetailPage({
   const inquiryMessage =
     locale === "ar" ? `استفسار عن العقار: ${title}` : `Inquiry about: ${title}`;
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb-links.web.app";
   const propertyUrl = `${siteUrl}/${locale}/realestate/${params.slug}`;
   // Price omitted from Offer for the same reason as door products — see
   // dict.realestate.ask_price. No dedicated real-estate rich-result type in

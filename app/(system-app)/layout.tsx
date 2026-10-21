@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false }
 };
 
-// Root layout for the whole system.syroleb.com app (rewritten to /system
+// Root layout for the whole system.<domain> app (rewritten to /system
 // by middleware.ts). Kept Arabic/RTL by default, same as the /admin panel —
 // the auth gate + sidebar chrome lives in the nested (protected)/layout.tsx
 // so /system/login can render without it.

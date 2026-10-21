@@ -11,11 +11,11 @@ const ar = fixArabicShaping;
 const LOGO_SRC = { data: readFileSync(path.join(process.cwd(), "public", "images", "logo-mark.png")), format: "png" as const };
 
 const COLORS = {
-  brand700: "#365030",
+  brand700: "#484745",
   ink900: "#1b1b18",
   ink800: "#2b2a24",
   white: "#ffffff",
-  border: "#c7d2c5"
+  border: "#c9c8c5"
 };
 
 export type VoucherPdfData = {

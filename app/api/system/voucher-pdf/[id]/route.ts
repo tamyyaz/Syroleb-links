@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireSystemUser } from "@/lib/systemApi";
 import { renderVoucherPdf } from "@/lib/pdf/VoucherDocument";
+import { DEFAULT_CURRENCY } from "@/lib/currency";
 
 function formatDate(date: Date): string {
   const day = String(date.getDate()).padStart(2, "0");
@@ -26,7 +27,7 @@ export async function GET(_request: NextRequest, { params }: { params: { id: str
     amount: voucher.amount,
     reason: voucher.reason,
     date: formatDate(voucher.createdAt),
-    currency: "AED"
+    currency: DEFAULT_CURRENCY
   });
 
   return new NextResponse(new Uint8Array(buffer), {

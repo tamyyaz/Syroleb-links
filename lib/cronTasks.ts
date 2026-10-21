@@ -9,6 +9,7 @@ import {
 } from "@/lib/mailer";
 import { formatInvoiceNumber } from "@/lib/invoices";
 import { formatQuoteNumber } from "@/lib/quotes";
+import { DEFAULT_CURRENCY } from "@/lib/currency";
 
 const QUOTE_EXPIRY_WINDOW_DAYS = 3;
 const WEEKLY_REPORT_WINDOW_DAYS = 7;
@@ -31,7 +32,7 @@ export async function checkOverdueInvoices(): Promise<number> {
       customerName: inv.customerName,
       customerPhone: inv.customerPhone,
       remaining: inv.totalAmount - inv.paidAmount,
-      currency: "AED",
+      currency: DEFAULT_CURRENCY,
       dueDate: inv.dueDate!
     }))
   );

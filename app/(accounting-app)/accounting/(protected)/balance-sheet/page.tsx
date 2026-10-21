@@ -1,5 +1,6 @@
 import { requireAccountingRole } from "@/lib/requireAccountingRole";
 import { getAccountBalances, type AccountBalance } from "@/lib/accountingReports";
+import { DEFAULT_CURRENCY } from "@/lib/currency";
 
 function toDateInputValue(date: Date): string {
   return date.toISOString().slice(0, 10);
@@ -17,7 +18,7 @@ function Section({ title, rows, total }: { title: string; rows: AccountBalance[]
             {rows.map((r) => (
               <tr key={r.accountId}>
                 <td className="py-2 text-ink-900">{r.code} — {r.nameAr}</td>
-                <td className="py-2 text-end font-semibold text-ink-900">{r.balance.toFixed(2)} AED</td>
+                <td className="py-2 text-end font-semibold text-ink-900">{r.balance.toFixed(2)} {DEFAULT_CURRENCY}</td>
               </tr>
             ))}
           </tbody>
@@ -25,7 +26,7 @@ function Section({ title, rows, total }: { title: string; rows: AccountBalance[]
       )}
       <div className="mt-3 flex justify-between border-t border-brand-200 pt-3 font-bold text-brand-700">
         <span>الإجمالي</span>
-        <span>{total.toFixed(2)} AED</span>
+        <span>{total.toFixed(2)} {DEFAULT_CURRENCY}</span>
       </div>
     </div>
   );
@@ -89,18 +90,18 @@ export default async function BalanceSheetPage({ searchParams }: { searchParams:
                 {equity.map((r) => (
                   <tr key={r.accountId}>
                     <td className="py-2 text-ink-900">{r.code} — {r.nameAr}</td>
-                    <td className="py-2 text-end font-semibold text-ink-900">{r.balance.toFixed(2)} AED</td>
+                    <td className="py-2 text-end font-semibold text-ink-900">{r.balance.toFixed(2)} {DEFAULT_CURRENCY}</td>
                   </tr>
                 ))}
                 <tr>
                   <td className="py-2 text-ink-900">صافي الدخل حتى تاريخه</td>
-                  <td className="py-2 text-end font-semibold text-ink-900">{netIncome.toFixed(2)} AED</td>
+                  <td className="py-2 text-end font-semibold text-ink-900">{netIncome.toFixed(2)} {DEFAULT_CURRENCY}</td>
                 </tr>
               </tbody>
             </table>
             <div className="mt-3 flex justify-between border-t border-brand-200 pt-3 font-bold text-brand-700">
               <span>الإجمالي</span>
-              <span>{totalEquity.toFixed(2)} AED</span>
+              <span>{totalEquity.toFixed(2)} {DEFAULT_CURRENCY}</span>
             </div>
           </div>
         </div>
@@ -109,11 +110,11 @@ export default async function BalanceSheetPage({ searchParams }: { searchParams:
       <div className="card mt-6 p-6">
         <div className="flex justify-between text-sm">
           <span className="font-bold text-ink-900">إجمالي الأصول</span>
-          <span className="font-bold text-ink-900">{totalAssets.toFixed(2)} AED</span>
+          <span className="font-bold text-ink-900">{totalAssets.toFixed(2)} {DEFAULT_CURRENCY}</span>
         </div>
         <div className="mt-1 flex justify-between text-sm">
           <span className="font-bold text-ink-900">إجمالي الالتزامات + حقوق الملكية</span>
-          <span className="font-bold text-ink-900">{totalLiabilitiesAndEquity.toFixed(2)} AED</span>
+          <span className="font-bold text-ink-900">{totalLiabilitiesAndEquity.toFixed(2)} {DEFAULT_CURRENCY}</span>
         </div>
       </div>
     </div>

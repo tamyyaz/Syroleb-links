@@ -13,10 +13,10 @@ registerCatalogFonts();
 const LOGO_SRC = { data: readFileSync(path.join(process.cwd(), "public", "images", "logo-mark.png")), format: "png" as const };
 
 const COLORS = {
-  brand700: "#365030",
-  brand600: "#47663b",
-  brand50: "#f2f5f0",
-  sand: "#e4dcc6",
+  brand700: "#484745",
+  brand600: "#5e5d5a",
+  brand50: "#f4f4f3",
+  sand: "#e0dad4",
   ink900: "#1b1b18",
   ink800: "#2b2a24",
   white: "#ffffff"

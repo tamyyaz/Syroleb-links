@@ -6,6 +6,7 @@ import { logAudit } from "@/lib/auditLog";
 import { deductStockForItems } from "@/lib/inventory";
 import { postInvoiceCreated } from "@/lib/autoPosting";
 import { formatInvoiceNumber } from "@/lib/invoices";
+import { DEFAULT_CURRENCY } from "@/lib/currency";
 
 export async function GET() {
   const { response } = await requireSystemUser();
@@ -42,6 +43,12 @@ export async function POST(request: NextRequest) {
   });
   if (!quote) {
     return NextResponse.json({ error: "quote_not_found" }, { status: 404 });
+  }
+
+  // Invoices, payments and the ledger are kept in one base currency — a quote
+  // priced in another currency can't be converted without an exchange rate.
+  if (quote.currency !== DEFAULT_CURRENCY) {
+    return NextResponse.json({ error: "quote_currency_not_supported", currency: quote.currency }, { status: 400 });
   }
 
   const invoiceNumber = await nextInvoiceNumber();

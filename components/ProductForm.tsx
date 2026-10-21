@@ -6,6 +6,7 @@ import type { Category, Material, ProductWithRelations } from "@/lib/types";
 import MediaGalleryField, { type MediaItem } from "./admin/MediaGalleryField";
 import { describeApiError } from "@/lib/adminFormError";
 import { MATERIAL_PRODUCT_LINES, PRODUCT_LINE_LABELS, type ProductLine } from "@/lib/productLines";
+import { CURRENCIES, CURRENCY_LABELS, DEFAULT_CURRENCY } from "@/lib/currency";
 
 const FIELD_LABELS: Record<string, string> = {
   slug: "الرابط المختصر",
@@ -69,7 +70,7 @@ export default function ProductForm({ product }: { product?: ProductWithRelation
       material,
       productLine: availableLines.includes(productLine as ProductLine) ? productLine : null,
       price: Number(form.get("price") || 0),
-      currency: String(form.get("currency") || "AED"),
+      currency: String(form.get("currency") || DEFAULT_CURRENCY),
       inStock: form.get("inStock") === "on",
       featured: form.get("featured") === "on",
       images: images.map((img) => ({ url: img.url, type: img.type === "video" ? "VIDEO" : "IMAGE" }))
@@ -156,7 +157,11 @@ export default function ProductForm({ product }: { product?: ProductWithRelation
         </div>
         <div>
           <label className="label">العملة</label>
-          <input className="input" name="currency" defaultValue={product?.currency ?? "AED"} />
+          <select className="input" name="currency" defaultValue={product?.currency ?? DEFAULT_CURRENCY}>
+            {CURRENCIES.map((c) => (
+              <option key={c} value={c}>{CURRENCY_LABELS[c].ar}</option>
+            ))}
+          </select>
         </div>
       </div>
 

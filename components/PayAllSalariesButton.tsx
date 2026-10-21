@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Employee } from "@prisma/client";
+import { DEFAULT_CURRENCY } from "@/lib/currency";
 
 export default function PayAllSalariesButton() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function PayAllSalariesButton() {
     }
 
     const confirmed = confirm(
-      `رح يتم دفع راتب ${payable.length} موظف بإجمالي ${total.toFixed(2)} AED. أكيد بدك تكمل؟`
+      `رح يتم دفع راتب ${payable.length} موظف بإجمالي ${total.toFixed(2)} ${DEFAULT_CURRENCY}. أكيد بدك تكمل؟`
     );
     if (!confirmed) {
       setLoading(false);
@@ -41,7 +42,7 @@ export default function PayAllSalariesButton() {
     }
 
     const data = await res.json();
-    setMessage(`تم دفع راتب ${data.paidCount} موظف بإجمالي ${data.totalAmount.toFixed(2)} AED.`);
+    setMessage(`تم دفع راتب ${data.paidCount} موظف بإجمالي ${data.totalAmount.toFixed(2)} ${DEFAULT_CURRENCY}.`);
     router.refresh();
   }
 

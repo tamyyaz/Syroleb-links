@@ -6,7 +6,7 @@ import { LayoutDashboard, LogOut, Users, Layers, FileText, Receipt, Wallet, User
 import { homeForSystemRole, type SystemRoleValue, type SystemPageKey } from "@/lib/systemRoles";
 
 // Mirrors components/AdminSidebar.tsx exactly, for the fully separate
-// system.syroleb.com app. NAV only lists modules that actually have a
+// system.<domain> app. NAV only lists modules that actually have a
 // page built yet — extended as each phase in the plan ships its route.
 const NAV: { href: string; label: string; icon: LucideIcon; key: SystemPageKey }[] = [
   { href: "/", label: "لوحة التحكم", icon: LayoutDashboard, key: "dashboard" },
