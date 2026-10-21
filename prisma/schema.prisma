@@ -1,7 +1,8 @@
 // Syroleb – Prisma schema
-// Production target: PostgreSQL (Neon, via Vercel's marketplace integration
-// — the cPanel host has no Node.js/remote-MySQL support, so the app is
-// deployed on Vercel instead; see README).
+// Production target: PostgreSQL on Supabase. DATABASE_URL is the pooled
+// connection string (port 6543, add ?pgbouncer=true) used by the app at
+// runtime; DIRECT_URL is the direct connection (port 5432) used by Prisma
+// for `db push` / migrations. See .env.example.
 // For local development without a Postgres server, you can temporarily
 // switch provider to "sqlite" and DATABASE_URL to "file:./dev.db".
 
@@ -11,7 +12,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum Material {

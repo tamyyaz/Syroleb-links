@@ -72,7 +72,7 @@ export default async function SystemQuotesPage({ searchParams }: { searchParams:
                     <Link href={`/system/quotes/${q.id}/edit`} className="btn-secondary py-1.5 px-3 text-xs">
                       تعديل
                     </Link>
-                    <ConvertToInvoiceButton quoteId={q.id} />
+                    <ConvertToInvoiceButton quoteId={q.id} currency={q.currency} />
                     <DeleteQuoteButton quoteId={q.id} apiBase="/api/system/quotes" />
                   </div>
                 </td>

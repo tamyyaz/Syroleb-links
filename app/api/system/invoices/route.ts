@@ -21,7 +21,15 @@ async function nextInvoiceNumber(): Promise<number> {
   return (last?.invoiceNumber ?? 0) + 1;
 }
 
-const createSchema = z.object({ quoteId: z.string().min(1) });
+// exchangeRate = how many units of the quote's currency equal 1 unit of the
+// base currency (e.g. 15000 SYP per 1 USD) — required only when the quote
+// isn't priced in the base currency.
+const createSchema = z.object({
+  quoteId: z.string().min(1),
+  exchangeRate: z.number().positive().finite().optional()
+});
+
+const round2 = (n: number) => Math.round(n * 100) / 100;
 
 // Invoices are created FROM an accepted Quote — "convert to invoice" — not
 // built line-by-line from scratch (that's what a Quote already is). Every
@@ -46,10 +54,14 @@ export async function POST(request: NextRequest) {
   }
 
   // Invoices, payments and the ledger are kept in one base currency — a quote
-  // priced in another currency can't be converted without an exchange rate.
-  if (quote.currency !== DEFAULT_CURRENCY) {
-    return NextResponse.json({ error: "quote_currency_not_supported", currency: quote.currency }, { status: 400 });
+  // priced in another currency is converted at the rate given right now and
+  // the original amount is kept in the invoice note.
+  const needsConversion = quote.currency !== DEFAULT_CURRENCY;
+  const rate = parsed.data.exchangeRate;
+  if (needsConversion && !rate) {
+    return NextResponse.json({ error: "exchange_rate_required", currency: quote.currency }, { status: 400 });
   }
+  const toBase = (value: number) => (needsConversion && rate ? round2(value / rate) : value);
 
   const invoiceNumber = await nextInvoiceNumber();
 
@@ -65,12 +77,16 @@ export async function POST(request: NextRequest) {
         descriptionAr: i.descriptionAr,
         descriptionEn: i.descriptionEn,
         quantity: i.quantity,
-        unitPrice: i.unitPrice,
+        unitPrice: toBase(i.unitPrice),
         discountPercent: i.discountPercent,
-        lineTotal: i.lineTotal
+        lineTotal: toBase(i.lineTotal)
       })),
-      subtotal: quote.subtotal,
-      totalAmount: quote.grandTotal
+      subtotal: toBase(quote.subtotal),
+      totalAmount: toBase(quote.grandTotal),
+      note:
+        needsConversion && rate
+          ? `محوّلة من عرض سعر بالـ ${quote.currency} (الإجمالي ${quote.grandTotal.toFixed(2)} ${quote.currency}) بسعر صرف ${rate} ${quote.currency} لكل 1 ${DEFAULT_CURRENCY}`
+          : undefined
     }
   });
 
