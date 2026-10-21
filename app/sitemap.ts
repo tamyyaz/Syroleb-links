@@ -3,8 +3,9 @@ import { prisma } from "@/lib/prisma";
 import { locales } from "@/lib/i18n/config";
 import { categoryPath, productPath, MATERIAL_SLUGS, CATALOG_MATERIALS } from "@/lib/materialPaths";
 import { MATERIAL_PRODUCT_LINES, PRODUCT_LINE_SLUGS } from "@/lib/productLines";
+import { getSiteUrl } from "@/lib/siteUrl";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb-links.web.app";
+const SITE_URL = getSiteUrl();
 
 const STATIC_PATHS = ["", "/catalog", "/about", "/contact", "/careers"];
 

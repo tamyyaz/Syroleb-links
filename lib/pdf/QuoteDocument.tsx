@@ -4,6 +4,7 @@ import { readFileSync } from "fs";
 import { Document, Page, Text, View, Image, StyleSheet, renderToBuffer } from "@react-pdf/renderer";
 import { registerCatalogFonts, fixArabicShaping } from "./fonts";
 import { formatQuoteNumber } from "@/lib/quotes";
+import { getSiteUrl } from "@/lib/siteUrl";
 
 registerCatalogFonts();
 
@@ -204,7 +205,7 @@ export function QuoteDocument({ quote }: { quote: QuotePdfData }) {
               {branch && <FieldLine label="الفرع" value={branch.name} />}
               <FieldLine label="الهاتف" value={branch ? branch.phone : ""} />
               <FieldLine label="العنوان" value={quote.companyEmail} />
-              <FieldLine label="الموقع" value="syroleb-links.web.app" />
+              <FieldLine label="الموقع" value={getSiteUrl().replace(/^https?:\/\//, "")} />
               {(quote.responsibleName || quote.responsiblePhone) && (
                 <FieldLine
                   label="المسؤول"

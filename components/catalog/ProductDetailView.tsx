@@ -6,6 +6,7 @@ import { productPath } from "@/lib/materialPaths";
 import OrderForm from "@/components/OrderForm";
 import AddToCartButton from "@/components/cart/AddToCartButton";
 import ProductGallery from "@/components/ProductGallery";
+import { getSiteUrl } from "@/lib/siteUrl";
 
 // Shared by /aluminum/[slug] (and the
 // legacy /products/[slug] product branch, kept only as a redirector).
@@ -28,7 +29,7 @@ export default function ProductDetailView({
       : `Hello, I'd like to ask about: ${name}`
   );
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb-links.web.app";
+  const siteUrl = getSiteUrl();
   const productUrl = `${siteUrl}/${locale}${productPath(product.material, product.slug)}`;
   // Price intentionally omitted from Offer — SYROLEB doesn't list prices
   // publicly (see dict.products.ask_price), so there's nothing honest to

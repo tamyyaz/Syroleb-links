@@ -12,6 +12,7 @@ import PageTransition from "@/components/motion/PageTransition";
 import CartProvider from "@/components/cart/CartProvider";
 import { anton, cairo, inter } from "@/lib/fonts";
 import "../../globals.css";
+import { getSiteUrl } from "@/lib/siteUrl";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -33,7 +34,7 @@ export async function generateMetadata({
   const dict = await getDictionary(locale);
   const hero = await getSiteSetting("hero");
   const siteName = process.env.NEXT_PUBLIC_SITE_NAME ?? "Syroleb";
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb-links.web.app";
+  const siteUrl = getSiteUrl();
   const ogLocale = locale === "ar" ? "ar_AE" : "en_AE";
   const altOgLocale = locale === "ar" ? "en_AE" : "ar_AE";
   // Site-wide fallback social-share image (real photography, not just the

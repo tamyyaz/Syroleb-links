@@ -4,6 +4,7 @@ import { readFileSync } from "fs";
 import { Document, Page, Text, View, Image, StyleSheet, renderToBuffer } from "@react-pdf/renderer";
 import { registerCatalogFonts, fixArabicShaping } from "./fonts";
 import { formatInvoiceNumber, INVOICE_STATUS_LABELS, type InvoiceStatusValue } from "@/lib/invoices";
+import { getSiteUrl } from "@/lib/siteUrl";
 
 registerCatalogFonts();
 
@@ -132,7 +133,7 @@ export function InvoiceDocument({ invoice }: { invoice: InvoicePdfData }) {
               {branch && <FieldLine label="الفرع" value={branch.name} />}
               <FieldLine label="الهاتف" value={branch ? branch.phone : ""} />
               <FieldLine label="العنوان" value={invoice.companyEmail} />
-              <FieldLine label="الموقع" value="syroleb-links.web.app" />
+              <FieldLine label="الموقع" value={getSiteUrl().replace(/^https?:\/\//, "")} />
             </View>
             <View style={styles.fieldsCol}>
               <FieldLine label="العميل" value={invoice.customerName} />

@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { getSiteUrl } from "@/lib/siteUrl";
 
 export type NewOrderEmailInput = {
   orderId: string;
@@ -91,7 +92,7 @@ const BRAND = "#484745";
 const BRAND_LIGHT = "#e4e4e2";
 const INK = "#1b1b18";
 const INK_MUTED = "#5b5850";
-const LOGO_URL = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb-links.web.app"}/images/logo-mark.png`;
+const LOGO_URL = `${getSiteUrl()}/images/logo-mark.png`;
 
 // Shared shell (header with logo/title/id + a label:value fields table) for
 // every auto-sent notification email — order and job-application alike are

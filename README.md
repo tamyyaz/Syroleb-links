@@ -27,7 +27,7 @@
 | تخزين الملفات | Supabase Storage |
 | المصادقة (الإدارة) | جلسة موقّعة بـ JWT (jose) + كوكي httpOnly، كلمات مرور مشفّرة bcrypt |
 | الإيميل | Nodemailer عبر SMTP |
-| الاستضافة | Firebase (`syroleb-links.web.app`) + GitHub Actions |
+| الاستضافة | Vercel (ربط مباشر مع GitHub) |
 
 ## هيكل المشروع
 
@@ -60,14 +60,17 @@ npm run dev             # http://localhost:3000
 
 لوحة التحكم: `http://localhost:3000/admin/login`
 
-## النشر — Firebase + GitHub
+## النشر — Vercel
 
-الدومين: `https://syroleb-links.web.app`. لوحة الإدارة والنظام الداخلي والمحاسبة على نفس الدومين تحت `/admin` و`/system` و`/accounting` (بدون نطاقات فرعية).
+الكود على GitHub والاستضافة على **Vercel** (ربط مباشر: كل دفعة على `main` بتنشر تلقائياً). لوحة الإدارة والنظام الداخلي والمحاسبة على نفس الدومين تحت `/admin` و`/system` و`/accounting`.
 
-- **قاعدة البيانات:** Supabase Postgres — ضع `DATABASE_URL` (pooler، المنفذ 6543) و`DIRECT_URL` (المنفذ 5432). الجداول تنشأ بـ `npx prisma db push`.
-- **تخزين الصور والـ PDF:** Supabase Storage — أنشئ bucket عام باسم `uploads` وضع `SUPABASE_URL` و`SUPABASE_SERVICE_ROLE_KEY`.
-- **المهام المجدولة:** `.github/workflows/cron.yml` (تنبيهات يومية وتقرير وباك أب أسبوعي). تحتاج secret باسم `CRON_SECRET` ومتغير `SITE_URL` بإعدادات المستودع.
-- **النشر من GitHub:** `.github/workflows/deploy.yml` — عند الدفع على `main` بيبني ويعمل `prisma db push` وينشر على موقع Firebase Hosting `syroleb-links` (مشروع `tamyyaz-3a83b`). الأسرار المطلوبة مكتوبة بأعلى الملف.
+1. من vercel.com سجّل الدخول بحساب GitHub واعمل **Add New Project** واختر هذا المستودع (فرع `main`).
+2. أضف متغيرات البيئة من `.env.example` في Settings ثم Environment Variables (على الأقل: `DATABASE_URL`, `DIRECT_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_SESSION_SECRET`, `SYSTEM_SESSION_SECRET`, `CRON_SECRET`, `NEXT_PUBLIC_SITE_URL`).
+3. **قاعدة البيانات:** Supabase Postgres. لإنشاء الجداول والبيانات الأولية شغّل من GitHub: Actions ثم **Database setup** ثم Run workflow (تحتاج أسرار المستودع `DATABASE_URL`, `DIRECT_URL`, `DEFAULT_ADMIN_USERNAME`, `DEFAULT_ADMIN_PASSWORD`).
+4. **تخزين الصور والـ PDF:** Supabase Storage — bucket عام باسم `uploads`.
+5. **المهام المجدولة:** `vercel.json` (تنبيهات يومية وتقرير أسبوعي)، وفيرسل Vercel قيمة `CRON_SECRET` تلقائياً.
+6. **النظام الداخلي:** بعد أول نشر، أرسل طلب POST لـ `/api/system/bootstrap` لإنشاء حساب المالك من `SYSTEM_OWNER_EMAIL/PASSWORD`.
+7. **الدومين:** افتراضياً `*.vercel.app`، وتقدر تربط دومين خاص (DNS على Cloudflare مثلاً) من Settings ثم Domains.
 
 ## قبل الإنتاج — قائمة تحقق سريعة
 

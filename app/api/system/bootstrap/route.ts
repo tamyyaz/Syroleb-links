@@ -2,10 +2,9 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
-// Setup/reset for DARKSHAM's OWNER account. prisma/seed.ts only runs
-// against a local/dev database — the production build script is "prisma db
-// push && next build" (no seed step), so this route is the safe way to
-// create (or reset the password of) that one account without needing raw
+// Setup/reset for the OWNER account. prisma/seed.ts only runs
+// against a local/dev database — the production build has no seed step, so
+// this route is the safe way to create (or reset the password of) that one account without needing raw
 // production DB access. Upserts on the email from SYSTEM_OWNER_EMAIL only —
 // credentials are read from server-side env vars, never from the request —
 // so it can be left in place permanently without being an open

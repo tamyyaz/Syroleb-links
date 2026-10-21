@@ -1,0 +1,37 @@
+# One-off / on-demand database setup (run manually: Actions > Database setup
+# > Run workflow). Creates/updates the tables in Supabase and seeds the starter
+# data (categories, sample product, knowledge base, first admin account).
+#
+# Required repo secrets: DATABASE_URL, DIRECT_URL, DEFAULT_ADMIN_USERNAME,
+# DEFAULT_ADMIN_PASSWORD. The admin password MUST come from a secret: this
+# repository is public, so a generated password printed by the seed script
+# would be visible in the public workflow log.
+name: Database setup
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DIRECT_URL: ${{ secrets.DIRECT_URL }}
+      DEFAULT_ADMIN_USERNAME: ${{ secrets.DEFAULT_ADMIN_USERNAME }}
+      DEFAULT_ADMIN_PASSWORD: ${{ secrets.DEFAULT_ADMIN_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Check secrets
+        run: |
+          for v in DATABASE_URL DIRECT_URL DEFAULT_ADMIN_USERNAME DEFAULT_ADMIN_PASSWORD; do
+            if [ -z "${!v}" ]; then echo "Missing secret: $v"; exit 1; fi
+          done
+      - run: npm ci
+      - name: Create/update tables
+        run: npx prisma db push
+      - name: Seed starter data
+        run: npm run db:seed

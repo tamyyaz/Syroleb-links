@@ -10,6 +10,7 @@ import CategorySpotlight from "@/components/CategorySpotlight";
 import BrandStatement from "@/components/BrandStatement";
 import QualityFeatures from "@/components/QualityFeatures";
 import CTASection from "@/components/CTASection";
+import { getSiteUrl } from "@/lib/siteUrl";
 
 const SPOTLIGHT_ORDER = ["aluminum-doors"];
 
@@ -30,7 +31,7 @@ export default async function HomePage({
     categories.find((c) => c.slug === slug)
   ).filter((c): c is (typeof categories)[number] => Boolean(c));
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb-links.web.app";
+  const siteUrl = getSiteUrl();
   // LocalBusiness (not the more generic Organization) — the branches are
   // physical locations customers visit, so this is eligible for local-
   // search treatment (map pack, knowledge panel) that Organization isn't.
