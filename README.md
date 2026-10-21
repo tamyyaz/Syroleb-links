@@ -67,7 +67,7 @@ npm run dev             # http://localhost:3000
 - **قاعدة البيانات:** Supabase Postgres — ضع `DATABASE_URL` (pooler، المنفذ 6543) و`DIRECT_URL` (المنفذ 5432). الجداول تنشأ بـ `npx prisma db push`.
 - **تخزين الصور والـ PDF:** Supabase Storage — أنشئ bucket عام باسم `uploads` وضع `SUPABASE_URL` و`SUPABASE_SERVICE_ROLE_KEY`.
 - **المهام المجدولة:** `.github/workflows/cron.yml` (تنبيهات يومية وتقرير وباك أب أسبوعي). تحتاج secret باسم `CRON_SECRET` ومتغير `SITE_URL` بإعدادات المستودع.
-- **النشر من GitHub:** قيد الإعداد (بانتظار مفتاح خدمة Firebase).
+- **النشر من GitHub:** `.github/workflows/deploy.yml` — عند الدفع على `main` بيبني ويعمل `prisma db push` وينشر على موقع Firebase Hosting `syroleb-links` (مشروع `tamyyaz-3a83b`). الأسرار المطلوبة مكتوبة بأعلى الملف.
 
 ## قبل الإنتاج — قائمة تحقق سريعة
 
