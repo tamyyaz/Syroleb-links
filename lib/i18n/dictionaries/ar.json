@@ -160,7 +160,7 @@
   "contact": {
     "title": "تواصل معنا",
     "eyebrow": "نحن هنا لخدمتك",
-    "address": "عرض الموقع على الخريطة",
+    "address": "ريف دمشق، عرطوز، مقابل معهد تمّيز",
     "phone": "الهاتف",
     "email": "البريد الإلكتروني",
     "form_title": "اترك رسالة"
@@ -170,9 +170,11 @@
     "quick_links": "روابط سريعة",
     "contact_us": "تواصل معنا",
     "locations_title": "موقعنا",
-    "location_ad": "الفرع الرئيسي",
-    "location_ad_address": "عرض الموقع على الخريطة",
-    "tech_support": "الدعم الفني (عطل بالموقع)"
+    "location_ad": "سوريا — الفرع الرئيسي",
+    "location_ad_address": "ريف دمشق، عرطوز، مقابل معهد تمّيز",
+    "tech_support": "الدعم الفني (عطل بالموقع)",
+    "location_ain": "لبنان — الفرع",
+    "location_ain_address": "لبنان، أنطلياس"
   },
   "chat": {
     "button_label": "اسأل سيروليب",

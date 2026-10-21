@@ -160,7 +160,7 @@
   "contact": {
     "title": "Contact Us",
     "eyebrow": "We're Here to Help",
-    "address": "View location on map",
+    "address": "Rif Dimashq, Artouz, opposite Tamayyoz Institute",
     "phone": "Phone",
     "email": "Email",
     "form_title": "Leave a Message"
@@ -170,9 +170,11 @@
     "quick_links": "Quick Links",
     "contact_us": "Contact Us",
     "locations_title": "Our Location",
-    "location_ad": "Main Branch",
-    "location_ad_address": "View location on map",
-    "tech_support": "Technical Support (website issue)"
+    "location_ad": "Syria — Main Branch",
+    "location_ad_address": "Rif Dimashq, Artouz, opposite Tamayyoz Institute",
+    "tech_support": "Technical Support (website issue)",
+    "location_ain": "Lebanon — Branch",
+    "location_ain_address": "Lebanon, Antelias"
   },
   "chat": {
     "button_label": "Ask Syroleb",

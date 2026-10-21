@@ -43,36 +43,36 @@ export default async function ContactPage({
         <h1 className="font-display mb-6 mt-2 text-3xl text-ink-900 sm:text-5xl">{dict.contact.title}</h1>
 
         <div className="card space-y-4 p-6">
-          <div className="flex items-start gap-3">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-700">
-              <MapPin className="h-4 w-4" />
-            </span>
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-wide text-ink-800/50">
-                {locale === "en" ? "Address" : "العنوان"}
+          {footer.locations.map((loc) => (
+            <div key={`${loc.name.en}-${loc.phone}`} className="space-y-3">
+              <div className="flex items-start gap-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-700">
+                  <MapPin className="h-4 w-4" />
+                </span>
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wide text-ink-800/50">{loc.name[locale]}</div>
+                  <div className="mt-0.5 text-sm font-medium text-ink-900">
+                    {loc.mapUrl ? (
+                      <a href={loc.mapUrl} target="_blank" rel="noopener noreferrer" className="text-brand-700 hover:underline">
+                        {loc.address[locale]}
+                      </a>
+                    ) : (
+                      loc.address[locale]
+                    )}
+                  </div>
+                </div>
               </div>
-              <div className="mt-0.5 text-sm font-medium text-ink-900">
-                {footer.locations[0]?.mapUrl ? (
-                  <a href={footer.locations[0].mapUrl} target="_blank" rel="noopener noreferrer" className="text-brand-700 hover:underline">
-                    {dict.contact.address}
-                  </a>
-                ) : (
-                  dict.contact.address
-                )}
+              <div className="flex items-start gap-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-700">
+                  <Phone className="h-4 w-4" />
+                </span>
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wide text-ink-800/50">{dict.contact.phone}</div>
+                  <div className="mt-0.5 text-sm font-medium text-ink-900" dir="ltr">+{loc.phone}</div>
+                </div>
               </div>
             </div>
-          </div>
-          {footer.locations[0]?.phone && (
-            <div className="flex items-start gap-3">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-700">
-                <Phone className="h-4 w-4" />
-              </span>
-              <div>
-                <div className="text-xs font-semibold uppercase tracking-wide text-ink-800/50">{dict.contact.phone}</div>
-                <div className="mt-0.5 text-sm font-medium text-ink-900" dir="ltr">+{footer.locations[0].phone}</div>
-              </div>
-            </div>
-          )}
+          ))}
           {footer.email && (
             <div className="flex items-start gap-3">
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-700">

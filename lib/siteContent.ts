@@ -211,7 +211,14 @@ export const SITE_SETTING_DEFAULTS: {
         name: { ar: arDict.footer.location_ad, en: enDict.footer.location_ad },
         address: { ar: arDict.footer.location_ad_address, en: enDict.footer.location_ad_address },
         phone: "963985222780",
-        mapUrl: "https://maps.app.goo.gl/wTEWy2wweRsYgyCo9"
+        mapUrl: "https://www.google.com/maps/place/C4CW%2B8FH+%D8%B3%D9%8A%D8%B1%D9%88%D9%84%D9%8A%D8%A8,+Artoz,+Syria/data=!4m2!3m1!1s0x151927006ea139a9:0x1dff34c467c3cc86"
+      },
+      {
+        icon: "map-pin",
+        name: { ar: arDict.footer.location_ain, en: enDict.footer.location_ain },
+        address: { ar: arDict.footer.location_ain_address, en: enDict.footer.location_ain_address },
+        phone: "96176453952",
+        mapUrl: "https://www.google.com/maps/search/?api=1&query=Antelias%2C+Lebanon"
       }
     ],
     social: {
