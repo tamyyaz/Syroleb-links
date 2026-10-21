@@ -1,0 +1,457 @@
+import nodemailer from "nodemailer";
+
+export type NewOrderEmailInput = {
+  orderId: string;
+  createdAt: Date;
+  customerName: string;
+  phone: string;
+  email?: string | null;
+  city?: string | null;
+  message?: string | null;
+  items: { name: string; quantity: number; measurement?: string | null }[];
+};
+
+export type OverdueInvoice = {
+  invoiceNumber: string;
+  customerName: string;
+  customerPhone: string;
+  remaining: number;
+  currency: string;
+  dueDate: Date;
+};
+
+export type LowStockProduct = {
+  nameAr: string;
+  stockQuantity: number;
+  lowStockThreshold: number;
+};
+
+export type ExpiringQuote = {
+  quoteNumber: string;
+  customerName: string;
+  customerPhone: string;
+  grandTotal: number;
+  currency: string;
+  expiryDate: Date;
+};
+
+export type WeeklyReportOrder = {
+  createdAt: Date;
+  customerName: string;
+  phone: string;
+  itemsSummary: string;
+};
+
+export type WeeklyReportProduct = {
+  nameAr: string;
+  stockQuantity: number;
+  lowStockThreshold: number;
+};
+
+export type NewJobApplicationEmailInput = {
+  applicationId: string;
+  createdAt: Date;
+  jobTitle: string;
+  applicantName: string;
+  phone: string;
+  yearsExperience: string;
+  reasonJoining: string;
+  previousWorkplaces?: string | null;
+  certificates?: string | null;
+  extraMessage?: string | null;
+};
+
+function getTransport() {
+  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE } = process.env;
+  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
+    throw new Error(
+      "SMTP is not configured. Set SMTP_HOST, SMTP_USER, SMTP_PASS in .env"
+    );
+  }
+  return nodemailer.createTransport({
+    host: SMTP_HOST,
+    port: Number(SMTP_PORT ?? 587),
+    secure: SMTP_SECURE === "true",
+    // Only matters when secure=false (STARTTLS submission ports like 587) —
+    // forces the upgrade to succeed instead of silently falling back to a
+    // plaintext session if the server doesn't advertise STARTTLS.
+    requireTLS: SMTP_SECURE !== "true",
+    auth: { user: SMTP_USER, pass: SMTP_PASS },
+    // Nodemailer's default connection/socket timeouts are ~2 minutes each —
+    // with misconfigured or placeholder SMTP settings that leaves a visitor
+    // stuck on "submitting" for minutes on every inquiry. The order/application
+    // is already saved before this runs, so failing fast here just makes
+    // that wait bounded instead of silent.
+    connectionTimeout: 8000,
+    socketTimeout: 8000
+  });
+}
+
+const BRAND = "#2b503a";
+const BRAND_LIGHT = "#d6e0d5";
+const INK = "#1b1b18";
+const INK_MUTED = "#5b5850";
+const LOGO_URL = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://syroleb.com"}/images/logo-mark.png`;
+
+// Shared shell (header with logo/title/id + a label:value fields table) for
+// every auto-sent notification email — order and job-application alike are
+// styled to match the admin panel's own print views, built with tables +
+// inline styles since email clients don't run Tailwind or support
+// flexbox/grid reliably. `bodyHtml` is whatever comes after the fields table
+// (items table for orders, nothing extra for job applications).
+function buildEmailShell(opts: { title: string; shortId: string; rows: [string, string][]; bodyHtml: string }) {
+  return `
+  <div dir="rtl" style="background:#f5f3ee; padding:24px 12px; font-family:Tahoma, Arial, sans-serif;">
+    <table role="presentation" width="100%" style="max-width:600px; margin:0 auto; background:#ffffff; border-collapse:collapse;" cellpadding="0" cellspacing="0">
+      <tr>
+        <td style="padding:24px 28px; border-bottom:2px solid ${BRAND};">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td style="font-size:18px; font-weight:bold; color:${BRAND};">
+                ${opts.title}
+                <div style="font-size:12px; font-weight:normal; color:${INK_MUTED}; margin-top:2px;">#${opts.shortId}</div>
+              </td>
+              <td align="left" style="white-space:nowrap;">
+                <img src="${LOGO_URL}" width="28" height="28" alt="" style="vertical-align:middle; border-radius:6px;" />
+                <span style="font-size:15px; font-weight:bold; color:${BRAND}; vertical-align:middle;">SYROLEB</span>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:20px 28px 0;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;">
+            ${opts.rows
+              .map(
+                ([label, value]) => `
+              <tr>
+                <td style="padding:4px 0; font-weight:bold; color:${BRAND}; white-space:nowrap;">${label}:</td>
+                <td style="padding:4px 0 4px 8px; color:${INK};">${escapeHtml(value)}</td>
+              </tr>`
+              )
+              .join("")}
+          </table>
+        </td>
+      </tr>
+      ${opts.bodyHtml}
+    </table>
+  </div>
+  `;
+}
+
+/**
+ * Sends a new-job-application notification automatically to the store inbox
+ * (ORDER_NOTIFY_EMAIL, the same Brother print-by-email address). Called
+ * from app/api/job-applications/route.ts right after the application is
+ * saved. Unlike new orders (app/api/orders/route.ts), this one still
+ * prints instantly — only order notifications moved to WhatsApp + a weekly
+ * digest (app/api/system/cron/weekly-report/route.ts).
+ */
+export async function sendNewJobApplicationEmail(application: NewJobApplicationEmailInput) {
+  const to = process.env.ORDER_NOTIFY_EMAIL;
+  const from = process.env.ORDER_FROM_EMAIL ?? process.env.SMTP_USER;
+  if (!to) {
+    throw new Error("ORDER_NOTIFY_EMAIL is not set in the environment");
+  }
+
+  const transport = getTransport();
+  const shortId = application.applicationId.slice(-6).toUpperCase();
+  const subject = `طلب توظيف جديد #${shortId} — ${application.applicantName}`;
+  const html = buildNewJobApplicationEmailHtml(application);
+
+  await transport.sendMail({ from, to, subject, html });
+}
+
+// Split out from sendNewJobApplicationEmail() so the markup can be
+// rendered/previewed without an SMTP connection.
+export function buildNewJobApplicationEmailHtml(application: NewJobApplicationEmailInput) {
+  const shortId = application.applicationId.slice(-6).toUpperCase();
+
+  const rows: [string, string][] = [
+    ["التاريخ", application.createdAt.toLocaleString("ar-AE")],
+    ["الوظيفة", application.jobTitle],
+    ["الاسم", application.applicantName],
+    ["الهاتف", application.phone],
+    ["سنوات الخبرة", application.yearsExperience],
+    ...(application.previousWorkplaces ? ([["أماكن العمل السابقة", application.previousWorkplaces]] as [string, string][]) : [])
+  ];
+
+  const textBlock = (label: string, value: string) => `
+      <tr>
+        <td style="padding:16px 28px 0;">
+          <div style="font-size:14px; font-weight:bold; color:${BRAND}; margin-bottom:4px;">${label}</div>
+          <div style="font-size:14px; color:${INK}; white-space:pre-line;">${escapeHtml(value)}</div>
+        </td>
+      </tr>`;
+
+  const bodyHtml =
+    textBlock("سبب الانضمام", application.reasonJoining) +
+    (application.certificates ? textBlock("الشهادات", application.certificates) : "") +
+    (application.extraMessage ? textBlock("ملاحظات إضافية", application.extraMessage) : "") +
+    `<tr><td style="padding:0 0 20px;"></td></tr>`;
+
+  return buildEmailShell({ title: "طلب توظيف جديد", shortId, rows, bodyHtml });
+}
+
+// Shared shell for the internal "digest" alerts below (overdue invoices,
+// low stock, expiring quotes) — one table of rows under a titled header,
+// all sent to ORDER_NOTIFY_EMAIL by their respective daily Vercel Cron
+// jobs rather than per-record, so a busy day doesn't flood the inbox.
+function buildAlertTableEmail(opts: { title: string; columns: string[]; rows: string[][] }) {
+  return `
+  <div dir="rtl" style="background:#f5f3ee; padding:24px 12px; font-family:Tahoma, Arial, sans-serif;">
+    <table role="presentation" width="100%" style="max-width:600px; margin:0 auto; background:#ffffff; border-collapse:collapse;" cellpadding="0" cellspacing="0">
+      <tr>
+        <td style="padding:24px 28px; border-bottom:2px solid ${BRAND};">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td style="font-size:18px; font-weight:bold; color:${BRAND};">${opts.title}</td>
+              <td align="left" style="white-space:nowrap;">
+                <img src="${LOGO_URL}" width="28" height="28" alt="" style="vertical-align:middle; border-radius:6px;" />
+                <span style="font-size:15px; font-weight:bold; color:${BRAND}; vertical-align:middle;">SYROLEB — النظام الداخلي</span>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:20px 28px 28px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px; border-collapse:collapse;">
+            <tr style="border-bottom:1px solid ${BRAND};">
+              ${opts.columns.map((col) => `<th align="right" style="padding:6px 0; color:${BRAND};">${escapeHtml(col)}</th>`).join("")}
+            </tr>
+            ${opts.rows
+              .map(
+                (cells, i) => `
+              <tr style="${i > 0 ? `border-top:1px solid ${BRAND_LIGHT};` : ""}">
+                ${cells.map((cell) => `<td style="padding:6px 0; color:${INK};">${cell}</td>`).join("")}
+              </tr>`
+              )
+              .join("")}
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+  `;
+}
+
+/**
+ * One consolidated alert for every invoice that just crossed its due date
+ * unpaid — run daily by app/api/system/cron/overdue-invoices/route.ts.
+ */
+export async function sendOverdueInvoicesAlert(invoices: OverdueInvoice[]) {
+  const to = process.env.ORDER_NOTIFY_EMAIL;
+  const from = process.env.ORDER_FROM_EMAIL ?? process.env.SMTP_USER;
+  if (!to) {
+    throw new Error("ORDER_NOTIFY_EMAIL is not set in the environment");
+  }
+
+  const transport = getTransport();
+  const subject = `تنبيه: ${invoices.length} فاتورة متأخرة الدفع`;
+  const html = buildAlertTableEmail({
+    title: "فواتير متأخرة الدفع",
+    columns: ["الفاتورة", "الزبون", "المتبقي", "تاريخ الاستحقاق"],
+    rows: invoices.map((inv) => [
+      `#${escapeHtml(inv.invoiceNumber)}`,
+      `${escapeHtml(inv.customerName)} — ${escapeHtml(inv.customerPhone)}`,
+      `${inv.remaining.toFixed(2)} ${inv.currency}`,
+      inv.dueDate.toLocaleDateString("ar-AE")
+    ])
+  });
+
+  await transport.sendMail({ from, to, subject, html });
+}
+
+/**
+ * One consolidated alert for every product whose stock just dropped to or
+ * below its per-product threshold — run daily by
+ * app/api/system/cron/low-stock/route.ts.
+ */
+export async function sendLowStockAlert(products: LowStockProduct[]) {
+  const to = process.env.ORDER_NOTIFY_EMAIL;
+  const from = process.env.ORDER_FROM_EMAIL ?? process.env.SMTP_USER;
+  if (!to) {
+    throw new Error("ORDER_NOTIFY_EMAIL is not set in the environment");
+  }
+
+  const transport = getTransport();
+  const subject = `تنبيه: ${products.length} منتج وصل لحد المخزون المنخفض`;
+  const html = buildAlertTableEmail({
+    title: "مخزون منخفض",
+    columns: ["المنتج", "الكمية الحالية", "الحد الأدنى"],
+    rows: products.map((p) => [escapeHtml(p.nameAr), String(p.stockQuantity), String(p.lowStockThreshold)])
+  });
+
+  await transport.sendMail({ from, to, subject, html });
+}
+
+/**
+ * One consolidated reminder for every quote expiring within 3 days (or
+ * already past its expiry) that was never converted to an invoice — run
+ * daily by app/api/system/cron/quote-expiry/route.ts.
+ */
+export async function sendQuoteExpiryAlert(quotes: ExpiringQuote[]) {
+  const to = process.env.ORDER_NOTIFY_EMAIL;
+  const from = process.env.ORDER_FROM_EMAIL ?? process.env.SMTP_USER;
+  if (!to) {
+    throw new Error("ORDER_NOTIFY_EMAIL is not set in the environment");
+  }
+
+  const transport = getTransport();
+  const subject = `تذكير: ${quotes.length} عرض سعر قارب على الانتهاء`;
+  const html = buildAlertTableEmail({
+    title: "عروض أسعار قاربت على الانتهاء",
+    columns: ["العرض", "الزبون", "القيمة", "تاريخ الانتهاء"],
+    rows: quotes.map((q) => [
+      `#${escapeHtml(q.quoteNumber)}`,
+      `${escapeHtml(q.customerName)} — ${escapeHtml(q.customerPhone)}`,
+      `${q.grandTotal.toFixed(2)} ${q.currency}`,
+      q.expiryDate.toLocaleDateString("ar-AE")
+    ])
+  });
+
+  await transport.sendMail({ from, to, subject, html });
+}
+
+// Same shell as buildAlertTableEmail, but for the weekly printed report
+// (app/api/system/cron/weekly-report/route.ts), which needs more than one
+// table (inventory, then the week's orders) under one header instead of
+// a single flat list.
+function buildMultiSectionEmail(opts: { title: string; sections: { heading: string; columns: string[]; rows: string[][] }[] }) {
+  return `
+  <div dir="rtl" style="background:#f5f3ee; padding:24px 12px; font-family:Tahoma, Arial, sans-serif;">
+    <table role="presentation" width="100%" style="max-width:600px; margin:0 auto; background:#ffffff; border-collapse:collapse;" cellpadding="0" cellspacing="0">
+      <tr>
+        <td style="padding:24px 28px; border-bottom:2px solid ${BRAND};">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td style="font-size:18px; font-weight:bold; color:${BRAND};">${opts.title}</td>
+              <td align="left" style="white-space:nowrap;">
+                <img src="${LOGO_URL}" width="28" height="28" alt="" style="vertical-align:middle; border-radius:6px;" />
+                <span style="font-size:15px; font-weight:bold; color:${BRAND}; vertical-align:middle;">SYROLEB — النظام الداخلي</span>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      ${opts.sections
+        .map(
+          (section) => `
+      <tr>
+        <td style="padding:20px 28px 4px;">
+          <div style="font-size:15px; font-weight:bold; color:${BRAND};">${escapeHtml(section.heading)}</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:8px 28px 24px;">
+          ${
+            section.rows.length === 0
+              ? `<div style="font-size:14px; color:${INK_MUTED};">لا يوجد بيانات لهذا القسم</div>`
+              : `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px; border-collapse:collapse;">
+                  <tr style="border-bottom:1px solid ${BRAND};">
+                    ${section.columns.map((col) => `<th align="right" style="padding:6px 0; color:${BRAND};">${escapeHtml(col)}</th>`).join("")}
+                  </tr>
+                  ${section.rows
+                    .map(
+                      (cells, i) => `
+                  <tr style="${i > 0 ? `border-top:1px solid ${BRAND_LIGHT};` : ""}">
+                    ${cells.map((cell) => `<td style="padding:6px 0; color:${INK};">${cell}</td>`).join("")}
+                  </tr>`
+                    )
+                    .join("")}
+                </table>`
+          }
+        </td>
+      </tr>`
+        )
+        .join("")}
+    </table>
+  </div>
+  `;
+}
+
+/**
+ * The weekly printed report (same Brother print-by-email address as
+ * everything else) that replaced instant per-order printing: current
+ * warehouse stock (low-stock items flagged) plus every website order/
+ * inquiry received in the past 7 days — run weekly by
+ * app/api/system/cron/weekly-report/route.ts.
+ */
+export async function sendWeeklyReport(products: WeeklyReportProduct[], orders: WeeklyReportOrder[]) {
+  const to = process.env.ORDER_NOTIFY_EMAIL;
+  const from = process.env.ORDER_FROM_EMAIL ?? process.env.SMTP_USER;
+  if (!to) {
+    throw new Error("ORDER_NOTIFY_EMAIL is not set in the environment");
+  }
+
+  const transport = getTransport();
+  const subject = `التقرير الأسبوعي — ${new Date().toLocaleDateString("ar-AE")}`;
+  const html = buildMultiSectionEmail({
+    title: "التقرير الأسبوعي",
+    sections: [
+      {
+        heading: `المخزون (${products.length} منتج)`,
+        columns: ["المنتج", "الكمية"],
+        rows: products.map((p) => [
+          escapeHtml(p.nameAr),
+          p.stockQuantity <= p.lowStockThreshold
+            ? `<span style="color:#b91c1c; font-weight:bold;">${p.stockQuantity}</span>`
+            : String(p.stockQuantity)
+        ])
+      },
+      {
+        heading: `طلبات هذا الأسبوع (${orders.length})`,
+        columns: ["التاريخ", "الزبون", "الهاتف", "الطلب"],
+        rows: orders.map((o) => [
+          o.createdAt.toLocaleDateString("ar-AE"),
+          escapeHtml(o.customerName),
+          escapeHtml(o.phone),
+          escapeHtml(o.itemsSummary)
+        ])
+      }
+    ]
+  });
+
+  await transport.sendMail({ from, to, subject, html });
+}
+
+/**
+ * Weekly data-safety export — a JSON snapshot of the core business tables
+ * attached to an internal email, run by
+ * app/api/system/cron/backup/route.ts. Not a substitute for Neon's own
+ * database backups, just an extra, independently-held copy of the data
+ * that actually matters day-to-day.
+ */
+export async function sendBackupEmail(filename: string, jsonContent: string) {
+  const to = process.env.ORDER_NOTIFY_EMAIL;
+  const from = process.env.ORDER_FROM_EMAIL ?? process.env.SMTP_USER;
+  if (!to) {
+    throw new Error("ORDER_NOTIFY_EMAIL is not set in the environment");
+  }
+
+  const transport = getTransport();
+  const subject = `نسخة احتياطية أسبوعية — ${new Date().toLocaleDateString("ar-AE")}`;
+  const html = buildAlertTableEmail({
+    title: "نسخة احتياطية أسبوعية",
+    columns: ["الملاحظة"],
+    rows: [["نسخة بصيغة JSON من بيانات العملاء، عروض الأسعار، الفواتير، المدفوعات، والموظفين — مرفقة بهذا الإيميل."]]
+  });
+
+  await transport.sendMail({
+    from,
+    to,
+    subject,
+    html,
+    attachments: [{ filename, content: jsonContent, contentType: "application/json" }]
+  });
+}
+
+function escapeHtml(input: string) {
+  return input
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}

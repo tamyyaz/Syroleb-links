@@ -1,0 +1,100 @@
+import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+import { getOrderStatusInfo } from "@/lib/orderStatus";
+import { requirePageRole } from "@/lib/requirePageRole";
+import DeleteOrderButton from "@/components/DeleteOrderButton";
+
+export default async function AdminOrdersPage() {
+  await requirePageRole("orders");
+
+  const orders = await prisma.order.findMany({
+    orderBy: { createdAt: "desc" },
+    include: { items: { include: { product: true } } }
+  });
+
+  return (
+    <div>
+      <h1 className="mb-6 text-2xl font-bold text-ink-900">الطلبات</h1>
+
+      {orders.length === 0 ? (
+        <p className="text-sm text-ink-800/60">لا يوجد طلبات بعد</p>
+      ) : (
+        <div className="card overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="border-b border-brand-100 bg-brand-50 text-start">
+              <tr>
+                <th className="p-3 text-start font-semibold">التاريخ</th>
+                <th className="p-3 text-start font-semibold">العميل</th>
+                <th className="p-3 text-start font-semibold">الهاتف / الإيميل</th>
+                <th className="p-3 text-start font-semibold">المنتجات</th>
+                <th className="p-3 text-start font-semibold">التفاصيل</th>
+                <th className="p-3 text-start font-semibold">الحالة</th>
+                <th className="p-3 text-start font-semibold">واتساب</th>
+                <th className="p-3 text-start font-semibold"><span className="sr-only">إجراءات</span></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-brand-100">
+              {orders.map((o) => (
+                <tr key={o.id}>
+                  <td className="p-3 whitespace-nowrap text-ink-800/70">
+                    {new Date(o.createdAt).toLocaleString("ar-AE")}
+                  </td>
+                  <td className="p-3 font-medium text-ink-900">{o.customerName}</td>
+                  <td className="p-3">
+                    <div>{o.phone}</div>
+                    <div className="text-xs text-ink-800/60">{o.email}</div>
+                  </td>
+                  <td className="p-3">
+                    {o.items.length === 0 ? (
+                      <span className="text-ink-800/50">استفسار عام</span>
+                    ) : (
+                      <ul>
+                        {o.items.map((item) => (
+                          <li key={item.id}>
+                            {item.product.nameAr} × {item.quantity}
+                            {item.measurement && (
+                              <span className="text-ink-800/60"> — القياس: {item.measurement}</span>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </td>
+                  <td className="p-3">
+                    {o.message ? (
+                      <div className="max-w-xs whitespace-pre-line text-xs text-ink-800/70">{o.message}</div>
+                    ) : (
+                      <span className="text-ink-800/40">—</span>
+                    )}
+                  </td>
+                  <td className="p-3">
+                    <span className={getOrderStatusInfo(o.status).badgeClass}>
+                      {getOrderStatusInfo(o.status).label}
+                    </span>
+                  </td>
+                  <td className="p-3">{o.emailedOk ? "✅" : "⚠️"}</td>
+                  <td className="p-3">
+                    <div className="flex gap-2">
+                      <Link href={`/admin/quotes/new?fromOrder=${o.id}`} className="btn-secondary whitespace-nowrap py-1.5 px-3 text-xs">
+                        إنشاء عرض
+                      </Link>
+                      <a
+                        href={`/admin/orders/${o.id}/print`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-secondary whitespace-nowrap py-1.5 px-3 text-xs"
+                      >
+                        طباعة مباشرة
+                      </a>
+                      <DeleteOrderButton orderId={o.id} />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}

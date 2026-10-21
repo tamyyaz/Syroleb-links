@@ -1,0 +1,707 @@
+// Syroleb – Prisma schema
+// Production target: PostgreSQL (Neon, via Vercel's marketplace integration
+// — the cPanel host has no Node.js/remote-MySQL support, so the app is
+// deployed on Vercel instead; see README).
+// For local development without a Postgres server, you can temporarily
+// switch provider to "sqlite" and DATABASE_URL to "file:./dev.db".
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Material {
+  WPC
+  // Displayed everywhere in the UI as "COMPOSITE" (see the material label
+  // maps in ProductForm.tsx, ProductFilters.tsx, CatalogDocument.tsx, and
+  // dict.products.material.UPVC) — kept as UPVC here so existing Product
+  // rows, the "upvc-doors" category slug, and ?material=UPVC URLs/filters
+  // don't need a data migration for what is, for now, a rename in name only.
+  UPVC
+  ALUMINUM
+  STEEL
+}
+
+enum OrderStatus {
+  NEW
+  CONTACTED
+  CONFIRMED
+  CANCELLED
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  MANAGER
+  EMPLOYEE
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+// Sub-line within a material, null only for Steel (not offered as a
+// catalog line today). Drives the /catalog/[material]/[slug] sub-pages —
+// see lib/productLines.ts for the material->lines and line->URL-slug maps.
+enum ProductLine {
+  ALUMINUM_SLIM_SYSTEM
+  ALUMINUM_DOORS
+  // Renamed to ALUMINUM_ALUCOBOND (correct brand name) — kept declared
+  // here, unused, rather than removed: dropping a value from a Postgres
+  // enum that might still be referenced is a data-loss-flagged `db push`
+  // operation, whereas adding one alongside it is always safe. Not
+  // included in lib/productLines.ts, so it's invisible to the app.
+  ALUMINUM_ECOBOND
+  ALUMINUM_ALUCOBOND
+  WPC_EXTERNAL
+  WPC_CLOSETS
+  WPC_DOORS
+  WPC_INTERIOR_DECOR
+  COMPOSITE_DOORS
+  COMPOSITE_EXTERIOR_DECOR
+}
+
+model Category {
+  id            String    @id @default(cuid())
+  slug          String    @unique
+  nameAr        String
+  nameEn        String
+  // Marketing copy for the homepage "spotlight" section (WPC / COMPOSITE (UPVC) / Aluminum
+  // doors blocks). Optional so extra categories can be added later without copy.
+  taglineAr     String?
+  taglineEn     String?
+  descriptionAr String?  @db.Text
+  descriptionEn String?  @db.Text
+  heroImage     String?
+  products      Product[]
+  createdAt     DateTime  @default(now())
+}
+
+model Product {
+  id            String         @id @default(cuid())
+  slug          String         @unique
+  nameAr        String
+  nameEn        String
+  descriptionAr String         @db.Text
+  descriptionEn String         @db.Text
+  material      Material       @default(WPC)
+  productLine   ProductLine?
+  price         Float
+  currency      String         @default("AED")
+  inStock       Boolean        @default(true)
+  featured      Boolean        @default(false)
+  category      Category       @relation(fields: [categoryId], references: [id])
+  categoryId    String
+  images        ProductImage[]
+  orderItems    OrderItem[]
+  quoteItems    QuoteItem[]
+  // Internal warehouse tracking (system.syroleb.com) — deliberately
+  // separate from `inStock` above, which stays the manually-toggled
+  // storefront badge exactly as before; nothing here changes what
+  // customers see until that's wired up as its own, separate decision.
+  stockQuantity      Int                  @default(0)
+  inventoryMovements InventoryMovement[]
+  // Low-stock email alert (lib/mailer.ts's sendLowStockAlert, run daily by
+  // the Vercel Cron job in vercel.json — same one-shot-until-resolved
+  // pattern as Invoice.overdueNotifiedAt): fires once when stockQuantity
+  // drops to/below lowStockThreshold, then stays quiet until a warehouse
+  // movement (app/api/system/warehouse/[productId]/movements/route.ts)
+  // brings the stock back above the threshold, which clears the flag.
+  lowStockThreshold  Int                  @default(5)
+  lowStockNotifiedAt DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([categoryId])
+}
+
+model ProductImage {
+  id        String    @id @default(cuid())
+  url       String
+  // For type VIDEO, url is a YouTube link or a direct video file URL —
+  // same convention as the hero background video and the about-page
+  // media gallery — rather than an uploaded file (avoids the ~4.5MB
+  // request-body limit on Vercel's serverless functions).
+  type      MediaType @default(IMAGE)
+  alt       String    @default("")
+  position  Int       @default(0)
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+
+  @@index([productId])
+}
+
+// A single order can quote one product (added from a product detail page)
+// or several at once (submitted from the cart) — either way it's one Order
+// with one-or-more OrderItem rows. A general inquiry (contact page, no
+// product attached) has zero items.
+model Order {
+  id           String      @id @default(cuid())
+  customerName String
+  phone        String
+  email        String?
+  city         String?
+  message      String?     @db.Text
+  status       OrderStatus @default(NEW)
+  emailedOk    Boolean     @default(false)
+  items        OrderItem[]
+  quotes       Quote[]
+  createdAt    DateTime    @default(now())
+
+  @@index([status])
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId     String
+  product     Product  @relation(fields: [productId], references: [id])
+  productId   String
+  quantity    Int      @default(1)
+  // Free-text door measurement (e.g. "90×210 سم") the customer types in at
+  // the cart/order-now step — doors here are made-to-order, so this is
+  // often needed before the shop can quote or produce. Optional: most
+  // inquiries are still "ask us" without a firm size yet.
+  measurement String?
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+// --- Real estate (separate from the door Product catalog — no material or
+// door Category, has a region instead) ------------------------------------
+model Property {
+  id            String          @id @default(cuid())
+  slug          String          @unique
+  titleAr       String
+  titleEn       String
+  descriptionAr String          @db.Text
+  descriptionEn String          @db.Text
+  price         Float
+  currency      String          @default("AED")
+  regionAr      String
+  regionEn      String
+  images        PropertyImage[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([regionAr])
+}
+
+model PropertyImage {
+  id         String   @id @default(cuid())
+  url        String
+  alt        String   @default("")
+  position   Int      @default(0)
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId String
+
+  @@index([propertyId])
+}
+
+// --- Careers / job openings -----------------------------------------------
+model Job {
+  id            String   @id @default(cuid())
+  titleAr       String
+  titleEn       String
+  locationAr    String
+  locationEn    String
+  descriptionAr String
+  descriptionEn String
+  createdAt     DateTime @default(now())
+}
+
+// A candidate applying to a Job posting — kept separate from Order (used to
+// be folded into Order.message as one free-text blob, which mixed job
+// applicants into the same admin list/print flow as product orders and
+// quote requests). No email field: the public form only ever collects a
+// phone number.
+model JobApplication {
+  id                 String   @id @default(cuid())
+  jobTitle           String
+  applicantName      String
+  phone              String
+  yearsExperience    String
+  reasonJoining      String
+  previousWorkplaces String?
+  certificates       String?
+  extraMessage       String?
+  emailedOk          Boolean  @default(false)
+  createdAt          DateTime @default(now())
+}
+
+model Admin {
+  id           String    @id @default(cuid())
+  username     String    @unique
+  passwordHash String
+  role         AdminRole @default(EMPLOYEE)
+  createdAt    DateTime  @default(now())
+}
+
+// SUPER_ADMIN-configurable page visibility for MANAGER/EMPLOYEE — see
+// lib/rolePermissions.ts. One row per non-owner role; a missing row means
+// "use the built-in defaults" rather than "no access".
+model RolePermission {
+  role  AdminRole @id
+  pages String    @db.Text
+}
+
+// --- AI assistant ("train it") -------------------------------------------
+// Everything the storefront chat widget is allowed to say is grounded in
+// these entries (plus the live product catalog) — the admin "trains" the
+// assistant by adding/editing entries here, not by fine-tuning a model.
+model KnowledgeEntry {
+  id        String   @id @default(cuid())
+  category  String   @default("general") // general | faq | policy | product
+  title     String
+  content   String   @db.Text
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Every visitor question + the assistant's answer, so an admin can review
+// what people actually ask and turn gaps into new KnowledgeEntry rows.
+model ChatLog {
+  id        String   @id @default(cuid())
+  question  String   @db.Text
+  answer    String   @db.Text
+  locale    String   @default("ar")
+  createdAt DateTime @default(now())
+}
+
+// --- Site content CMS -----------------------------------------------------
+// One JSON row per homepage/footer section (key: "hero" | "stats" |
+// "services" | "quality" | "cta" | "footer") so the admin can edit copy,
+// numbers, and icon choices without a code change or schema migration —
+// value shape is validated in app code (lib/siteContent.ts), not the DB.
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+}
+
+// --- Chat moderation -------------------------------------------------------
+// A row lands here the moment isMessageAbusive() (lib/ai.ts) flags one of a
+// visitor's messages — every later /api/chat request matching EITHER the ip
+// OR the cookieId gets a fixed decline instead of reaching the AI. Both are
+// captured together (not just ip) so switching a VPN on isn't enough on its
+// own to get a fresh start — the cookie persists across IP changes, and
+// only clears if the visitor clears cookies or switches browser/device.
+// Removing a row (unblocking) is restricted to the DARKSHAM account
+// specifically, not just SUPER_ADMIN — see app/api/admin/blocked/[id]/route.ts.
+model BlockedVisitor {
+  id        String   @id @default(cuid())
+  ip        String
+  cookieId  String?
+  reason    String   @db.Text
+  createdAt DateTime @default(now())
+
+  @@index([ip])
+  @@index([cookieId])
+}
+
+// --- Price quotes -----------------------------------------------------------
+// Admin-managed discount tiers (e.g. وكيل/تاجر/مهندس/عميل), each with its own
+// percentage, selectable per QuoteItem — see /admin/customer-types.
+model CustomerType {
+  id              String      @id @default(cuid())
+  nameAr          String
+  nameEn          String
+  discountPercent Float       @default(0)
+  isActive        Boolean     @default(true)
+  quoteItems      QuoteItem[]
+  customers       Customer[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+// A real customer record, managed from system.syroleb.com — Quote itself
+// still keeps its own snapshotted customerName/customerPhone/etc (a quote
+// printed once must never change if the Customer record is edited later),
+// this is just an optional live link for the system app's own customer
+// list/history view.
+model Customer {
+  id             String        @id @default(cuid())
+  nameAr         String
+  nameEn         String?
+  phone          String
+  email          String?
+  address        String?
+  customerTypeId String?
+  customerType   CustomerType? @relation(fields: [customerTypeId], references: [id], onDelete: SetNull)
+  quotes         Quote[]
+  invoices       Invoice[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([customerTypeId])
+}
+
+// A formal, printable price offer — separate from Order (an inbound customer
+// request): a Quote is what the admin issues back. Can start from an
+// existing Order (orderId set, prefilled) or from scratch (phone-in
+// customer, orderId null). Every number that ends up on the PDF is snapshotted
+// here/on QuoteItem at save time — editing a CustomerType's percent or a
+// Product's price later must never retroactively change an issued quote.
+// quoteNumber is assigned by app code (see lib/quotes.ts / app/api/admin/quotes/route.ts),
+// not a DB default — sqlite (local dev) can't autoincrement a non-@id field.
+model Quote {
+  id                String      @id @default(cuid())
+  quoteNumber       Int         @unique
+  order             Order?      @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  orderId           String?
+  customer          Customer?   @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  customerId        String?
+  customerName      String
+  customerPhone     String
+  customerEmail     String?
+  customerAddress   String?
+  customerNumber    String?
+  addressedTo       String?
+  responsibleName   String?
+  responsiblePhone  String?
+  issueDate         DateTime    @default(now())
+  expiryDate        DateTime?
+  shippingFee       Float       @default(0)
+  discountAmount    Float       @default(0)
+  subtotal          Float
+  grandTotal        Float
+  currency          String      @default("AED")
+  termsAr           String      @db.Text
+  termsEn           String      @db.Text
+  customerNote      String?     @db.Text
+  createdByUsername String?
+  items             QuoteItem[]
+  invoices          Invoice[]
+  // Quote-expiry email reminder (lib/mailer.ts's sendQuoteExpiryAlert, run
+  // daily by the Vercel Cron job in vercel.json): fires once when
+  // expiryDate is within 3 days (or already past) and the quote hasn't
+  // been converted to an Invoice yet — a nudge to follow up with the
+  // customer before the offer goes stale.
+  expiryNotifiedAt  DateTime?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  @@index([orderId])
+  @@index([customerId])
+}
+
+model QuoteItem {
+  id              String        @id @default(cuid())
+  quote           Quote         @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId         String
+  product         Product?      @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productId       String?
+  descriptionAr   String
+  descriptionEn   String
+  quantity        Int           @default(1)
+  unitPrice       Float
+  customerType    CustomerType? @relation(fields: [customerTypeId], references: [id], onDelete: SetNull)
+  customerTypeId  String?
+  discountPercent Float         @default(0)
+  lineTotal       Float
+  position        Int           @default(0)
+
+  @@index([quoteId])
+  @@index([productId])
+  @@index([customerTypeId])
+}
+
+// --- Internal system (system.syroleb.com) -------------------------------
+// Fully separate login from Admin/AdminRole above — an "employee" here
+// (factory/sales staff) has no reason to ever touch /admin, and vice versa.
+// OWNER is the only role that can create/edit other SystemUsers (mirrors how
+// AdminRole.SUPER_ADMIN is the only role that manages /admin/team).
+enum SystemRole {
+  OWNER
+  MANAGER
+  STAFF
+}
+
+model SystemUser {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  passwordHash String
+  name         String
+  role         SystemRole @default(STAFF)
+  // Not @unique — a genuinely-unique FK added now to this already-populated
+  // table would fail db push's data-loss check the same way it did in the
+  // Employees phase. "One login per employee" is enforced in the API layer
+  // (app/api/system/users/route.ts) instead of at the DB level.
+  employee     Employee?  @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+  employeeId   String?
+  createdAt    DateTime   @default(now())
+
+  @@index([employeeId])
+}
+
+enum InvoiceStatus {
+  UNPAID
+  PARTIALLY_PAID
+  PAID
+}
+
+// A formal invoice, usually created from an accepted Quote ("convert to
+// invoice") but can also stand alone. Like Quote, every number that prints
+// on the invoice is snapshotted at creation time (items as JSON, matching
+// QuoteItem's own shape) — editing the source Quote/Customer/Product later
+// must never retroactively change an already-issued invoice. paidAmount/
+// status are the only fields that change afterward, driven by Payment rows.
+model Invoice {
+  id            String        @id @default(cuid())
+  invoiceNumber Int           @unique
+  quote         Quote?        @relation(fields: [quoteId], references: [id], onDelete: SetNull)
+  quoteId       String?
+  customer      Customer?     @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  customerId    String?
+  customerName  String
+  customerPhone String
+  items         Json
+  subtotal      Float
+  totalAmount   Float
+  paidAmount    Float         @default(0)
+  status        InvoiceStatus @default(UNPAID)
+  note          String?
+  // Set manually per invoice (no default) — the "متأخرة الدفع" alert
+  // (lib/mailer.ts's sendOverdueInvoicesAlert, run daily by the Vercel Cron
+  // job in vercel.json) only fires once dueDate has passed AND the invoice
+  // isn't PAID yet. overdueNotifiedAt marks that the one-time alert already
+  // went out, so it isn't re-sent every day the invoice stays overdue.
+  dueDate           DateTime?
+  overdueNotifiedAt DateTime?
+  payments      Payment[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([quoteId])
+  @@index([customerId])
+}
+
+enum PaymentType {
+  INCOME
+  EXPENSE
+}
+
+// A single money movement — invoice payments (INCOME), and now employee
+// wages/vouchers/deductions (EXPENSE) via employeeId. `category` stays a
+// free string rather than an enum so new kinds don't need a schema change.
+model Payment {
+  id         String      @id @default(cuid())
+  type       PaymentType
+  category   String
+  amount     Float
+  method     String?
+  note       String?
+  invoice    Invoice?    @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
+  invoiceId  String?
+  employee   Employee?   @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+  employeeId String?
+  createdAt  DateTime    @default(now())
+
+  @@index([invoiceId])
+  @@index([employeeId])
+}
+
+// The HR roster — separate from SystemUser (a login account), since not
+// every employee needs/gets a system login. SystemUser.employeeId links the
+// two only when self-service access is set up; not every Employee has one,
+// and (since that FK isn't @unique — see SystemUser's comment) this is a
+// list rather than a single optional relation.
+model Employee {
+  id          String               @id @default(cuid())
+  nameAr      String
+  nameEn      String?
+  phone       String
+  email       String?
+  position    String?
+  monthlyWage Float                @default(0)
+  hireDate    DateTime?
+  isActive    Boolean              @default(true)
+  payments    Payment[]
+  vouchers    EmployeeVoucher[]
+  deductions  EmployeeDeduction[]
+  evaluations EmployeeEvaluation[]
+  systemUsers SystemUser[]
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+}
+
+model EmployeeEvaluation {
+  id          String   @id @default(cuid())
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  score       Int
+  notes       String?
+  evaluatedBy String?
+  createdAt   DateTime @default(now())
+
+  @@index([employeeId])
+}
+
+// سند قبض — an ad-hoc payment to the employee (advance/bonus/reimbursement).
+// Also creates a matching Payment(EXPENSE, category:"voucher") for the
+// ledger — deliberately NOT linked via a dedicated FK (would need a new
+// @unique column on the already-populated Payment table, which db push
+// flags as data-loss-risky the same way SystemUser.employeeId did) —
+// Payment.employeeId + category is enough to find them together.
+model EmployeeVoucher {
+  id         String   @id @default(cuid())
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  amount     Float
+  reason     String
+  createdAt  DateTime @default(now())
+
+  @@index([employeeId])
+}
+
+// A reduction against what the employee is owed (e.g. misuse/damage cost,
+// per the client's own warranty terms) — a record for HR/payroll purposes,
+// not itself a money movement, so it doesn't create a Payment row.
+model EmployeeDeduction {
+  id         String   @id @default(cuid())
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  amount     Float
+  reason     String
+  createdAt  DateTime @default(now())
+
+  @@index([employeeId])
+}
+
+// One row per create/update/delete made through system.syroleb.com —
+// written by lib/auditLog.ts, called from the mutating API routes. OWNER-only
+// visibility (/system/audit-log), for accountability once more than one
+// SystemUser is added. actorEmail/actorName are copied at write time rather
+// than a live FK, so the trail still reads correctly after a user is removed.
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorEmail String
+  action     String // create | update | delete
+  entityType String // "Quote" | "Invoice" | "Payment" | ...
+  entityId   String
+  summary    String
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}
+
+// One stock movement for a Product's warehouse quantity — IN (restock),
+// OUT (sold/used), or ADJUSTMENT (manual correction, quantity is the new
+// absolute value rather than a delta). `type` stays a free string rather
+// than an enum, matching Payment.category's reasoning.
+model InventoryMovement {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  type      String
+  quantity  Int
+  note      String?
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+}
+
+// --- Formal accounting (account.syroleb.com) ----------------------------
+// Fully separate from the flat income/expense Payment ledger above, which
+// stays exactly as-is. OWNER-only — see lib/systemRoles.ts's
+// DEFAULT_SYSTEM_ROLE_PAGES (MANAGER/STAFF don't get the "accounting" page
+// key). Reuses the same SystemUser login as system.syroleb.com.
+enum AccountType {
+  ASSET
+  LIABILITY
+  EQUITY
+  INCOME
+  EXPENSE
+}
+
+// Chart of accounts. code follows standard SMB numbering (1000s assets,
+// 2000s liabilities, 3000s equity, 4000s income, 5000s expense). Hierarchy
+// via a self-relation is schema-ready but the v1 UI renders a flat indented
+// list, not a tree widget — cheap to add now, painful to retrofit once real
+// journal lines exist against a flat table.
+model Account {
+  id              String                   @id @default(cuid())
+  code            String                   @unique
+  nameAr          String
+  nameEn          String?
+  type            AccountType
+  parent          Account?                 @relation("AccountHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  parentId        String?
+  children        Account[]                @relation("AccountHierarchy")
+  // Marks rows created by the starter-chart-of-accounts seed action
+  // (app/api/accounting/accounts/seed-starter/route.ts) — informational only.
+  isSystemDefault Boolean                  @default(false)
+  isActive        Boolean                  @default(true)
+  lines           JournalEntryLine[]
+  mappings        CategoryAccountMapping[]
+  createdAt       DateTime                 @default(now())
+  updatedAt       DateTime                 @updatedAt
+
+  @@index([parentId])
+  @@index([type])
+}
+
+// entryNumber assigned by app code (lib/journalEntries.ts), mirrors
+// Quote.quoteNumber/Invoice.invoiceNumber — sqlite (local dev) can't
+// autoincrement a non-@id field. sourceType/sourceId trace an auto-posted
+// entry back to the Invoice/Payment that created it (lib/autoPosting.ts) —
+// null for a manually-entered one — so deleting that source can find and
+// remove the matching entry the same way lib/inventory.ts reverses a
+// warehouse deduction when an invoice is deleted.
+model JournalEntry {
+  id             String             @id @default(cuid())
+  entryNumber    Int                @unique
+  date           DateTime
+  description    String
+  reference      String?
+  createdByEmail String
+  sourceType     String? // "Invoice" | "Payment" | null (manual)
+  sourceId       String?
+  lines          JournalEntryLine[]
+  createdAt      DateTime           @default(now())
+
+  @@index([date])
+  @@index([sourceType, sourceId])
+}
+
+// Exactly one of debit/credit is > 0 per line; sum(debit) == sum(credit)
+// across an entry's lines is the double-entry invariant — enforced in the
+// API layer (lib/journalEntries.ts), not the DB, same reasoning as
+// SystemUser's "one login per employee" comment: no native cross-row CHECK
+// in Postgres for this, and Zod + explicit checks is the established
+// pattern here.
+model JournalEntryLine {
+  id             String       @id @default(cuid())
+  journalEntry   JournalEntry @relation(fields: [journalEntryId], references: [id], onDelete: Cascade)
+  journalEntryId String
+  account        Account      @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  accountId      String
+  debit          Float        @default(0)
+  credit         Float        @default(0)
+  note           String?
+  position       Int          @default(0)
+
+  @@index([journalEntryId])
+  @@index([accountId])
+}
+
+// Maps a Payment.category string (free-text, no enum — see Payment's own
+// comment) to the account auto-posting should use, so lib/autoPosting.ts
+// never has to guess. Any category with no row here falls back to the
+// seeded Suspense account (code 3999) instead of a wrong guess — see the
+// schema comment on the starter chart of accounts in lib/accounts.ts.
+model CategoryAccountMapping {
+  id        String   @id @default(cuid())
+  category  String   @unique
+  account   Account  @relation(fields: [accountId], references: [id])
+  accountId String
+  createdAt DateTime @default(now())
+}
