@@ -8,7 +8,7 @@ import {
   Briefcase,
   Building2,
   ClipboardList,
-  DoorOpen,
+  Package,
   FileText,
   History,
   LayoutDashboard,
@@ -24,7 +24,7 @@ import { homeForRole, type AdminRole, type PageKey } from "@/lib/adminRoles";
 
 const NAV: { href: string; label: string; icon: LucideIcon; key: PageKey }[] = [
   { href: "/admin", label: "لوحة التحكم", icon: LayoutDashboard, key: "dashboard" },
-  { href: "/admin/products", label: "المنتجات", icon: DoorOpen, key: "products" },
+  { href: "/admin/products", label: "المنتجات", icon: Package, key: "products" },
   { href: "/admin/categories", label: "الفئات", icon: Layers, key: "categories" },
   { href: "/admin/jobs", label: "الوظائف الشاغرة", icon: Briefcase, key: "jobs" },
   { href: "/admin/job-applications", label: "طلبات التوظيف", icon: UserCheck, key: "jobApplications" },

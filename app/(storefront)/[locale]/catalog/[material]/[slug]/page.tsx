@@ -10,7 +10,7 @@ import { MATERIAL_PRODUCT_LINES, PRODUCT_LINE_LABELS, productLineForSlug } from 
 import { getSiteSetting } from "@/lib/siteContent";
 import { resolveCatalogMaterial, MATERIAL_CATEGORY_SLUGS, CATALOG_PDF_KEY } from "@/lib/materialPaths";
 
-// This one segment does double duty: a known sub-line slug ("doors",
+// This one segment does double duty: a known sub-line slug ("aluminum-glass",
 // "closets", "slim-system"...) renders a filtered listing, anything else is
 // looked up as an actual product slug — same disambiguation the old
 // /products/[slug] legacy redirector used for category-vs-product.

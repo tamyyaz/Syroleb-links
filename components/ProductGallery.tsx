@@ -13,7 +13,7 @@ export default function ProductGallery({
   images: GalleryImage[];
   fallbackAlt: string;
 }) {
-  const shown = images.length > 0 ? images : [{ url: "/images/placeholder-door.svg", alt: fallbackAlt, type: "image" as const }];
+  const shown = images.length > 0 ? images : [{ url: "/images/placeholder.svg", alt: fallbackAlt, type: "image" as const }];
   const [active, setActive] = useState(0);
   const current = shown[Math.min(active, shown.length - 1)];
   const youtubeId = current.type === "video" ? parseYouTubeId(current.url) : null;

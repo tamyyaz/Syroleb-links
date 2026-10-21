@@ -50,10 +50,12 @@ export default function Footer({
         <div>
           <div className="mb-3 text-lg font-extrabold tracking-wide">SYROLEB</div>
           <p className="text-sm text-brand-100/70">{dict.hero.subtitle}</p>
-          <div className="mt-4 flex items-center gap-2 text-sm text-brand-100/80">
-            <MailIcon className="h-4 w-4 shrink-0" />
-            <a href={`mailto:${content.email}`} className="hover:text-white">{content.email}</a>
-          </div>
+          {content.email && (
+            <div className="mt-4 flex items-center gap-2 text-sm text-brand-100/80">
+              <MailIcon className="h-4 w-4 shrink-0" />
+              <a href={`mailto:${content.email}`} className="hover:text-white">{content.email}</a>
+            </div>
+          )}
           <div className="mt-4 flex items-center gap-3">
             {SOCIAL_LINKS.filter(({ key }) => content.social[key]).map(({ key, Icon }) => (
               <a
@@ -98,14 +100,31 @@ export default function Footer({
             {content.locations.map((loc) => {
               const PinIcon = resolveIcon(loc.icon, "map-pin");
               return (
-                <li key={loc.phone}>
-                  <div className="flex items-start gap-2">
-                    <PinIcon className="mt-0.5 h-4 w-4 shrink-0" />
-                    <div>
-                      <div className="font-semibold text-white">{loc.name[locale]}</div>
-                      <div>{loc.address[locale]}</div>
-                    </div>
-                  </div>
+                <li key={`${loc.name.en}-${loc.phone}`}>
+                  {/* The whole name/address block opens the branch on the map. */}
+                  {(() => {
+                    const body = (
+                      <>
+                        <PinIcon className="mt-0.5 h-4 w-4 shrink-0" />
+                        <div>
+                          <div className="font-semibold text-white">{loc.name[locale]}</div>
+                          <div>{loc.address[locale]}</div>
+                        </div>
+                      </>
+                    );
+                    return loc.mapUrl ? (
+                      <a
+                        href={loc.mapUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-start gap-2 hover:text-white"
+                      >
+                        {body}
+                      </a>
+                    ) : (
+                      <div className="flex items-start gap-2">{body}</div>
+                    );
+                  })()}
                   <div className="mt-1 flex items-center gap-2">
                     <WhatsAppIcon className="h-3.5 w-3.5 shrink-0" />
                     <a

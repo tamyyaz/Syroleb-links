@@ -1,8 +1,8 @@
 {
-  "name": "syroleb-doors",
+  "name": "syroleb",
   "version": "1.0.0",
   "private": true,
-  "description": "Syroleb – موقع شركة سيروليب للأبواب (متجر إلكتروني ثنائي اللغة)",
+  "description": "Syroleb – موقع شركة سيروليب للألمنيوم والزجاج (متجر إلكتروني ثنائي اللغة)",
   "scripts": {
     "dev": "next dev",
     "build": "node scripts/vercel-build.mjs",
@@ -22,7 +22,6 @@
     "jose": "^5.9.6",
     "lucide-react": "^1.33.0",
     "next": "14.2.15",
-    "nodemailer": "^6.9.15",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "zod": "^3.23.8"
@@ -30,7 +29,6 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.16.10",
-    "@types/nodemailer": "^6.4.16",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",

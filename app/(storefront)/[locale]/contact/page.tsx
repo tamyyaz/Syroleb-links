@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Mail, MapPin } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { getDictionary } from "@/lib/i18n/getDictionary";
 import { isLocale, type Locale } from "@/lib/i18n/config";
 import { notFound } from "next/navigation";
@@ -51,18 +51,39 @@ export default async function ContactPage({
               <div className="text-xs font-semibold uppercase tracking-wide text-ink-800/50">
                 {locale === "en" ? "Address" : "العنوان"}
               </div>
-              <div className="mt-0.5 text-sm font-medium text-ink-900">{dict.contact.address}</div>
+              <div className="mt-0.5 text-sm font-medium text-ink-900">
+                {footer.locations[0]?.mapUrl ? (
+                  <a href={footer.locations[0].mapUrl} target="_blank" rel="noopener noreferrer" className="text-brand-700 hover:underline">
+                    {dict.contact.address}
+                  </a>
+                ) : (
+                  dict.contact.address
+                )}
+              </div>
             </div>
           </div>
-          <div className="flex items-start gap-3">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-700">
-              <Mail className="h-4 w-4" />
-            </span>
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-wide text-ink-800/50">{dict.contact.email}</div>
-              <div className="mt-0.5 text-sm font-medium text-ink-900" dir="ltr">{footer.email}</div>
+          {footer.locations[0]?.phone && (
+            <div className="flex items-start gap-3">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-700">
+                <Phone className="h-4 w-4" />
+              </span>
+              <div>
+                <div className="text-xs font-semibold uppercase tracking-wide text-ink-800/50">{dict.contact.phone}</div>
+                <div className="mt-0.5 text-sm font-medium text-ink-900" dir="ltr">+{footer.locations[0].phone}</div>
+              </div>
             </div>
-          </div>
+          )}
+          {footer.email && (
+            <div className="flex items-start gap-3">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-700">
+                <Mail className="h-4 w-4" />
+              </span>
+              <div>
+                <div className="text-xs font-semibold uppercase tracking-wide text-ink-800/50">{dict.contact.email}</div>
+                <div className="mt-0.5 text-sm font-medium text-ink-900" dir="ltr">{footer.email}</div>
+              </div>
+            </div>
+          )}
         </div>
 
         <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="btn-secondary mt-6">

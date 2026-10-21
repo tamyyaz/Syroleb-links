@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
 export default function WhatsAppButton({ label }: { label: string }) {
-  const href = buildWhatsAppLink("مرحباً، أرغب بالاستفسار عن الأبواب المتوفرة لديكم.");
+  const href = buildWhatsAppLink("مرحباً، أرغب بالاستفسار عن منتجات الألمنيوم المتوفرة لديكم.");
 
   return (
     <motion.a

@@ -22,7 +22,7 @@ export default function ProductDetailView({
   const name = locale === "ar" ? product.nameAr : product.nameEn;
   const description = locale === "ar" ? product.descriptionAr : product.descriptionEn;
   const categoryName = locale === "ar" ? product.category.nameAr : product.category.nameEn;
-  const image = firstProductImageUrl(product.images) ?? "/images/placeholder-door.svg";
+  const image = firstProductImageUrl(product.images) ?? "/images/placeholder.svg";
   const whatsappHref = buildWhatsAppLink(
     locale === "ar"
       ? `مرحباً، أرغب بالاستفسار عن: ${name}`

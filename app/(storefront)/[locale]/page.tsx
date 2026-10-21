@@ -12,7 +12,7 @@ import QualityFeatures from "@/components/QualityFeatures";
 import CTASection from "@/components/CTASection";
 import { getSiteUrl } from "@/lib/siteUrl";
 
-const SPOTLIGHT_ORDER = ["aluminum-doors"];
+const SPOTLIGHT_ORDER = ["aluminum"];
 
 export default async function HomePage({
   params
@@ -41,7 +41,7 @@ export default async function HomePage({
     name: "SYROLEB",
     url: siteUrl,
     logo: `${siteUrl}/images/logo-mark.png`,
-    email: footer.email,
+    ...(footer.email ? { email: footer.email } : {}),
     contactPoint: footer.locations.map((loc) => ({
       "@type": "ContactPoint",
       telephone: `+${loc.phone}`,

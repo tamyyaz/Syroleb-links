@@ -144,8 +144,8 @@ model OrderItem {
   product     Product  @relation(fields: [productId], references: [id])
   productId   String
   quantity    Int      @default(1)
-  // Free-text door measurement (e.g. "90×210 سم") the customer types in at
-  // the cart/order-now step — doors here are made-to-order, so this is
+  // Free-text measurement (e.g. "90×210 سم") the customer types in at
+  // the cart/order-now step — items here are made-to-order, so this is
   // often needed before the shop can quote or produce. Optional: most
   // inquiries are still "ask us" without a firm size yet.
   measurement String?

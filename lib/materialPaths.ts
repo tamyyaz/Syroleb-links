@@ -41,8 +41,8 @@ export const CATALOG_PDF_KEY: Record<Material, keyof CatalogsContent> = {
 };
 
 export const MATERIAL_CATEGORY_SLUGS: Record<Material, string> = {
-  ALUMINUM: "aluminum-doors",
-  STEEL: "aluminum-doors"
+  ALUMINUM: "aluminum",
+  STEEL: "aluminum"
 };
 
 export function productPath(material: Material, slug: string) {
@@ -50,7 +50,7 @@ export function productPath(material: Material, slug: string) {
 }
 
 const CATEGORY_SLUG_TO_SECTION_PATH: Record<string, string> = {
-  "aluminum-doors": MATERIAL_PATHS.ALUMINUM
+  "aluminum": MATERIAL_PATHS.ALUMINUM
 };
 
 // Homepage spotlight buttons link to a Category (not a Material directly)

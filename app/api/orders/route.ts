@@ -26,14 +26,10 @@ const orderSchema = z.object({
 
 // Creates an order/inquiry (one product from a detail page, several from the
 // cart, or none for a general contact-page inquiry) AND auto-sends it to
-// WhatsApp (lib/whatsapp.ts) — instant per-order printing (Brother
-// print-by-email to ORDER_NOTIFY_EMAIL) was intentionally removed in favor
-// of WhatsApp plus a weekly printed digest (app/api/system/cron/
-// weekly-report/route.ts), so paper only comes out once a week now. The DB
-// write always happens first so no order is ever lost even if the
-// WhatsApp send fails; that failure is reported back on the order record
-// (emailedOk — repurposed to mean "WhatsApp notified", not "emailed",
-// see /admin/orders) instead of failing the whole request.
+// WhatsApp (lib/whatsapp.ts). The DB write always happens first so no order
+// is ever lost even if the WhatsApp send fails; a successful send is
+// recorded on the order (emailedOk — repurposed to mean "WhatsApp
+// notified", see /admin/orders) instead of failing the whole request.
 export async function POST(request: NextRequest) {
   const json = await request.json().catch(() => null);
   const parsed = orderSchema.safeParse(json);

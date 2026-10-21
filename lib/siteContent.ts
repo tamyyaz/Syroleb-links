@@ -70,7 +70,7 @@ const socialLinksSchema = z
   .default({ facebook: "", instagram: "", youtube: "", linkedin: "", tiktok: "", twitter: "" });
 
 // A separate "something's broken with the site itself" contact — distinct
-// from the 3 sales branches above, so it's never confused with them. The
+// from the sales branch above, so it's never confused with it. The
 // default (used whenever a stored footer row predates this field) is empty,
 // which hides the line; the admin can fill it in from /admin/content.
 const techSupportSchema = z
@@ -78,17 +78,20 @@ const techSupportSchema = z
   .default({ name: "", phone: "" });
 
 export const footerContentSchema = z.object({
-  email: z.string().email(),
+  email: z.union([z.string().email(), z.literal("")]).default(""),
   locations: z
     .array(
       z.object({
         icon: z.string(),
         name: bilingualText,
         address: bilingualText,
-        phone: z.string().min(1)
+        phone: z.string().min(1),
+        // Google Maps link — the branch name/address in the footer link to it
+        mapUrl: z.string().default("")
       })
     )
-    .length(3),
+    .min(1)
+    .max(5),
   social: socialLinksSchema,
   techSupport: techSupportSchema
 });
@@ -201,13 +204,24 @@ export const SITE_SETTING_DEFAULTS: {
     subtitle: { ar: arDict.cta.subtitle, en: enDict.cta.subtitle }
   },
   footer: {
-    email: "info@example.com",
+    email: "",
     locations: [
-      { icon: "map-pin", name: { ar: arDict.footer.location_ad, en: enDict.footer.location_ad }, address: { ar: arDict.footer.location_ad_address, en: enDict.footer.location_ad_address }, phone: "000000000000" },
-      { icon: "map-pin", name: { ar: arDict.footer.location_ain, en: enDict.footer.location_ain }, address: { ar: arDict.footer.location_ain_address, en: enDict.footer.location_ain_address }, phone: "000000000000" },
-      { icon: "map-pin", name: { ar: arDict.footer.location_sy, en: enDict.footer.location_sy }, address: { ar: arDict.footer.location_sy_address, en: enDict.footer.location_sy_address }, phone: "000000000000" }
+      {
+        icon: "map-pin",
+        name: { ar: arDict.footer.location_ad, en: enDict.footer.location_ad },
+        address: { ar: arDict.footer.location_ad_address, en: enDict.footer.location_ad_address },
+        phone: "963985222780",
+        mapUrl: "https://maps.app.goo.gl/wTEWy2wweRsYgyCo9"
+      }
     ],
-    social: { facebook: "", instagram: "", youtube: "", linkedin: "", tiktok: "", twitter: "" },
+    social: {
+      facebook: "https://www.facebook.com/share/185kPVGKWp/",
+      instagram: "https://www.instagram.com/syro.leb",
+      youtube: "",
+      linkedin: "",
+      tiktok: "https://www.tiktok.com/@amin.hasan79",
+      twitter: ""
+    },
     techSupport: { name: "", phone: "" }
   },
   about_media: {
@@ -219,24 +233,24 @@ export const SITE_SETTING_DEFAULTS: {
   quoteTerms: {
     ar:
       "1- مدة التوريد والتركيب 40 يوم من تاريخ جهوزية الموقع و دفع الدفعة الأولى\n\n" +
-      "2- ينبغي أن يكون عرض جانبي الباب على الأقل 10 سم و خلافه يتم قص الحاجب على الأصول. يجب أن تُترك نهاية الباب والبرطاش بعد تركيب الباب أو يتم تركيب الباب فوق النعلة والبرطاش\n\n" +
+      "2- يجب أن تكون القياسات النهائية معتمدة من العميل أو المهندس المسؤول قبل بدء التصنيع\n\n" +
       "3- تعتبر الأعمال المتفق عليها قد تم تسليمها بعد يومين من انتهاء التركيب إذا لم يبدِ المالك أو المهندس المسؤول عن المشروع أي ملاحظة\n\n" +
       "4- يجب على العميل توفير الكهرباء في الموقع عند التركيب\n\n" +
-      "5- في حال عدم جهوزية العميل لن يتم التركيب لكي لا تتضرر الأبواب. وفي حال إصرار العميل على التركيب شركة سيروليب لن تتحمل مسؤولية تضرر الأبواب و يجب على العميل والمهندس المسؤول توضيع خط لإخلاء مسؤولية شركة سيروليب\n\n" +
+      "5- في حال عدم جهوزية الموقع لن يتم التركيب حفاظاً على المنتجات. وفي حال إصرار العميل على التركيب لن تتحمل سيروليب مسؤولية أي ضرر، ويجب على العميل والمهندس توقيع تعهد خطي بذلك\n\n" +
       "6- الضمان يشمل البضاعة خلال الفترة المحددة والتي هي خمس سنوات من تاريخ التركيب وتاريخ الدفعة الأخيرة، والكفالة لاتشمل الأضرار المتعمدة وسوء الاستخدام\n\n" +
       "7- يتكفل العميل بتكاليف الأضرار من سوء الاستخدام وتكاليف النقل والإصلاح\n\n" +
       "8- الدفعة الأولى 80% من قيمة العقد عند التوقيع. الدفعة الثانية 20% من قيمة العقد قبل التركيب ب 15 يوم\n\n" +
-      "9- بعد توقيع العقد، سيبدأ إنتاج البضاعة ولا يجوز استرداد الدفعة الأولى أو إلغاء أي من الأبواب المعتمدة",
+      "9- بعد توقيع العقد، سيبدأ إنتاج البضاعة ولا يجوز استرداد الدفعة الأولى أو إلغاء أي من المنتجات المعتمدة",
     en:
       "1- The duration of supply and installation is 40 days from the date the site is ready and the first payment is paid\n\n" +
-      "2- The width of the two sides of the doors should be at least 10 cm and otherwise the frame is cut on the insole. The lower door threshold must be installed after installing the door, or the door is installed on the insole door and the threshold door\n\n" +
+      "2- Final measurements must be approved by the customer or the responsible engineer before manufacturing starts\n\n" +
       "3- Agreed works are considered to have been delivered two days after completion of installation if the customer or engineer responsible for the project do not make any comment\n\n" +
       "4- The customer must provide electricity at the site upon installation\n\n" +
-      "5- If the site is not ready, the installation will not be done so that the doors are not damaged. If the customer insists on installation, SYROLEB will not be responsible for the doors damaged, and the customer and the engineer must sign a written letter disclaiming SYROLEB company's responsibility\n\n" +
+      "5- If the site is not ready, the installation will not be done to protect the products. If the customer insists on installation, SYROLEB will not be responsible for any damage, and the customer and the engineer must sign a written undertaking\n\n" +
       "6- The warranty includes the goods during the specified period, which is five years from the date of installation and the date of the last payment. The warranty does not cover intentional damage and misuse\n\n" +
       "7- The customer bears the costs of damage from misuse, transportation and repair costs\n\n" +
       "8- The first payment at signing (80% of the contract value). The second payment is 15 days before installation (20% of the contract value)\n\n" +
-      "9- After signing the contract, manufacturing will begin. The down payment cannot be refunded or any of the doors cancelled"
+      "9- After signing the contract, manufacturing will begin. The down payment cannot be refunded or any of the approved products cancelled"
   }
 };
 

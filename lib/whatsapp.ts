@@ -1,18 +1,30 @@
-import type { NewOrderEmailInput } from "@/lib/mailer";
+// Public WhatsApp number (international format, digits only) used by every
+// click-to-chat button. NEXT_PUBLIC_WHATSAPP_NUMBER overrides it.
+export const DEFAULT_WHATSAPP_NUMBER = "963985222780";
+
+export type NewOrderInput = {
+  orderId: string;
+  createdAt: Date;
+  customerName: string;
+  phone: string;
+  email?: string | null;
+  city?: string | null;
+  message?: string | null;
+  items: { name: string; quantity: number; measurement?: string | null }[];
+};
 
 /**
- * Builds a WhatsApp click-to-chat link. Set NEXT_PUBLIC_WHATSAPP_NUMBER
- * in .env (international format, digits only, e.g. 15551234567).
+ * Builds a WhatsApp click-to-chat link. Uses DEFAULT_WHATSAPP_NUMBER unless
+ * NEXT_PUBLIC_WHATSAPP_NUMBER is set (international format, digits only).
  */
 export function buildWhatsAppLink(message: string, phoneOverride?: string) {
-  const phone = phoneOverride ?? process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
+  const phone = phoneOverride ?? (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || DEFAULT_WHATSAPP_NUMBER);
   const encoded = encodeURIComponent(message);
   return `https://wa.me/${phone}?text=${encoded}`;
 }
 
-// Plain-text counterpart to lib/mailer.ts's buildNewOrderEmailHtml — same
-// data, formatted for a WhatsApp message instead of an HTML email.
-export function buildNewOrderWhatsAppText(order: NewOrderEmailInput): string {
+// Plain-text WhatsApp message describing a new order/inquiry.
+export function buildNewOrderWhatsAppText(order: NewOrderInput): string {
   const shortId = order.orderId.slice(-6).toUpperCase();
   const lines = [`طلب جديد #${shortId}`, "", `الاسم: ${order.customerName}`, `الهاتف: ${order.phone}`];
   if (order.city) lines.push(`المدينة: ${order.city}`);
@@ -35,7 +47,7 @@ export function buildNewOrderWhatsAppText(order: NewOrderEmailInput): string {
 // "<phone>@c.us" for a person or "<id>@g.us" for a group, both obtainable
 // from the instance's getChats endpoint) in the environment. Best-effort
 // only — callers should never let a failure here block the request that
-// triggered it (mirrors how email notification failures are handled).
+// triggered it.
 // Requires the linked phone to stay online/connected, unlike CallMeBot —
 // see buildWhatsAppLink above for the unrelated storefront click-to-chat
 // button, which doesn't depend on either of these.

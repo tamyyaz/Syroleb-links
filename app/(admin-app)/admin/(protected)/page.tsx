@@ -1,4 +1,4 @@
-import { DoorOpen, Inbox, ShoppingCart } from "lucide-react";
+import { Package, Inbox, ShoppingCart } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { getOrderStatusInfo } from "@/lib/orderStatus";
 import { requirePageRole } from "@/lib/requirePageRole";
@@ -23,7 +23,7 @@ export default async function AdminDashboardPage() {
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="card flex items-center gap-4 p-6">
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-700">
-            <DoorOpen className="h-5 w-5" />
+            <Package className="h-5 w-5" />
           </span>
           <div>
             <div className="text-sm text-ink-800/60">إجمالي المنتجات</div>

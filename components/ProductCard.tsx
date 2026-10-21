@@ -24,7 +24,7 @@ export default function ProductCard({
 }) {
   const name = locale === "ar" ? product.nameAr : product.nameEn;
   const categoryName = locale === "ar" ? product.category.nameAr : product.category.nameEn;
-  const image = firstProductImageUrl(product.images) ?? "/images/placeholder-door.svg";
+  const image = firstProductImageUrl(product.images) ?? "/images/placeholder.svg";
 
   return (
     <div className="card-interactive group flex flex-col overflow-hidden">

@@ -11,7 +11,7 @@ export type CartItem = {
   currency: string;
   quantity: number;
   // Free-text size the customer types in on the cart page (e.g. "90×210
-  // سم") — doors here are made-to-order, so this often matters before the
+  // سم") — items here are made-to-order, so this often matters before the
   // shop can quote. Optional, empty by default.
   measurement?: string;
 };

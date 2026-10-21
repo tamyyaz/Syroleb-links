@@ -154,7 +154,7 @@ function chunk<T>(items: T[], size: number): T[][] {
 export function CatalogDocument({
   categories,
   siteName = "SYROLEB",
-  siteTagline = "حلول أبواب بجودة عالية وتصميم مبتكر",
+  siteTagline = "حلول ألمنيوم وزجاج بجودة عالية وتصميم مبتكر",
   collectionTag = "( COLLECTION 2026 ) @SYROLEB"
 }: {
   categories: CatalogPdfCategory[];

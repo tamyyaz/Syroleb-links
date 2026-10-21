@@ -14,7 +14,7 @@ export function isProductLine(value: string): value is ProductLine {
 
 export const PRODUCT_LINE_LABELS: Record<ProductLine, { ar: string; en: string }> = {
   ALUMINUM_SLIM_SYSTEM: { ar: "نظام سلم (Slim System)", en: "Slim System" },
-  ALUMINUM_DOORS: { ar: "أبواب", en: "Doors" },
+  ALUMINUM_DOORS: { ar: "ألمنيوم وزجاج", en: "Aluminum & Glass" },
   ALUMINUM_ALUCOBOND: { ar: "ألوكوبوند", en: "Alucobond" }
 };
 
@@ -25,15 +25,15 @@ export const MATERIAL_PRODUCT_LINES: Partial<Record<Material, ProductLine[]>> = 
 };
 
 // URL segment for each line under its material's /catalog/[material]/...
-// route (e.g. /catalog/aluminum/doors).
+// route (e.g. /catalog/aluminum/aluminum-glass).
 export const PRODUCT_LINE_SLUGS: Record<ProductLine, string> = {
   ALUMINUM_SLIM_SYSTEM: "slim-system",
-  ALUMINUM_DOORS: "doors",
+  ALUMINUM_DOORS: "aluminum-glass",
   ALUMINUM_ALUCOBOND: "alucobond"
 };
 
 // Reverse lookup used by /catalog/[material]/[slug] to tell a sub-line
-// listing (e.g. "doors") apart from an actual product slug — only the
+// listing (e.g. "aluminum-glass") apart from an actual product slug — only the
 // lines that apply to that material are considered.
 export function productLineForSlug(material: Material, slug: string): ProductLine | undefined {
   return (MATERIAL_PRODUCT_LINES[material] ?? []).find((line) => PRODUCT_LINE_SLUGS[line] === slug);

@@ -132,7 +132,7 @@ export function InvoiceDocument({ invoice }: { invoice: InvoicePdfData }) {
             <View style={styles.fieldsCol}>
               {branch && <FieldLine label="الفرع" value={branch.name} />}
               <FieldLine label="الهاتف" value={branch ? branch.phone : ""} />
-              <FieldLine label="العنوان" value={invoice.companyEmail} />
+              {invoice.companyEmail ? <FieldLine label="العنوان" value={invoice.companyEmail} /> : null}
               <FieldLine label="الموقع" value={getSiteUrl().replace(/^https?:\/\//, "")} />
             </View>
             <View style={styles.fieldsCol}>

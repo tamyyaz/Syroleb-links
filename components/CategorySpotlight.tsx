@@ -18,14 +18,14 @@ export default function CategorySpotlight({
 }) {
   const name = locale === "ar" ? category.nameAr : category.nameEn;
   const words = name.split(" ");
-  // English names lead with the specific term ("Aluminum Doors") so the accent
-  // word is first; Arabic names lead with the generic term ("أبواب ألمنيوم")
+  // English names lead with the specific term ("Aluminum Profiles") so the accent
+  // word is first; Arabic names lead with the generic term ("بروفايلات ألمنيوم")
   // so the accent word is last. Render every word in its natural reading
   // order and just color whichever one is the accent.
   const accentIndex = locale === "en" ? 0 : words.length - 1;
   const tagline = locale === "ar" ? category.taglineAr : category.taglineEn;
   const description = locale === "ar" ? category.descriptionAr : category.descriptionEn;
-  const image = category.heroImage ?? "/images/placeholder-door.svg";
+  const image = category.heroImage ?? "/images/placeholder.svg";
 
   return (
     <section className="bg-sage-300 py-14">

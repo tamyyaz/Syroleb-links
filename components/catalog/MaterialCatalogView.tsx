@@ -10,7 +10,7 @@ import { Download } from "lucide-react";
 
 // Shared by /catalog/[material] and /catalog/[material]/[slug]'s sub-line
 // branch — one material's catalog, optionally with a sub-line filter
-// (Doors, Slim System, Alucobond, Closets, Interior/Exterior Decor...).
+// (Aluminum & Glass, Slim System, Alucobond...).
 export default async function MaterialCatalogView({
   category,
   material,
@@ -31,7 +31,7 @@ export default async function MaterialCatalogView({
   // hidden until one's uploaded from /admin/content -> "كتالوجات PDF".
   catalogPdfUrl?: string;
   // /catalog/[material] — when set, the sub-line filter navigates to a real
-  // clean URL (e.g. /catalog/aluminum/doors) instead of a ?line= query param.
+  // clean URL (e.g. /catalog/aluminum/aluminum-glass) instead of a ?line= query param.
   lineBasePath?: string;
 }) {
   const categories = await prisma.category.findMany({ orderBy: { nameEn: "asc" } });

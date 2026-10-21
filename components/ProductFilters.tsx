@@ -34,12 +34,12 @@ export default function ProductFilters({
   productLines?: ProductLine[];
   // Set on /catalog/[material] (and its [slug] sub-line branch) — changing
   // the line select there navigates to a real clean URL like
-  // /catalog/aluminum/doors instead of appending ?line= to the current page, so
+  // /catalog/aluminum/aluminum-glass instead of appending ?line= to the current page, so
   // there's exactly one canonical URL per sub-line rather than two.
   lineBasePath?: string;
   // The active line when it's expressed in the URL path rather than a
   // ?line= query param — without this the select would show "all lines"
-  // even while actually viewing e.g. /catalog/aluminum/doors.
+  // even while actually viewing e.g. /catalog/aluminum/aluminum-glass.
   currentLine?: ProductLine;
 }) {
   const router = useRouter();

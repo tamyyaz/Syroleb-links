@@ -408,7 +408,7 @@ function FooterEditor({ value, onChange }: { value: FooterContent; onChange: (v:
   return (
     <div className="space-y-6">
       <div>
-        <label className="label">البريد الإلكتروني</label>
+        <label className="label">البريد الإلكتروني (اختياري — اتركه فاضي لإخفائه)</label>
         <input className="input" value={value.email} onChange={(e) => onChange({ ...value, email: e.target.value })} />
       </div>
 
@@ -451,7 +451,7 @@ function FooterEditor({ value, onChange }: { value: FooterContent; onChange: (v:
 
       {value.locations.map((loc, i) => (
         <div key={i} className="space-y-3 rounded-lg border border-brand-100 p-4">
-          <div className="text-sm font-semibold text-ink-800/70">فرع {i + 1}</div>
+          <div className="text-sm font-semibold text-ink-800/70">{value.locations.length > 1 ? `فرع ${i + 1}` : "الفرع الرئيسي"}</div>
           <IconPicker
             value={loc.icon as never}
             onChange={(icon) => {
@@ -499,6 +499,20 @@ function FooterEditor({ value, onChange }: { value: FooterContent; onChange: (v:
               onChange={(e) => {
                 const locations = [...value.locations];
                 locations[i] = { ...locations[i], phone: e.target.value };
+                onChange({ ...value, locations: locations as FooterContent["locations"] });
+              }}
+            />
+          </div>
+          <div>
+            <label className="label">رابط الموقع على الخريطة (Google Maps)</label>
+            <input
+              className="input"
+              dir="ltr"
+              placeholder="https://maps.app.goo.gl/..."
+              value={loc.mapUrl}
+              onChange={(e) => {
+                const locations = [...value.locations];
+                locations[i] = { ...locations[i], mapUrl: e.target.value };
                 onChange({ ...value, locations: locations as FooterContent["locations"] });
               }}
             />

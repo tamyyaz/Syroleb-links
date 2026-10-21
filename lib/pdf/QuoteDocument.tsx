@@ -204,7 +204,7 @@ export function QuoteDocument({ quote }: { quote: QuotePdfData }) {
             <View style={styles.fieldsCol}>
               {branch && <FieldLine label="الفرع" value={branch.name} />}
               <FieldLine label="الهاتف" value={branch ? branch.phone : ""} />
-              <FieldLine label="العنوان" value={quote.companyEmail} />
+              {quote.companyEmail ? <FieldLine label="العنوان" value={quote.companyEmail} /> : null}
               <FieldLine label="الموقع" value={getSiteUrl().replace(/^https?:\/\//, "")} />
               {(quote.responsibleName || quote.responsiblePhone) && (
                 <FieldLine

@@ -8,13 +8,13 @@ import Reveal from "./motion/Reveal";
 // spread interrupts a grid with one big pull-quote page.
 const COPY: Record<Locale, { line1: string; line2: string; support: string }> = {
   ar: {
-    line1: "أبواب تُصنع لتدوم.",
+    line1: "ألمنيوم يُصنع ليدوم.",
     line2: "تفاصيل تُنفَّذ بدقة.",
     support:
       "من مصنعنا إلى مشاريعنا — نفس المعيار الذي لا يساوم."
   },
   en: {
-    line1: "Doors built to last.",
+    line1: "Aluminum built to last.",
     line2: "Details crafted with precision.",
     support: "From our workshop to our projects — one uncompromising standard."
   }

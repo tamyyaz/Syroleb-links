@@ -24,7 +24,7 @@ export default async function CatalogChooserPage({ params }: { params: { locale:
 
   const categories = await prisma.category.findMany({ orderBy: { nameEn: "asc" } });
 
-  const aluminum = categories.find((c) => c.slug === "aluminum-doors");
+  const aluminum = categories.find((c) => c.slug === "aluminum");
 
   type Card = { href: string; name: string; image: string | undefined };
   const cards: Card[] = [];

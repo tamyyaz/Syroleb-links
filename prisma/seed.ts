@@ -9,15 +9,15 @@ async function main() {
   // --- Categories: the Syroleb product lines ---
   const categories = [
     {
-      slug: "aluminum-doors",
-      nameAr: "أبواب ألمنيوم",
-      nameEn: "Aluminum Doors",
-      taglineAr: "أبواب سيروليب عالية الأداء",
-      taglineEn: "Syroleb's high performance doors",
+      slug: "aluminum",
+      nameAr: "ألمنيوم",
+      nameEn: "Aluminum",
+      taglineAr: "ألمنيوم سيروليب عالي الأداء",
+      taglineEn: "Syroleb's high performance aluminum",
       descriptionAr:
-        "مصنوعة لأعلى درجات الأمان وبتأثير معماري مميز، تقدّم أبواب الألمنيوم الثقيلة لدينا قوة لا تُخترق مع هيبة جمالية خالدة لحماية عقارك وتمييزه.",
+        "ألمنيوم عالي الجودة بتصاميم عصرية وعزل حراري ممتاز، لنوافذ وواجهات تدوم لسنوات طويلة.",
       descriptionEn:
-        "Crafted for ultimate security and striking architectural impact, our heavy-duty Aluminum doors offer impenetrable strength combined with timeless aesthetic prestige to protect and distinguish your property.",
+        "High-quality aluminum with modern designs and excellent thermal insulation, for windows and façades built to last.",
       heroImage: "https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?w=1200"
     }
   ];
@@ -37,11 +37,11 @@ async function main() {
   // --- Sample products ---
   const products = [
     {
-      slug: "aluminum-security-door-pro",
-      nameAr: "باب ألمنيوم أمني بروفيشنال",
-      nameEn: "Aluminum Security Door Pro",
-      descriptionAr: "باب ألمنيوم ثقيل مقاوم للاختراق بمتعدد نقاط قفل، مناسب للمداخل الرئيسية والمشاريع التجارية.",
-      descriptionEn: "Heavy-duty impact-resistant aluminum door with multi-point locking, ideal for main entrances and commercial projects.",
+      slug: "aluminum-sliding-window",
+      nameAr: "نافذة ألمنيوم منزلقة",
+      nameEn: "Aluminum Sliding Window",
+      descriptionAr: "نافذة ألمنيوم منزلقة بعزل حراري وصوتي ممتاز وإطار متين، مناسبة للمنازل والمشاريع التجارية.",
+      descriptionEn: "Sliding aluminum window with excellent thermal and acoustic insulation and a durable frame, ideal for homes and commercial projects.",
       categoryId: aluminum.id,
       material: Material.ALUMINUM,
       price: 4200,
@@ -49,11 +49,11 @@ async function main() {
       images: ["https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1200"]
     },
     {
-      slug: "aluminum-architectural-door",
-      nameAr: "باب ألمنيوم معماري فاخر",
-      nameEn: "Aluminum Architectural Door",
-      descriptionAr: "تصميم معماري مميز بطلاء إلكتروستاتيك، يجمع بين القوة والهيبة الجمالية لواجهات العقارات الفاخرة.",
-      descriptionEn: "Distinctive architectural design with electrostatic coating, combining strength with aesthetic prestige for premium property facades.",
+      slug: "aluminum-curtain-wall",
+      nameAr: "واجهة كيرتن وول ألمنيوم",
+      nameEn: "Aluminum Curtain Wall Façade",
+      descriptionAr: "واجهة زجاجية بإطار ألمنيوم بتصميم معماري مميز وطلاء إلكتروستاتيك، تجمع بين القوة والمظهر الراقي.",
+      descriptionEn: "Glazed façade with an aluminum frame, distinctive architectural design and electrostatic coating, combining strength with a premium look.",
       categoryId: aluminum.id,
       material: Material.ALUMINUM,
       price: 5100,
@@ -91,7 +91,7 @@ async function main() {
       category: "faq",
       title: "مدة التوصيل والتركيب",
       content:
-        "مدة التوصيل والتركيب عادة بين 7 إلى 14 يوم عمل حسب نوع الباب والكمية والموقع، ونأكد الموعد الدقيق مع العميل بعد تأكيد الطلب."
+        "مدة التوصيل والتركيب عادة بين 7 إلى 14 يوم عمل حسب نوع المنتج والكمية والموقع، ونأكد الموعد الدقيق مع العميل بعد تأكيد الطلب."
     },
     {
       category: "faq",

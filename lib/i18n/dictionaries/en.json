@@ -11,7 +11,7 @@
   },
   "hero": {
     "title": "SYROLEB",
-    "subtitle": "High-quality door solutions with innovative design",
+    "subtitle": "High-quality aluminum & glass solutions with innovative design",
     "cta_products": "Browse Catalog",
     "cta_contact": "Contact Us"
   },
@@ -27,16 +27,16 @@
   },
   "services": {
     "eyebrow": "Our Services",
-    "heading": "We Do More Than Doors",
+    "heading": "Complete Aluminum & Glass Solutions",
     "aluminum": "Aluminum"
   },
   "spotlight": {
-    "tagline": "Syroleb's high performance doors",
+    "tagline": "Syroleb's high performance aluminum",
     "shop_now": "Shop Now",
     "details": "Details"
   },
   "quality": {
-    "eyebrow": "Aluminum, Doors",
+    "eyebrow": "Aluminum & Glass",
     "q1_title": "World-Class Quality",
     "q1_body": "International standards in execution",
     "q2_title": "Comprehensive Warranty",
@@ -55,7 +55,7 @@
     "categories": "Shop by Category",
     "why_us": "Why Syroleb?",
     "why_1_title": "High Manufacturing Quality",
-    "why_1_body": "Genuine materials and precise finishing for doors that last for years.",
+    "why_1_body": "Genuine materials and precise finishing for products that last for years.",
     "why_2_title": "Fast Delivery & Installation",
     "why_2_body": "A dedicated team delivering and installing wherever you are.",
     "why_3_title": "Warranty & After-Sales Support",
@@ -148,7 +148,7 @@
   "about": {
     "title": "About Us",
     "eyebrow": "Syroleb",
-    "body": "Syroleb specializes in manufacturing, supplying and installing doors and aluminum products to world-class quality standards. We serve individuals, contractors and commercial projects with high quality, comprehensive warranty and continuous innovation.",
+    "body": "Syroleb specializes in manufacturing, supplying and installing aluminum and glass products to world-class quality standards. We serve individuals, contractors and commercial projects with high quality, comprehensive warranty and continuous innovation.",
     "vision_eyebrow": "Our Vision",
     "vision_body": "We aim to be the premier partner for developers and engineers, bringing world-class solutions to regional projects.",
     "values_title": "Our Values",
@@ -160,7 +160,7 @@
   "contact": {
     "title": "Contact Us",
     "eyebrow": "We're Here to Help",
-    "address": "Company address",
+    "address": "View location on map",
     "phone": "Phone",
     "email": "Email",
     "form_title": "Leave a Message"
@@ -169,13 +169,9 @@
     "rights": "All rights reserved",
     "quick_links": "Quick Links",
     "contact_us": "Contact Us",
-    "locations_title": "Our Locations",
-    "location_ad": "Branch 1",
-    "location_ad_address": "Address",
-    "location_ain": "Branch 2",
-    "location_ain_address": "Address",
-    "location_sy": "Branch 3",
-    "location_sy_address": "Address",
+    "locations_title": "Our Location",
+    "location_ad": "Main Branch",
+    "location_ad_address": "View location on map",
     "tech_support": "Technical Support (website issue)"
   },
   "chat": {

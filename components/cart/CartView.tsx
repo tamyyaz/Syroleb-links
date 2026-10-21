@@ -57,7 +57,7 @@ export default function CartView({ dict, locale }: { dict: Dictionary; locale: L
               <div className="card space-y-3 p-4">
                 <div className="flex items-center gap-4">
                   <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-brand-100">
-                    <Image src={item.image ?? "/images/placeholder-door.svg"} alt={item.name} fill className="object-cover" />
+                    <Image src={item.image ?? "/images/placeholder.svg"} alt={item.name} fill className="object-cover" />
                   </div>
                   <div className="flex-1">
                     <div className="font-semibold text-ink-900">{item.name}</div>

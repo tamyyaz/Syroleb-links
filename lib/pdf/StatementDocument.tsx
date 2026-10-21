@@ -117,7 +117,7 @@ export function StatementDocument({ statement }: { statement: StatementPdfData }
             <View style={styles.fieldsCol}>
               {branch && <FieldLine label="الفرع" value={branch.name} />}
               <FieldLine label="الهاتف" value={branch ? branch.phone : ""} />
-              <FieldLine label="العنوان" value={statement.companyEmail} />
+              {statement.companyEmail ? <FieldLine label="العنوان" value={statement.companyEmail} /> : null}
             </View>
             <View style={styles.fieldsCol}>
               <FieldLine label="العميل" value={statement.customerName} />
