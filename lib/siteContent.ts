@@ -188,7 +188,7 @@ export const SITE_SETTING_DEFAULTS: {
     eyebrow: { ar: arDict.services.eyebrow, en: enDict.services.eyebrow },
     heading: { ar: arDict.services.heading, en: enDict.services.heading },
     items: [
-      { key: "aluminum", image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600", label: { ar: arDict.services.aluminum, en: enDict.services.aluminum }, href: "/catalog/aluminum" }
+      { key: "aluminum", image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600", label: { ar: arDict.services.aluminum, en: enDict.services.aluminum }, href: "/gallery" }
     ]
   },
   quality: {

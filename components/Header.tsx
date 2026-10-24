@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/getDictionary";
 import LanguageSwitcher from "./LanguageSwitcher";
-import CartNavLink from "./cart/CartNavLink";
 
 export default function Header({
   dict,
@@ -28,7 +27,7 @@ export default function Header({
 
   const links = [
     { href: `/${locale}`, label: dict.nav.home },
-    { href: `/${locale}/catalog`, label: dict.nav.products },
+    { href: `/${locale}/gallery`, label: dict.nav.gallery },
     { href: `/${locale}/about`, label: dict.nav.about },
     { href: `/${locale}/careers`, label: dict.nav.careers }
   ];
@@ -50,7 +49,7 @@ export default function Header({
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
-          {links.map((link, i) => (
+          {links.map((link) => (
             <Fragment key={link.href}>
               <Link
                 href={link.href}
@@ -63,7 +62,6 @@ export default function Header({
               >
                 {link.label}
               </Link>
-              {i === 1 && <CartNavLink locale={locale} label={dict.nav.cart} />}
             </Fragment>
           ))}
         </nav>
@@ -115,7 +113,7 @@ export default function Header({
         }`}
       >
         <div className="container-page space-y-1 py-3">
-          {links.map((link, i) => (
+          {links.map((link) => (
             <Fragment key={link.href}>
               <Link
                 href={link.href}
@@ -128,11 +126,6 @@ export default function Header({
               >
                 {link.label}
               </Link>
-              {i === 1 && (
-                <div className="px-3 py-1">
-                  <CartNavLink locale={locale} label={dict.nav.cart} />
-                </div>
-              )}
             </Fragment>
           ))}
           <Link href={`/${locale}/contact`} className="btn-primary mt-2 w-full sm:hidden">

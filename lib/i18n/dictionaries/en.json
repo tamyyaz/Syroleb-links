@@ -7,12 +7,13 @@
     "careers": "Careers",
     "cart": "Cart",
     "whatsapp": "WhatsApp",
-    "contact_us_btn": "Contact Us"
+    "contact_us_btn": "Contact Us",
+    "gallery": "Gallery"
   },
   "hero": {
     "title": "SYROLEB",
     "subtitle": "High-quality aluminum & glass solutions with innovative design",
-    "cta_products": "Browse Catalog",
+    "cta_products": "View Gallery",
     "cta_contact": "Contact Us"
   },
   "stats": {
@@ -47,7 +48,7 @@
   "cta": {
     "title": "Ready to Turn Your Vision into Reality?",
     "subtitle": "Contact us now and start your project with Syroleb",
-    "catalog": "Catalog",
+    "catalog": "Gallery",
     "contact": "Contact Us"
   },
   "home": {
@@ -207,5 +208,15 @@
     "new_orders": "New Orders",
     "total_products": "Total Products",
     "no_orders": "No orders yet"
+  },
+  "gallery": {
+    "eyebrow": "Our Work",
+    "title": "Gallery",
+    "subtitle": "A selection of our completed projects",
+    "empty": "Photos coming soon",
+    "view_all": "View Gallery",
+    "close": "Close",
+    "prev": "Previous",
+    "next": "Next"
   }
 }

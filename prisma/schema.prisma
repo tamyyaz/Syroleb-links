@@ -154,6 +154,15 @@ model OrderItem {
   @@index([productId])
 }
 
+// --- Photo gallery (public /gallery page; no prices, managed from /admin/gallery) ---
+model GalleryImage {
+  id        String   @id @default(cuid())
+  url       String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
 // --- Careers / job openings -----------------------------------------------
 model Job {
   id            String   @id @default(cuid())

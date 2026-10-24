@@ -30,6 +30,7 @@ export const PAGE_KEYS = [
   "dashboard",
   "products",
   "categories",
+  "gallery",
   "jobs",
   "jobApplications",
   "orders",
@@ -52,6 +53,7 @@ export const PAGE_KEY_LABELS: Record<PageKey, string> = {
   dashboard: "لوحة التحكم",
   products: "المنتجات",
   categories: "الفئات",
+  gallery: "معرض الصور",
   jobs: "الوظائف الشاغرة",
   jobApplications: "طلبات التوظيف",
   orders: "الطلبات",
@@ -73,7 +75,8 @@ export const DEFAULT_ROLE_PAGES: Record<Exclude<AdminRole, "SUPER_ADMIN">, PageK
     "dashboard",
     "products",
     "categories",
-      "jobs",
+    "gallery",
+    "jobs",
     "jobApplications",
     "orders",
     "quotes",
@@ -82,7 +85,7 @@ export const DEFAULT_ROLE_PAGES: Record<Exclude<AdminRole, "SUPER_ADMIN">, PageK
     "chats",
     "team"
   ],
-  EMPLOYEE: ["products", "categories"]
+  EMPLOYEE: ["products", "categories", "gallery"]
 };
 
 // The page every role should land on right after login / when it hits a

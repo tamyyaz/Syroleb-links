@@ -6,17 +6,10 @@ const SECTIONS: { key: string; label: string; description: string; href?: string
   { key: "hero", label: "القسم الرئيسي (أعلى الصفحة الرئيسية)", description: "العنوان، الوصف الفرعي، صورة أو فيديو الخلفية" },
   { key: "stats", label: "شريط الإحصائيات", description: "سنوات الخبرة، المشاريع، العملاء" },
   { key: "services", label: "شبكة الخدمات", description: "بطاقات الخدمات بالصفحة الرئيسية" },
-  {
-    key: "categories",
-    label: "أقسام المنتجات (الفئات)",
-    description: "العناوين والوصف وصورة كل قسم — نفس الأقسام الظاهرة تحت بعضها بالصفحة الرئيسية",
-    href: "/admin/categories"
-  },
   { key: "quality", label: "قسم الثقة", description: "الجودة، الضمان، الابتكار" },
   { key: "cta", label: "قسم الدعوة لاتخاذ إجراء", description: "قبل الفوتر مباشرة" },
   { key: "footer", label: "الفوتر", description: "الفروع، الهاتف، الإيميل" },
   { key: "about_media", label: "صور وفيديوهات صفحة من نحن", description: "معرض صور/فيديوهات إضافي بأسفل صفحة \"من نحن\"" },
-  { key: "catalogs", label: "كتالوجات PDF", description: "ملف PDF جاهز لكل قسم يحمّله الزوار" },
   {
     key: "quoteTerms",
     label: "شروط عرض السعر الافتراضية",

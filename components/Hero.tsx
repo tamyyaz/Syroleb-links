@@ -92,7 +92,7 @@ export default function Hero({
             <Link href={`/${locale}/contact`} className="btn-outline-light">
               {dict.hero.cta_contact}
             </Link>
-            <Link href={`/${locale}/catalog`} className="btn-primary">
+            <Link href={`/${locale}/gallery`} className="btn-primary">
               {dict.hero.cta_products}
             </Link>
           </motion.div>

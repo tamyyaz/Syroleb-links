@@ -7,6 +7,15 @@ const nextConfig = {
       { protocol: "https", hostname: "**" }
     ]
   },
+  // The public catalog and cart were replaced by the photo gallery.
+  async redirects() {
+    return [
+      { source: "/:locale(ar|en)/catalog/:path*", destination: "/:locale/gallery", permanent: false },
+      { source: "/:locale(ar|en)/products/:path*", destination: "/:locale/gallery", permanent: false },
+      { source: "/:locale(ar|en)/aluminum/:path*", destination: "/:locale/gallery", permanent: false },
+      { source: "/:locale(ar|en)/cart", destination: "/:locale/gallery", permanent: false }
+    ];
+  },
   eslint: {
     ignoreDuringBuilds: false
   }

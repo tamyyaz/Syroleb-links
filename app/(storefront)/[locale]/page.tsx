@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import { getDictionary } from "@/lib/i18n/getDictionary";
 import { isLocale, type Locale } from "@/lib/i18n/config";
 import { notFound } from "next/navigation";
@@ -6,13 +5,11 @@ import { getAllSiteSettings } from "@/lib/siteContent";
 import Hero from "@/components/Hero";
 import StatsBar from "@/components/StatsBar";
 import ServicesGrid from "@/components/ServicesGrid";
-import CategorySpotlight from "@/components/CategorySpotlight";
+import GalleryPreview from "@/components/GalleryPreview";
 import BrandStatement from "@/components/BrandStatement";
 import QualityFeatures from "@/components/QualityFeatures";
 import CTASection from "@/components/CTASection";
 import { getSiteUrl } from "@/lib/siteUrl";
-
-const SPOTLIGHT_ORDER = ["aluminum-doors"];
 
 export default async function HomePage({
   params
@@ -23,13 +20,6 @@ export default async function HomePage({
   const locale = params.locale as Locale;
   const dict = await getDictionary(locale);
   const { hero, stats, services, quality, cta, footer } = await getAllSiteSettings();
-
-  const categories = await prisma.category.findMany({
-    where: { slug: { in: SPOTLIGHT_ORDER } }
-  });
-  const orderedCategories = SPOTLIGHT_ORDER.map((slug) =>
-    categories.find((c) => c.slug === slug)
-  ).filter((c): c is (typeof categories)[number] => Boolean(c));
 
   const siteUrl = getSiteUrl();
   // LocalBusiness (not the more generic Organization) — the branches are
@@ -65,15 +55,7 @@ export default async function HomePage({
       <StatsBar locale={locale} content={stats} />
       <ServicesGrid locale={locale} content={services} />
 
-      {orderedCategories.map((category, i) => (
-        <CategorySpotlight
-          key={category.id}
-          category={category}
-          dict={dict}
-          locale={locale}
-          reverse={i % 2 === 1}
-        />
-      ))}
+      <GalleryPreview locale={locale} dict={dict} />
 
       <BrandStatement locale={locale} />
       <QualityFeatures locale={locale} content={quality} />
