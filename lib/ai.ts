@@ -36,10 +36,10 @@ async function buildSystemPrompt(locale: string) {
     ? products
         .map(
           (p) =>
-            `- ${p.nameEn} / ${p.nameAr} | category: ${p.category.nameEn} | material: ${p.material} | price: ${p.price} ${p.currency} | ${p.inStock ? "in stock" : "out of stock"}`
+            `- ${p.nameEn} / ${p.nameAr} | category: ${p.category.nameEn} | material: ${p.material}`
         )
         .join("\n")
-    : "(no products in the catalog yet)";
+    : "(no products listed yet)";
 
   const languageInstruction =
     locale === "ar"
@@ -49,8 +49,9 @@ async function buildSystemPrompt(locale: string) {
   return `You are the SYROLEB website assistant. You help visitors with questions about Syroleb's products and services.
 
 Rules:
-- Only answer using the SITE FACTS, KNOWLEDGE BASE and PRODUCT CATALOG below. If you don't know something, say so honestly and suggest contacting the team on WhatsApp instead of guessing.
-- Never invent prices, warranty terms, or delivery times that aren't listed below.
+- Only answer using the SITE FACTS, KNOWLEDGE BASE and PRODUCTS below. If you don't know something, say so honestly and suggest contacting the team on WhatsApp instead of guessing.
+- Never state, estimate or guess any price. If asked about prices, say that pricing is given per quote and suggest contacting the team on WhatsApp.
+- Never invent warranty terms or delivery times that aren't listed below.
 - Keep answers short and friendly (2-4 sentences), like a helpful sales assistant.
 - Plain text only — no markdown (no **bold**, no bullet lists, no headings). This is rendered as-is in a chat bubble.
 - ${languageInstruction}
@@ -61,7 +62,7 @@ ${siteFacts}
 KNOWLEDGE BASE (maintained by the SYROLEB team):
 ${knowledgeText}
 
-PRODUCT CATALOG (subset):
+PRODUCTS (names only, no prices):
 ${productsText}`;
 }
 
