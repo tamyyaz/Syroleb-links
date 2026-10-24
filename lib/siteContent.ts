@@ -69,13 +69,14 @@ const socialLinksSchema = z
   })
   .default({ facebook: "", instagram: "", youtube: "", linkedin: "", tiktok: "", twitter: "" });
 
-// A separate "something's broken with the site itself" contact — distinct
+// The website developer's contact (shown at the bottom of the footer) — a
+// separate "something's broken with the site itself" contact — distinct
 // from the sales branch above, so it's never confused with it. The
 // default (used whenever a stored footer row predates this field) is empty,
 // which hides the line; the admin can fill it in from /admin/content.
 const techSupportSchema = z
-  .object({ name: z.string().default(""), phone: z.string() })
-  .default({ name: "", phone: "" });
+  .object({ name: z.string().default(""), nameEn: z.string().default(""), phone: z.string() })
+  .default({ name: "", nameEn: "", phone: "" });
 
 export const footerContentSchema = z.object({
   email: z.union([z.string().email(), z.literal("")]).default(""),
@@ -229,7 +230,7 @@ export const SITE_SETTING_DEFAULTS: {
       tiktok: "https://www.tiktok.com/@amin.hasan79",
       twitter: ""
     },
-    techSupport: { name: "", phone: "" }
+    techSupport: { name: "المهندس علاء الحسن", nameEn: "Eng. Alaa Al-Hassan", phone: "963957669592" }
   },
   about_media: {
     items: []

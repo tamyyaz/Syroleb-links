@@ -153,11 +153,14 @@ export default function Footer({
             <SupportIcon className="h-3.5 w-3.5 shrink-0" />
             <span>
               {dict.footer.tech_support}
-              {content.techSupport.name ? ` — ${content.techSupport.name}` : ""}:
+              {(() => {
+                const name = locale === "en" && content.techSupport.nameEn ? content.techSupport.nameEn : content.techSupport.name;
+                return name ? ` — ${name}` : "";
+              })()}:
             </span>
             <a
               href={buildWhatsAppLink(
-                locale === "ar" ? "مرحباً، عندي مشكلة تقنية بالموقع" : "Hello, I have a technical issue with the website",
+                locale === "ar" ? "مرحباً مهندس علاء، بخصوص موقع سيروليب" : "Hello Eng. Alaa, regarding the Syroleb website",
                 toWhatsAppDigits(content.techSupport.phone)
               )}
               target="_blank"
